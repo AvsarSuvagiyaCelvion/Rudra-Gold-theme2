@@ -1,0 +1,458 @@
+{% schema %}
+{
+  "name": "Luxury Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "RUDRA GOLD"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Brand Tagline",
+      "default": "Timeless Purity, Crafted for Royalty"
+    }
+  ]
+}
+{% endschema %}
+
+<header class="site-header" id="siteHeader">
+  <div class="container header-container">
+    
+    <!-- Left: Mobile Menu Trigger & Logo -->
+    <div class="header-left">
+      <button class="mobile-menu-trigger" id="mobileMenuTrigger" aria-label="Open navigation menu">
+        {% render 'icon-hamburger' %}
+      </button>
+      <a href="/" class="header-logo-group">
+        <h1 class="logo-title">{{ section.settings.brand_name }}</h1>
+        <span class="logo-tagline">{{ section.settings.tagline }}</span>
+      </a>
+    </div>
+
+    <!-- Center: Main Navigation & Mega Menus -->
+    <nav class="main-navigation" id="mainNavigation">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="/" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item has-mega-menu">
+          <a href="/collections" class="nav-link">
+            Collections 
+            <svg class="nav-arrow" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </a>
+          <!-- Visual Mega Menu -->
+          <div class="mega-menu">
+            <div class="container mega-menu-grid">
+              
+              <a href="/collections/bridal" class="mega-menu-column">
+                <div class="mega-image-wrapper">
+                  <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=300&q=80" alt="Bridal Heritage">
+                </div>
+                <h4>Bridal Heritage</h4>
+                <span>Grand designs for royal weddings</span>
+              </a>
+
+              <a href="/collections/temple" class="mega-menu-column">
+                <div class="mega-image-wrapper">
+                  <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=300&q=80" alt="Temple Gold">
+                </div>
+                <h4>Temple Gold</h4>
+                <span>Traditional hand-carved heritage</span>
+              </a>
+
+              <a href="/collections/daily-wear" class="mega-menu-column">
+                <div class="mega-image-wrapper">
+                  <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=300&q=80" alt="Daily Wear">
+                </div>
+                <h4>Daily Wear</h4>
+                <span>Minimalist modern gold essentials</span>
+              </a>
+
+              <a href="/collections/solitaires" class="mega-menu-column">
+                <div class="mega-image-wrapper">
+                  <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=300&q=80" alt="Ethical Diamonds">
+                </div>
+                <h4>Solitaires</h4>
+                <span>Rare diamonds of timeless purity</span>
+              </a>
+
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="/collections/necklaces" class="nav-link">Necklaces</a>
+        </li>
+        <li class="nav-item">
+          <a href="/collections/rings" class="nav-link">Rings & Bangles</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" data-modal-type="vip-visit" class="nav-link vip-link">VIP Home Trial</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Right: Utility Icons -->
+    <div class="header-right">
+      <button class="header-icon-btn" id="headerSearchTrigger" aria-label="Open Search">
+        {% render 'icon-search' %}
+      </button>
+      <a href="/pages/wishlist" class="header-icon-btn wishlist-icon-btn" aria-label="Wishlist">
+        {% render 'icon-wishlist' %}
+        <span class="wishlist-count header-badge">0</span>
+      </a>
+      <button class="header-icon-btn" data-cart-drawer-trigger aria-label="Open Bag">
+        {% render 'icon-cart' %}
+        <span class="cart-count-badge header-badge">0</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- Search Overlay Drawer -->
+<div class="search-drawer-overlay" id="searchDrawerOverlay">
+  <button class="search-drawer-close" id="searchDrawerClose">
+    {% render 'icon-close' %}
+  </button>
+  <div class="search-drawer-container">
+    <h3 style="font-family: var(--font-serif); font-size: 20px; text-transform: uppercase; margin-bottom: 20px; color: var(--color-gold);">Search RUDRA GOLD</h3>
+    <div class="search-drawer-input-wrapper">
+      <input type="text" class="search-drawer-input" id="searchDrawerInput" placeholder="Search rings, necklaces, bridal sets..." autocomplete="off">
+      <span class="search-drawer-icon">{% render 'icon-search' %}</span>
+    </div>
+    <!-- Search Output Results -->
+    <div class="search-results-output" id="searchResultsOutput">
+      <!-- Search results will dynamically populate here -->
+    </div>
+  </div>
+</div>
+
+<style>
+/* Header CSS Layout styling */
+.site-header {
+  position: fixed;
+  top: 36px; /* Below announcement bar default */
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  z-index: 997;
+  transition: var(--transition-smooth);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.announcement-bar-section ~ .site-header {
+  top: auto;
+}
+
+.site-header.scrolled {
+  background-color: var(--color-dark);
+  height: 75px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-logo-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--color-gold);
+  line-height: 1.1;
+}
+
+.logo-tagline {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2px;
+}
+
+.site-header.scrolled .logo-tagline {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.main-navigation {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 36px;
+  align-items: center;
+}
+
+.nav-link {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 0;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--color-gold);
+  transition: var(--transition-fast);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover {
+  color: var(--color-gold-glow);
+}
+
+.nav-arrow {
+  transition: transform 0.3s;
+}
+
+.has-mega-menu:hover .nav-arrow {
+  transform: rotate(180deg);
+}
+
+.vip-link {
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+/* Mega Menu Structure */
+.has-mega-menu {
+  position: static;
+}
+
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-dark);
+  border-bottom: 1.5px solid var(--color-gold);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: translateY(10px);
+  padding: 40px 0;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.has-mega-menu:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mega-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.mega-menu-column {
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.mega-menu-column:hover {
+  transform: translateY(-5px);
+}
+
+.mega-image-wrapper {
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  margin-bottom: 15px;
+  border-radius: 2px;
+  aspect-ratio: 1 / 1;
+}
+
+.mega-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s;
+}
+
+.mega-menu-column:hover .mega-image-wrapper img {
+  transform: scale(1.05);
+}
+
+.mega-menu-column h4 {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--color-gold);
+  margin-bottom: 4px;
+}
+
+.mega-menu-column span {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Utilities Right Icons */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-icon-btn {
+  color: var(--color-light);
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-fast);
+}
+
+.header-icon-btn:hover {
+  color: var(--color-gold);
+}
+
+.wishlist-icon-btn svg, .header-icon-btn svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.header-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: var(--color-gold);
+  color: var(--color-dark);
+  font-size: 8px;
+  font-weight: 700;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-trigger {
+  display: none;
+  color: var(--color-light);
+  cursor: pointer;
+}
+
+/* Mobile & Tablet Styles */
+@media (max-width: 991px) {
+  .site-header {
+    height: 70px;
+    top: 0;
+    background-color: var(--color-dark);
+  }
+  .main-navigation {
+    display: none; /* Controlled by slide drawer */
+  }
+  .mobile-menu-trigger {
+    display: block;
+  }
+  .mega-menu {
+    display: none; /* Hide standard desktop mega menu */
+  }
+}
+</style>
+
+<!-- Mobile Navigation Menu Drawer JS Toggle Code in theme.js -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Mobile search trigger
+  const mobileSearch = document.getElementById('mobileSearchTrigger');
+  const searchDrawer = document.getElementById('searchDrawerOverlay');
+  const searchClose = document.getElementById('searchDrawerClose');
+  const searchOverlay = document.getElementById('searchDrawerOverlay');
+  const desktopSearch = document.getElementById('headerSearchTrigger');
+
+  const openSearch = () => {
+    searchDrawer.classList.add('active');
+    document.getElementById('searchDrawerInput').focus();
+  };
+
+  const closeSearch = () => {
+    searchDrawer.classList.remove('active');
+  };
+
+  if (mobileSearch) mobileSearch.addEventListener('click', openSearch);
+  if (desktopSearch) desktopSearch.addEventListener('click', openSearch);
+  if (searchClose) searchClose.addEventListener('click', closeSearch);
+
+  // Simple Mock live search results simulation
+  const searchInput = document.getElementById('searchDrawerInput');
+  const resultsOutput = document.getElementById('searchResultsOutput');
+  
+  const mockProducts = [
+    { title: "Rudra Royal Signature Necklace", price: "₹2,45,000", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=150&q=80" },
+    { title: "Bridal Heritage Diamond Choker", price: "₹4,12,000", img: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=150&q=80" },
+    { title: "Mayur Heritage Temple Ring", price: "₹65,000", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80" },
+    { title: "Golden Glow Filigree Bangles", price: "₹1,85,000", img: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=150&q=80" }
+  ];
+
+  if (searchInput && resultsOutput) {
+    searchInput.addEventListener('input', () => {
+      const val = searchInput.value.toLowerCase().trim();
+      resultsOutput.innerHTML = '';
+      
+      if (val.length < 2) return;
+
+      const filtered = mockProducts.filter(p => p.title.toLowerCase().includes(val));
+      if (filtered.length === 0) {
+        resultsOutput.innerHTML = '<p style="color: rgba(255,255,255,0.4); text-align: center; margin-top: 20px;">No exquisite pieces match your search.</p>';
+      } else {
+        filtered.forEach(p => {
+          resultsOutput.innerHTML += `
+            <a href="#" class="search-result-item" onclick="event.preventDefault(); triggerQuickView('${p.title}', ${parseInt(p.price.replace(/[₹,]/g,''))}, '${p.img}'); document.getElementById('searchDrawerClose').click();">
+              <img src="${p.img}" alt="${p.title}">
+              <div>
+                <h4 class="search-result-item-title">${p.title}</h4>
+                <p class="search-result-item-price">${p.price}</p>
+              </div>
+            </a>
+          `;
+        });
+      }
+    });
+  }
+});
+</script>

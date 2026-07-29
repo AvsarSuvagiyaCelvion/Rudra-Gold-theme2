@@ -1,0 +1,70 @@
+<div class="gold-rate-ticker-widget" data-modal-type="hallmark">
+  <span class="gold-rate-ticker-dot"></span>
+  <span class="gold-rate-ticker-label">Live Gold Rate:</span>
+  <span class="gold-rate-ticker-value" data-purity="22k" id="globalGold22k">₹6,850/g (22K)</span>
+  <span class="gold-rate-ticker-value" data-purity="18k" id="globalGold18k">₹5,605/g (18K)</span>
+  <span class="gold-rate-ticker-transparency">(Verify Purity)</span>
+</div>
+
+<style>
+.gold-rate-ticker-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-gold-glow);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.gold-rate-ticker-widget:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.gold-rate-ticker-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #25d366;
+  border-radius: 50%;
+  animation: pulseGreen 1.5s infinite;
+}
+
+.gold-rate-ticker-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.gold-rate-ticker-value {
+  color: var(--color-light);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.gold-rate-ticker-transparency {
+  color: var(--color-gold);
+  font-size: 9px;
+  text-decoration: underline;
+  margin-left: 2px;
+}
+
+@keyframes pulseGreen {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(37, 211, 102, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+</style>

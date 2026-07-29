@@ -1,0 +1,126 @@
+{% schema %}
+{
+  "name": "Luxury Trust Bar",
+  "settings": []
+}
+{% endschema %}
+
+<section class="brand-trust-bar">
+  <div class="container trust-bar-grid">
+    
+    <div class="trust-item" data-modal-type="hallmark">
+      <div class="trust-icon-wrapper">
+        {% render 'icon-hallmark' %}
+      </div>
+      <div class="trust-info">
+        <h3>BIS Hallmark 916</h3>
+        <p>100% certified pure gold with digital traceability</p>
+      </div>
+    </div>
+
+    <div class="trust-item" data-modal-type="hallmark">
+      <div class="trust-icon-wrapper">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polygon points="6 3 18 3 22 9 12 21 2 9 6 3"/>
+          <path d="M2 9h20M12 3v18M12 3L2 9M12 3l10 6M12 21L6 3M12 21l6-3"/>
+        </svg>
+      </div>
+      <div class="trust-info">
+        <h3>Certified Diamonds</h3>
+        <p>GIA, IGI and HRD certified conflict-free solitaires</p>
+      </div>
+    </div>
+
+    <div class="trust-item" data-modal-type="hallmark">
+      <div class="trust-icon-wrapper">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+        </svg>
+      </div>
+      <div class="trust-info">
+        <h3>Lifetime Exchange</h3>
+        <p>Guaranteed buyback & exchange options at live rates</p>
+      </div>
+    </div>
+
+    <div class="trust-item" data-modal-type="hallmark">
+      <div class="trust-icon-wrapper">
+        {% render 'icon-shield' %}
+      </div>
+      <div class="trust-info">
+        <h3>100% Insured Shipping</h3>
+        <p>Free fully-insured delivery across India flagships</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.brand-trust-bar {
+  background-color: var(--color-cream);
+  border-top: 1px solid var(--color-gray-border);
+  border-bottom: 1px solid var(--color-gray-border);
+  padding: 40px 0;
+}
+
+.trust-bar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.trust-item:hover {
+  transform: translateY(-3px);
+}
+
+.trust-icon-wrapper {
+  color: var(--color-gold);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-light);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 10px rgba(11, 11, 11, 0.02);
+}
+
+.trust-info h3 {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 4px;
+}
+
+.trust-info p {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 991px) {
+  .trust-bar-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 575px) {
+  .trust-bar-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+</style>

@@ -1,0 +1,98 @@
+<!-- AJAX Cart Drawer Template -->
+<div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle">
+  
+  <div class="cart-drawer-header">
+    <h3 id="cartDrawerTitle">Your Bag</h3>
+    <button class="cart-drawer-close-btn" id="cartDrawerClose" aria-label="Close cart drawer">
+      {% render 'icon-close' %}
+    </button>
+  </div>
+
+  <div class="cart-drawer-body">
+    <!-- Free Shipping Progress Bar -->
+    <div class="shipping-progress-wrapper">
+      <p class="shipping-progress-text" id="shippingProgressText">
+        Add <span>₹1,50,000</span> more for <strong>Free Insured Shipping & Velvet Box Packaging</strong>
+      </p>
+      <div class="shipping-progress-bar-bg">
+        <div class="shipping-progress-bar-fill" id="shippingProgressBarFill"></div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="cart-drawer-empty" id="cartDrawerEmptyState">
+      <div style="text-align: center; padding: 40px 0;">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--color-gold)" stroke-width="1" style="margin-bottom: 20px;">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <h4 style="font-family: var(--font-serif); font-size: 18px; margin-bottom: 10px; text-transform: uppercase;">Your bag is empty</h4>
+        <p style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 24px;">Discover our hand-carved heritage collections.</p>
+        <button class="btn-primary" onclick="document.getElementById('cartDrawerClose').click();" style="width: 100%;">Continue Shopping</button>
+      </div>
+    </div>
+
+    <!-- Cart Items Container -->
+    <div class="cart-drawer-items" id="cartDrawerItemsContainer">
+      <!-- Injected Dynamically via JS -->
+    </div>
+
+    <!-- Cart Customizations & Upsells -->
+    <div class="cart-drawer-filled-only" id="cartDrawerFilledState" style="display: none;">
+      
+      <!-- Engraving & Premium Packaging Options -->
+      <div class="cart-drawer-options">
+        <label class="cart-drawer-option-row">
+          <input type="checkbox" id="premiumGiftWrapCheck">
+          <span>Add Royal Velvet Gift Packaging (₹250)</span>
+        </label>
+        
+        <label class="cart-drawer-option-row">
+          <input type="checkbox" id="laserEngravingCheck">
+          <span>Add Custom Laser Engraving (Free)</span>
+        </label>
+        <textarea id="laserEngravingText" class="engraving-textarea" placeholder="Enter engraving details (e.g. Names, Dates or Initials)"></textarea>
+
+        <label class="cart-drawer-option-row" style="margin-top: 10px;">
+          <input type="checkbox" id="insuredDeliveryCheck" checked>
+          <span>100% Fully Insured Secure Transit (Free)</span>
+        </label>
+      </div>
+
+      <!-- Luxury Upsell Widget -->
+      <div class="drawer-upsell-wrapper">
+        <h4 class="drawer-upsell-title">Complete Your Look</h4>
+        <div class="drawer-upsell-item">
+          <img class="drawer-upsell-item-img" src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=150&q=80" alt="Gold Cleaner">
+          <div class="drawer-upsell-item-info">
+            <p class="drawer-upsell-item-title">Gold & Diamond Care Polish kit</p>
+            <p class="drawer-upsell-item-price">₹1,200</p>
+          </div>
+          <button class="drawer-upsell-add-btn" data-title="Gold & Diamond Care Polish kit" data-price="1200" data-img="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=150&q=80">
+            Add
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cart-drawer-footer" id="cartDrawerFooter">
+    <div class="cart-drawer-summary-row">
+      <span>Subtotal</span>
+      <span id="cartSubtotalAmount">₹0</span>
+    </div>
+    <div class="cart-drawer-summary-row total">
+      <span>Grand Total</span>
+      <span id="cartTotalAmount">₹0</span>
+    </div>
+    <p style="font-size: 10px; color: var(--color-text-muted); text-align: center; margin-top: 8px;">Tax and shipping calculated at checkout.</p>
+    
+    <button class="btn-primary cart-drawer-checkout-btn" onclick="alert('Proceeding to luxury checkout gateway...');">
+      Proceed to Checkout
+    </button>
+  </div>
+
+</div>

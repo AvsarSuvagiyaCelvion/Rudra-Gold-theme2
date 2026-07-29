@@ -1,0 +1,68 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Rudra Gold",
+    "theme_version": "1.0.0",
+    "theme_author": "Antigravity",
+    "theme_documentation_url": "https://rudragold.com",
+    "theme_support_url": "https://rudragold.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary_gold",
+        "label": "Primary Gold",
+        "default": "#D4AF37"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_gold",
+        "label": "Secondary Gold Accent",
+        "default": "#F3E5AB"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_text",
+        "label": "Dark Accent / Text",
+        "default": "#0B0B0B"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_base",
+        "label": "Background Base",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_cream",
+        "label": "Background Cream / Off-White",
+        "default": "#FAF8F5"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL",
+        "default": "https://instagram.com"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook URL",
+        "default": "https://facebook.com"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp_number",
+        "label": "WhatsApp VIP Number (e.g. 919876543210)",
+        "default": "917405544338"
+      }
+    ]
+  }
+]

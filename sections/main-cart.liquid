@@ -1,0 +1,34 @@
+{% schema %}
+{
+  "name": "Main Cart Page",
+  "settings": []
+}
+{% endschema %}
+
+<section class="main-cart-section section-padding">
+  <div class="container cart-page-container">
+    
+    <div class="section-header">
+      <span class="section-subtitle">YOUR SELECTED CURIOS</span>
+      <h1 class="section-title">Your Curation Bag</h1>
+    </div>
+
+    <!-- Empty State -->
+    <div class="cart-page-empty" id="cartPageEmptyState" style="text-align: center; padding: 60px 0;">
+      <p style="font-size: 14px; color: var(--color-text-muted); margin-bottom: 30px;">Your bag is currently empty of certified luxury pieces.</p>
+      <a href="/collections" class="btn-primary">Explore Our Heritage Collections</a>
+    </div>
+
+    <!-- Filled State (simulated layout) -->
+    <div class="cart-page-filled" id="cartPageFilledState" style="display: none;">
+      <!-- Standard cart page display similar to drawer styling -->
+    </div>
+
+  </div>
+</section>
+
+<style>
+.cart-page-container {
+  max-width: 800px;
+}
+</style>

@@ -1,0 +1,346 @@
+{% schema %}
+{
+  "name": "Luxury Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2026 RUDRA GOLD. All Rights Reserved."
+    }
+  ]
+}
+{% endschema %}
+
+<footer class="site-footer">
+  <div class="container footer-top-padding">
+    <div class="footer-grid">
+      
+      <!-- Brand Profile column -->
+      <div class="footer-col brand-col">
+        <h2 class="footer-logo">RUDRA GOLD</h2>
+        <p class="footer-tagline">"Timeless Purity, Crafted for Royalty"</p>
+        <p class="footer-about">Crafting legacy bridal jewellery and conflict-free solitaire diamonds. A century-long trust built on metal melt purity and hallmark transparency.</p>
+        
+        <!-- Address & Contact Info -->
+        <div class="footer-contact-info" style="margin-bottom: 20px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+          <p style="margin-bottom: 6px;">
+            <strong>Office:</strong> 340, First Floor, Varsha Society, Matavadi, Varachha, Surat - 395006
+          </p>
+          <p>
+            <strong>Phone/WhatsApp:</strong> <a href="https://wa.me/917405544338" style="color: var(--color-gold);">+91 74055 44338</a>
+          </p>
+        </div>
+        
+        <!-- Store Locator Link -->
+        <a href="/pages/store-locator" class="store-locator-cta">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Locate Flagship Boutique
+        </a>
+      </div>
+
+      <!-- Quick Links column -->
+      <div class="footer-col">
+        <h3>Our Collections</h3>
+        <ul>
+          <li><a href="/collections/bridal">Bridal Heritage</a></li>
+          <li><a href="/collections/temple">Temple Gold Collection</a></li>
+          <li><a href="/collections/daily-wear">Daily Wear Essentials</a></li>
+          <li><a href="/collections/solitaires">Solitaire Diamonds</a></li>
+          <li><a href="/collections/bangles">Bangles & Kadas</a></li>
+        </ul>
+      </div>
+
+      <!-- Customer Care column -->
+      <div class="footer-col">
+        <h3>Customer Concierge</h3>
+        <ul>
+          <li><a href="#" data-modal-type="vip-visit">Book Store Curation</a></li>
+          <li><a href="#" data-modal-type="vip-visit">VIP Home Trial Curation</a></li>
+          <li><a href="#" data-modal-type="hallmark">BIS Hallmark Transparency</a></li>
+          <li><a href="/pages/gold-rate-tracker">Live Gold Rates Tracker</a></li>
+          <li><a href="/pages/faq">Lifetime Exchange Policies</a></li>
+        </ul>
+      </div>
+
+      <!-- Trust Certifications column -->
+      <div class="footer-col certs-col">
+        <h3>Certifications</h3>
+        <div class="certifications-logos">
+          
+          <div class="cert-item" data-modal-type="hallmark">
+            <span class="cert-icon">916</span>
+            <div class="cert-lbl">
+              <h4>BIS Hallmark</h4>
+              <span>Melt Transparency</span>
+            </div>
+          </div>
+
+          <div class="cert-item" data-modal-type="hallmark">
+            <span class="cert-icon">IGI</span>
+            <div class="cert-lbl">
+              <h4>IGI certified</h4>
+              <span>100% Conflict-free</span>
+            </div>
+          </div>
+
+          <div class="cert-item" data-modal-type="hallmark">
+            <span class="cert-icon">GIA</span>
+            <div class="cert-lbl">
+              <h4>GIA Certified</h4>
+              <span>Rare Solitaires</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-container">
+      
+      <!-- Selectors -->
+      <div class="footer-selectors">
+        <div class="selector-dropdown">
+          <button class="selector-btn">
+            English (IN)
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="selector-dropdown">
+          <button class="selector-btn">
+            INR (₹)
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer-copyright">
+        {{ section.settings.copyright_text }}
+      </div>
+
+      <!-- Payment Icons -->
+      <div class="footer-payments">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1" class="payment-icon">
+          <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
+          <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1" class="payment-icon">
+          <circle cx="19" cy="12" r="3"/>
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 12a3 3 0 0 0 4-3"/>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<style>
+.site-footer {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.footer-top-padding {
+  padding: 80px 0 50px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 40px;
+}
+
+.brand-col h2 {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+  margin-bottom: 5px;
+}
+
+.footer-tagline {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-gold-glow);
+  margin-bottom: 20px;
+}
+
+.footer-about {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.store-locator-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  padding: 10px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  transition: var(--transition-fast);
+}
+
+.store-locator-cta:hover {
+  background-color: var(--color-gold);
+  color: var(--color-dark);
+}
+
+.footer-col h3 {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gold);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col ul li {
+  margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: var(--transition-fast);
+}
+
+.footer-col ul li a:hover {
+  color: var(--color-gold);
+  padding-left: 3px;
+}
+
+/* Certifications Column */
+.certifications-logos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cert-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.cert-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.cert-lbl h4 {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-light);
+  line-height: 1.2;
+}
+
+.cert-lbl span {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Bottom Footer Styling */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 30px 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.footer-bottom-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-selectors {
+  display: flex;
+  gap: 15px;
+}
+
+.selector-btn {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.footer-payments {
+  display: flex;
+  gap: 10px;
+}
+
+.payment-icon {
+  opacity: 0.5;
+  color: var(--color-light);
+}
+
+@media (max-width: 991px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-bottom-container {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+</style>

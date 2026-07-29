@@ -1,0 +1,347 @@
+{% schema %}
+{
+  "name": "Main Collection Grid",
+  "settings": []
+}
+{% endschema %}
+
+<section class="main-collection-section section-padding">
+  <div class="container">
+    
+    <!-- Top Filter & Sort Bar -->
+    <div class="collection-top-bar">
+      <div class="top-bar-left">
+        <h2>Heritage Gold Jewellery</h2>
+        <span class="product-count">12 Exquisite Pieces Found</span>
+      </div>
+
+      <div class="top-bar-right">
+        <!-- Sort By -->
+        <div class="sort-wrapper">
+          <label for="sortBySelect">Sort By:</label>
+          <select id="sortBySelect" class="sort-select-dropdown">
+            <option value="featured">Featured Curation</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="bestsellers">Bestselling</option>
+          </select>
+        </div>
+
+        <!-- Column Layout Grid Switcher -->
+        <div class="grid-switcher">
+          <span class="switcher-label">View:</span>
+          <button class="grid-switcher-btn" data-columns="2" aria-label="Show 2 columns">2 Cols</button>
+          <button class="grid-switcher-btn active" data-columns="3" aria-label="Show 3 columns">3 Cols</button>
+          <button class="grid-switcher-btn" data-columns="4" aria-label="Show 4 columns">4 Cols</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="collection-main-layout">
+      
+      <!-- Left Sidebar: Filters -->
+      <aside class="collection-sidebar-filters">
+        <h3 class="filter-sidebar-title">Refine By</h3>
+
+        <div class="filter-group">
+          <h4>Metal Purity</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="22k" checked>
+            <span>22K Gold (916)</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="18k">
+            <span>18K Gold (750)</span>
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Price Range</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="0-50">
+            <span>Under ₹50,000</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="50-150">
+            <span>₹50,000 - ₹1,50,000</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="150-up" checked>
+            <span>Over ₹1,50,000</span>
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Product Type</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="rings">
+            <span>Rings & Bands</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="necklaces">
+            <span>Necklaces & Chokers</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="bangles">
+            <span>Bangles & Kada</span>
+          </label>
+        </div>
+      </aside>
+
+      <!-- Right Side: Product Grid -->
+      <div class="collection-content-grid-wrapper">
+        <div class="collection-grid cols-3" id="collectionProductGrid">
+          
+          {% render 'product-card',
+            title: "Mayur Heritage Temple Ring",
+            price: 68000,
+            image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+            hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+            purity: "22K Gold"
+          %}
+
+          {% render 'product-card',
+            title: "Royal Peacock Gold Band",
+            price: 49500,
+            image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
+            purity: "18K Gold"
+          %}
+
+          {% render 'product-card',
+            title: "Rudra Royal Signature Necklace",
+            price: 245000,
+            image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
+            purity: "22K Gold"
+          %}
+
+          {% render 'product-card',
+            title: "Nizami Pearl Heritage Choker",
+            price: 380000,
+            image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+            purity: "22K Gold"
+          %}
+
+          {% render 'product-card',
+            title: "Glow Silhouette Bangles Set",
+            price: 165000,
+            image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+            purity: "22K Gold"
+          %}
+
+          {% render 'product-card',
+            title: "Classic Solitaire Tennis Bracelet",
+            price: 450000,
+            image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+            purity: "18K Gold"
+          %}
+
+        </div>
+
+        <!-- Infinite Scroll simulated trigger button -->
+        <div class="collection-load-more-wrapper">
+          <button class="btn-secondary" id="loadMoreBtn" onclick="simulateLoadMore()">
+            Discover More Pieces
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+.collection-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-gray-border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.top-bar-left h2 {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  color: var(--color-dark);
+}
+
+.product-count {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.sort-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.sort-select-dropdown {
+  border: 1px solid var(--color-gray-border);
+  padding: 6px 12px;
+  background-color: var(--color-light);
+}
+
+.grid-switcher {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.switcher-label {
+  font-size: 12px;
+}
+
+.grid-switcher-btn {
+  background-color: transparent;
+  border: 1px solid var(--color-gray-border);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.grid-switcher-btn.active, .grid-switcher-btn:hover {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  border-color: var(--color-dark);
+}
+
+/* Sidebar Grid layout */
+.collection-main-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 40px;
+}
+
+.collection-sidebar-filters {
+  align-self: flex-start;
+}
+
+.filter-sidebar-title {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-dark);
+  margin-bottom: 24px;
+  border-bottom: 1.5px solid var(--color-gold);
+  padding-bottom: 8px;
+}
+
+.filter-group {
+  margin-bottom: 30px;
+}
+
+.filter-group h4 {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: var(--color-dark);
+}
+
+.filter-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.filter-checkbox-row input {
+  accent-color: var(--color-gold);
+}
+
+/* Grids count */
+.collection-grid {
+  display: grid;
+  gap: 30px;
+}
+
+.collection-grid.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.collection-grid.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.collection-grid.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.collection-load-more-wrapper {
+  text-align: center;
+  margin-top: 50px;
+}
+
+@media (max-width: 991px) {
+  .collection-main-layout {
+    grid-template-columns: 1fr;
+  }
+  .collection-sidebar-filters {
+    display: none; /* Hide filter on tablet/mobile default, could toggle */
+  }
+  .grid-switcher {
+    display: none; /* Hide grid layouts switcher on tablet */
+  }
+  .collection-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .collection-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
+<script>
+function simulateLoadMore() {
+  const grid = document.getElementById('collectionProductGrid');
+  const btn = document.getElementById('loadMoreBtn');
+  if (!grid || !btn) return;
+
+  btn.textContent = "Loading Curation...";
+  btn.disabled = true;
+
+  setTimeout(() => {
+    // Add 3 mock items
+    const newItems = `
+      {% render 'product-card',
+        title: 'Mayura Filigree Kada',
+        price: 215000,
+        image: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80',
+        purity: '22K Gold'
+      %}
+      {% render 'product-card',
+        title: 'Aura Solitaire Drop Necklace',
+        price: 320000,
+        image: 'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80',
+        purity: '18K Gold'
+      %}
+      {% render 'product-card',
+        title: 'Chandra Prabha Temple Necklace',
+        price: 195000,
+        image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80',
+        purity: '22K Gold'
+      %}
+    `;
+    grid.insertAdjacentHTML('beforeend', newItems);
+    
+    btn.style.display = 'none'; // Hide load more after first load simulation
+  }, 1000);
+}
+</script>

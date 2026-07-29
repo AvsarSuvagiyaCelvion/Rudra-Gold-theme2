@@ -1,0 +1,32 @@
+{
+  "general": {
+    "search": {
+      "search": "Search",
+      "no_results": "No results found"
+    },
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Curation Bag",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "price": {
+        "from_price_html": "From {{ price }}",
+        "regular_price": "Regular price",
+        "sale_price": "Sale price"
+      }
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Bag",
+      "subtotal": "Subtotal",
+      "checkout": "Checkout",
+      "empty": "Your bag is currently empty of certified luxury pieces."
+    }
+  }
+}

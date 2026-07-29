@@ -1,0 +1,209 @@
+{% schema %}
+{
+  "name": "Shoppable Instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "LIFESTYLE INSPIRATION"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Shop The Royal Look"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="instagram-shoppable section-padding">
+  <div class="container">
+    
+    <div class="section-header">
+      <span class="section-subtitle">{{ section.settings.subtitle }}</span>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    </div>
+
+    <!-- Instagram Gallery Grid -->
+    <div class="insta-grid">
+      
+      <!-- Photo 1 -->
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" alt="Rudra Gold Bridal Curation" loading="lazy">
+        <div class="insta-overlay">
+          <span class="insta-shop-dot" onclick="triggerQuickView('Mayur Heritage Temple Ring', 68000, 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80')">
+            <span class="pulse"></span>
+            Shop Ring
+          </span>
+        </div>
+      </div>
+
+      <!-- Photo 2 -->
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=400&q=80" alt="Necklace Styling" loading="lazy">
+        <div class="insta-overlay">
+          <span class="insta-shop-dot" onclick="triggerQuickView('Rudra Royal Signature Necklace', 245000, 'https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80')">
+            <span class="pulse"></span>
+            Shop Necklace
+          </span>
+        </div>
+      </div>
+
+      <!-- Photo 3 -->
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=400&q=80" alt="Earrings Curation" loading="lazy">
+        <div class="insta-overlay">
+          <span class="insta-shop-dot" onclick="triggerQuickView('Vajra Sparkling Solitaire Drops', 290000, 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80')">
+            <span class="pulse"></span>
+            Shop Solitaires
+          </span>
+        </div>
+      </div>
+
+      <!-- Photo 4 -->
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=400&q=80" alt="Bangle Stack styling" loading="lazy">
+        <div class="insta-overlay">
+          <span class="insta-shop-dot" onclick="triggerQuickView('Glow Silhouette Bangles Set', 165000, 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80')">
+            <span class="pulse"></span>
+            Shop Bangles
+          </span>
+        </div>
+      </div>
+
+      <!-- Photo 5 -->
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=400&q=80" alt="Diamond Bracelet" loading="lazy">
+        <div class="insta-overlay">
+          <span class="insta-shop-dot" onclick="triggerQuickView('Classic Solitaire Tennis Bracelet', 450000, 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80')">
+            <span class="pulse"></span>
+            Shop Bracelet
+          </span>
+        </div>
+      </div>
+
+      <!-- Photo 6 -->
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" alt="Ring closeups" loading="lazy">
+        <div class="insta-overlay">
+          <span class="insta-shop-dot" onclick="triggerQuickView('Royal Peacock Gold Band', 49500, 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80')">
+            <span class="pulse"></span>
+            Shop Band
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.insta-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  aspect-ratio: 1 / 1;
+}
+
+.insta-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.insta-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 11, 11, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--transition-fast);
+  z-index: 2;
+}
+
+.insta-item:hover img {
+  transform: scale(1.05);
+}
+
+.insta-item:hover .insta-overlay {
+  opacity: 1;
+}
+
+.insta-shop-dot {
+  background-color: var(--color-dark);
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold);
+  padding: 8px 16px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: var(--transition-fast);
+}
+
+.insta-shop-dot:hover {
+  background-color: var(--color-gold);
+  color: var(--color-dark);
+}
+
+.insta-shop-dot .pulse {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-gold);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulseDot 1.5s infinite;
+}
+
+.insta-shop-dot:hover .pulse {
+  background-color: var(--color-dark);
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .insta-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 575px) {
+  .insta-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>

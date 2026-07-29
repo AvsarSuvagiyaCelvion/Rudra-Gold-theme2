@@ -1,0 +1,226 @@
+{% schema %}
+{
+  "name": "Why Rudra Gold",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "THE BENCHMARK OF TRUST"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "The Rudra Gold Guarantee"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="why-rudra-gold section-padding">
+  <div class="container">
+    
+    <div class="section-header">
+      <span class="section-subtitle">{{ section.settings.subtitle }}</span>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    </div>
+
+    <!-- Timeline Wrapper -->
+    <div class="luxury-timeline">
+      <div class="timeline-line"></div>
+      
+      <!-- Card 1 -->
+      <div class="timeline-card-wrapper left">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-num">01</div>
+          <h3>100% BIS 916 Hallmark Purity</h3>
+          <p>Every ornament is authenticated by Government Hallmark Centers. Scan your item's HUID mark on the official BIS Care App to instantly trace the melt purity, certificate timestamp, and jeweler licensure details.</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="timeline-card-wrapper right">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-num">02</div>
+          <h3>Ethical Sourcing & Conflict-Free</h3>
+          <p>We source diamonds strictly certified by GIA/IGI, ensuring they conform to the Kimberley Process. Transparent grading guarantees standard pricing with no hidden carat deductions.</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="timeline-card-wrapper left">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-num">03</div>
+          <h3>Zero-Loss Lifetime Exchange</h3>
+          <p>Upgrade your legacy ornaments without deductions. Get 100% value exchange calculated at real-time gold market rates, reflecting actual metal value with no hidden trade-in margins.</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="timeline-card-wrapper right">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-num">04</div>
+          <h3>Fair Making Charges</h3>
+          <p>Unlike conventional jewelers charging arbitrary markup fees, we offer transparent billing breakdowns (Metal Weight * Market Rate + Fixed Karak Making Charge + 3% GST).</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+.why-rudra-gold {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  overflow: hidden;
+}
+
+.why-rudra-gold .section-title {
+  color: var(--color-light);
+}
+
+.luxury-timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 50px auto 0;
+  padding: 40px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 0%, var(--color-gold) 15%, var(--color-gold) 85%, transparent 100%);
+}
+
+.timeline-card-wrapper {
+  display: flex;
+  width: 50%;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.timeline-card-wrapper.left {
+  left: 0;
+  padding-right: 40px;
+  justify-content: flex-end;
+}
+
+.timeline-card-wrapper.right {
+  left: 50%;
+  padding-left: 40px;
+  justify-content: flex-start;
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 30px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-gold);
+  border: 2px solid var(--color-dark);
+  z-index: 2;
+}
+
+.timeline-card-wrapper.left .timeline-dot {
+  right: -6px;
+}
+
+.timeline-card-wrapper.right .timeline-dot {
+  left: -6px;
+}
+
+.timeline-card {
+  max-width: 420px;
+  position: relative;
+  text-align: left;
+  border-color: rgba(212, 175, 55, 0.15) !important;
+}
+
+.timeline-num {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--color-gold);
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.timeline-card h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: var(--color-light);
+  margin-bottom: 12px;
+}
+
+.timeline-card p {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 20px;
+  }
+  .timeline-card-wrapper {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .timeline-card-wrapper.left, .timeline-card-wrapper.right {
+    left: 0;
+    padding-left: 45px;
+    padding-right: 0;
+    justify-content: flex-start;
+  }
+  .timeline-card-wrapper.left .timeline-dot, .timeline-card-wrapper.right .timeline-dot {
+    left: 14px;
+  }
+  .timeline-card {
+    max-width: 100%;
+  }
+}
+</style>
+
+<script>
+// GSAP timeline animation
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+  gsap.utils.toArray('.timeline-card-wrapper').forEach((card) => {
+    gsap.from(card.querySelector('.timeline-card'), {
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      x: card.classList.contains('left') ? -50 : 50,
+      duration: 1,
+      ease: 'power3.out'
+    });
+
+    gsap.from(card.querySelector('.timeline-dot'), {
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      },
+      scale: 0,
+      duration: 0.5,
+      delay: 0.2
+    });
+  });
+});
+</script>

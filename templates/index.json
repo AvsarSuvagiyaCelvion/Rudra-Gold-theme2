@@ -1,0 +1,80 @@
+{
+  "sections": {
+    "hero_banner": {
+      "type": "hero-banner",
+      "settings": {
+        "subtitle": "ESTD 1918 • ROYAL HERITAGE",
+        "title_line1": "Timeless Purity,",
+        "title_line2": "Crafted for Royalty",
+        "description": "Indulge in our exquisite collection of hand-carved temple jewellery and certified solitaires, designed for luxury connoisseurs."
+      }
+    },
+    "brand_trust_bar": {
+      "type": "brand-trust-bar",
+      "settings": {}
+    },
+    "curated_collections": {
+      "type": "curated-collections",
+      "settings": {
+        "subtitle": "ROYAL HERITAGE SELECTIONS",
+        "title": "Shop by Collection"
+      }
+    },
+    "bestsellers_ajax": {
+      "type": "bestsellers-ajax",
+      "settings": {
+        "subtitle": "CURATED EXQUISITE CREATIONS",
+        "title": "Rudra Bestsellers"
+      }
+    },
+    "craftsmanship_video": {
+      "type": "craftsmanship-video",
+      "settings": {
+        "subtitle": "THE ART OF EXCELLENCE",
+        "title": "Handcrafted for Generations",
+        "description": "Every gold filament and diamond facet represents hours of rigorous carving by our family-hereditary master karigars. Preserving India's ancient metal-smithing traditions."
+      }
+    },
+    "why_rudra_gold": {
+      "type": "why-rudra-gold",
+      "settings": {
+        "subtitle": "THE BENCHMARK OF TRUST",
+        "title": "The Rudra Gold Guarantee"
+      }
+    },
+    "testimonials_glass": {
+      "type": "testimonials-glass",
+      "settings": {
+        "subtitle": "VERIFIED BUYER PATRONAGE",
+        "title": "Patron Testimonials"
+      }
+    },
+    "instagram_shoppable": {
+      "type": "instagram-shoppable",
+      "settings": {
+        "subtitle": "LIFESTYLE INSPIRATION",
+        "title": "Shop The Royal Look"
+      }
+    },
+    "newsletter_luxury": {
+      "type": "newsletter-luxury",
+      "settings": {
+        "subtitle": "THE ROYAL CLUB",
+        "title": "Subscribe for VIP Curation",
+        "description": "Receive seasonal lookbooks, early alerts on bespoke bridal collections, and private boutique showcase invitations."
+      }
+    }
+  },
+  "order": [
+    "hero_banner",
+    "brand_trust_bar",
+    "curated_collections",
+    "bestsellers_ajax",
+    "craftsmanship_video",
+    "why_rudra_gold",
+    "testimonials_glass",
+    "instagram_shoppable",
+    "newsletter_luxury"
+  ]
+}
+

@@ -1,0 +1,69 @@
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "✨ Exclusive Bridal Curation: Complimentary Home Trials Available Across Selected Flagships"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gold_rate",
+      "label": "Show Live Gold Rate Ticker",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<div class="announcement-bar-section">
+  <div class="container announcement-bar-container">
+    <div class="announcement-message">
+      {{ section.settings.announcement_text }}
+    </div>
+    {% if section.settings.show_gold_rate %}
+      <div class="announcement-gold-ticker">
+        {% render 'gold-rate-ticker' %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.announcement-bar-section {
+  background-color: var(--color-dark);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 8px 0;
+  z-index: 1000;
+  position: relative;
+}
+
+.announcement-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.announcement-message {
+  font-size: 11px;
+  color: var(--color-light);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+@media (max-width: 991px) {
+  .announcement-bar-container {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  .announcement-message {
+    font-size: 10px;
+  }
+}
+</style>

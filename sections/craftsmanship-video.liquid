@@ -1,0 +1,131 @@
+{% comment %} Touch to force Shopify CLI watcher re-sync {% endcomment %}
+{% schema %}
+{
+  "name": "Craftsmanship Video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "THE ART OF EXCELLENCE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Handcrafted for Generations"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Every gold filament and diamond facet represents hours of rigorous carving by our family-hereditary master karigars. Preserving India's ancient metal-smithing traditions."
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video File URL (MP4 Format)",
+      "default": "https://assets.mixkit.co/videos/preview/mixkit-jewelry-craftsman-polishing-a-ring-41666-large.mp4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Craftsmanship Video"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="craftsmanship-video-section">
+  <!-- Autoplay background video -->
+  <div class="video-bg-wrapper">
+    <video autoplay loop muted playsinline class="video-bg">
+      <source src="{{ section.settings.video_url }}" type="video/mp4">
+    </video>
+    <div class="video-overlay-glow"></div>
+  </div>
+
+  <div class="container video-container-inner">
+    <div class="video-content">
+      <span class="section-subtitle">{{ section.settings.subtitle }}</span>
+      <h2 class="video-title">{{ section.settings.title }}</h2>
+      <p class="video-desc">{{ section.settings.description }}</p>
+      
+      <button class="btn-primary" data-modal-type="vip-visit">
+        Request Custom Curation
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+.craftsmanship-video-section {
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  background-color: var(--color-dark);
+}
+
+.video-bg-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(11,11,11,0.2) 0%, rgba(11,11,11,0.85) 100%);
+  box-shadow: inset 0 0 100px rgba(212, 175, 55, 0.2);
+  z-index: -1;
+}
+
+.video-container-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.video-content {
+  max-width: 600px;
+  color: var(--color-light);
+}
+
+.video-title {
+  font-family: var(--font-serif);
+  font-size: 42px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  color: var(--color-light);
+}
+
+.video-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .craftsmanship-video-section {
+    height: 480px;
+  }
+  .video-title {
+    font-size: 32px;
+  }
+}
+</style>

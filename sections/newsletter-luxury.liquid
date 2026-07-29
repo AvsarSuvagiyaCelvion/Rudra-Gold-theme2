@@ -1,0 +1,166 @@
+{% schema %}
+{
+  "name": "Luxury Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "THE ROYAL CLUB"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Subscribe for VIP Curation"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Receive seasonal lookbooks, early alerts on bespoke bridal collections, and private boutique showcase invitations."
+    }
+  ]
+}
+{% endschema %}
+
+<section class="newsletter-luxury section-padding">
+  <div class="container newsletter-container-inner">
+    
+    <div class="newsletter-content">
+      <span class="section-subtitle">{{ section.settings.subtitle }}</span>
+      <h2 class="section-title text-center">{{ section.settings.title }}</h2>
+      <p class="newsletter-desc">{{ section.settings.description }}</p>
+      
+      <!-- Dynamic Form -->
+      <form class="newsletter-form" id="newsletterForm" onsubmit="event.preventDefault(); triggerNewsletterSubmit();">
+        <div class="newsletter-input-group">
+          <input type="email" class="newsletter-input" id="newsletterEmail" placeholder="Enter your email address" required autocomplete="email">
+          <button type="submit" class="newsletter-submit-btn">
+            Join Club
+            {% render 'icon-arrow' %}
+          </button>
+        </div>
+      </form>
+
+      <div class="newsletter-feedback" id="newsletterFeedback">
+        Thank you for joining our exclusive circle. A validation invitation has been sent to your inbox.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.newsletter-luxury {
+  background-color: var(--color-cream);
+  border-top: 1px solid var(--color-gray-border);
+  text-align: center;
+  position: relative;
+}
+
+.newsletter-container-inner {
+  display: flex;
+  justify-content: center;
+}
+
+.newsletter-content {
+  max-width: 580px;
+  width: 100%;
+}
+
+.newsletter-desc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.newsletter-form {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.newsletter-input-group {
+  display: flex;
+  background-color: var(--color-light);
+  border: 1px solid var(--color-gray-border);
+  border-radius: 2px;
+  padding: 4px;
+  transition: var(--transition-smooth);
+}
+
+.newsletter-input-group:focus-within {
+  border-color: var(--color-gold);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+}
+
+.newsletter-input {
+  flex: 1;
+  padding: 12px 18px;
+  font-size: 13px;
+  color: var(--color-dark);
+}
+
+.newsletter-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+.newsletter-submit-btn {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.newsletter-submit-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--color-light);
+}
+
+.newsletter-submit-btn:hover {
+  background-color: var(--color-gold);
+  color: var(--color-dark);
+}
+
+.newsletter-submit-btn:hover svg {
+  stroke: var(--color-dark);
+  transform: translateX(3px);
+  transition: var(--transition-fast);
+}
+
+.newsletter-feedback {
+  display: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold);
+  background-color: rgba(212, 175, 55, 0.05);
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 2px;
+  animation: fadeIn 0.4s ease forwards;
+}
+</style>
+
+<script>
+function triggerNewsletterSubmit() {
+  const form = document.getElementById('newsletterForm');
+  const feedback = document.getElementById('newsletterFeedback');
+  if (form && feedback) {
+    form.style.display = 'none';
+    feedback.style.display = 'block';
+  }
+}
+</script>

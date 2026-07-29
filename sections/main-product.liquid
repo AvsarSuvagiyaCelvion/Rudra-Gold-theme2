@@ -1,0 +1,519 @@
+{% schema %}
+{
+  "name": "Main Product Detail",
+  "settings": []
+}
+{% endschema %}
+
+<section class="main-product-section section-padding">
+  <div class="container product-detail-grid">
+    
+    <!-- Left: Product Image Gallery -->
+    <div class="product-gallery-wrapper">
+      <div class="product-main-image-box">
+        <img id="pdpMainImage" src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=800&q=80" alt="Rudra Royal Signature Necklace">
+      </div>
+      <div class="product-thumbnails-grid">
+        <img class="pdp-thumb active" src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 1" onclick="switchPDPImage(this.src)">
+        <img class="pdp-thumb" src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 2" onclick="switchPDPImage(this.src)">
+        <img class="pdp-thumb" src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 3" onclick="switchPDPImage(this.src)">
+      </div>
+    </div>
+
+    <!-- Right: Product Context Details -->
+    <div class="product-info-wrapper">
+      <span class="product-pdp-subtitle">Royal Heritage Collection</span>
+      <h1 class="product-pdp-title">Rudra Royal Signature Necklace</h1>
+      
+      <!-- Ratings -->
+      <div class="product-pdp-rating">
+        <div class="rating-stars">
+          {%- for i in (1..5) -%}
+            {% render 'icon-star' %}
+          {%- endfor -%}
+        </div>
+        <span>(24 Verified Reviews)</span>
+      </div>
+
+      <!-- Live Pricing Display -->
+      <div class="product-pdp-price" id="pdpPriceDisplay">
+        ₹2,45,000
+      </div>
+
+      <!-- Variant Selectors -->
+      <div class="product-pdp-variants">
+        
+        <div class="variant-field">
+          <label for="puritySelector">Select Metal Purity:</label>
+          <select id="puritySelector" class="purity-select-dropdown" data-purity-selector>
+            <option value="22k" selected>22 Karat Gold (916 Purity)</option>
+            <option value="18k">18 Karat Gold (750 Purity)</option>
+          </select>
+        </div>
+
+        <div class="variant-field">
+          <span class="weight-label">Approx Metal Weight:</span>
+          <span class="weight-value" id="pdpMetalWeight">32.4</span> grams
+        </div>
+
+      </div>
+
+      <!-- Price Breakdown Accordion -->
+      <div class="luxury-accordion">
+        <button class="accordion-header active" onclick="toggleAccordion(this)">
+          Transparent Pricing Breakdown
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content" style="display: block;">
+          <table class="breakdown-table">
+            <tr>
+              <td>Gold Rate (Per Gram)</td>
+              <td id="breakupGoldRate" class="text-right">₹6,850/g</td>
+            </tr>
+            <tr>
+              <td>Metal Value (32.4g)</td>
+              <td id="breakupMetalPrice" class="text-right">₹2,21,940</td>
+            </tr>
+            <tr>
+              <td>Making Charges (12%)</td>
+              <td id="breakupMaking" class="text-right">₹26,632</td>
+            </tr>
+            <tr>
+              <td>GST (3% Jewel Tax)</td>
+              <td id="breakupGst" class="text-right">₹7,457</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total Certified Price</td>
+              <td id="breakupTotal" class="text-right">₹2,56,029</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Trust Badges & Links -->
+      <div class="pdp-trust-links">
+        <a href="#" data-modal-type="hallmark">{% render 'icon-hallmark' %} BIS Hallmark Verified Purity</a>
+        <a href="#" data-modal-type="size-guide">📐 Size Guide & Dimensions</a>
+      </div>
+
+      <!-- Engraving / Gift Wrap Options -->
+      <div class="pdp-customization-options">
+        <label class="customization-checkbox">
+          <input type="checkbox" id="pdpLaserEngraveCheck" onchange="togglePDPEngraveText(this)">
+          <span>Add Custom Laser Engraving (Free)</span>
+        </label>
+        <input type="text" id="pdpLaserEngraveText" class="pdp-engrave-input" placeholder="Engraving text (e.g. Initials or Date)" style="display: none;">
+      </div>
+
+      <!-- Actions -->
+      <div class="pdp-action-buttons">
+        <button class="btn-primary pdp-add-to-cart-btn" id="pdpAddToCartBtn">
+          Add to Curation Bag
+        </button>
+        
+        <div class="pdp-booking-buttons">
+          <button class="btn-secondary" data-modal-type="vip-visit">VIP Home Trial</button>
+          <button class="btn-secondary" data-modal-type="vip-visit">Book Store Visit</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Sticky Add to Cart bottom bar -->
+<div class="sticky-atc-bar" id="stickyAtcBar">
+  <div class="container sticky-atc-container">
+    <div class="sticky-atc-product">
+      <img src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=80&q=80" alt="Necklace">
+      <div>
+        <h4>Rudra Royal Signature Necklace</h4>
+        <span>22K Gold • 32.4 grams</span>
+      </div>
+    </div>
+    <div class="sticky-atc-actions">
+      <span class="sticky-atc-price">₹2,56,029</span>
+      <button class="btn-primary" onclick="document.getElementById('pdpAddToCartBtn').click();">Quick Add</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 50px;
+}
+
+.product-gallery-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.product-main-image-box {
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-gray-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.product-main-image-box img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.product-thumbnails-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.pdp-thumb {
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-gray-border);
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: var(--transition-fast);
+}
+
+.pdp-thumb.active, .pdp-thumb:hover {
+  opacity: 1;
+  border-color: var(--color-gold);
+}
+
+.product-info-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-pdp-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+  margin-bottom: 12px;
+}
+
+.product-pdp-title {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  color: var(--color-dark);
+  margin-bottom: 10px;
+}
+
+.product-pdp-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 2px;
+  color: var(--color-gold);
+}
+
+.rating-stars svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.product-pdp-price {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--color-gray-border);
+  padding-bottom: 15px;
+}
+
+.product-pdp-variants {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.variant-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.purity-select-dropdown {
+  border: 1px solid var(--color-gray-border);
+  padding: 8px 16px;
+  font-size: 13px;
+  background-color: var(--color-light);
+}
+
+.weight-label {
+  font-weight: 500;
+}
+
+.weight-value {
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+/* Accordion Price Breakdown */
+.luxury-accordion {
+  border: 1px solid var(--color-gold-glow);
+  margin-bottom: 30px;
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: var(--color-cream);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-dark);
+}
+
+.accordion-arrow {
+  font-size: 9px;
+  transition: transform 0.3s;
+}
+
+.accordion-header.active .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  padding: 20px;
+  background-color: var(--color-light);
+  border-top: 1px solid var(--color-gold-glow);
+}
+
+.breakdown-table {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+}
+
+.breakdown-table td {
+  padding: 8px 0;
+  color: var(--color-text-muted);
+}
+
+.breakdown-table .text-right {
+  text-align: right;
+  font-weight: 500;
+  color: var(--color-dark);
+}
+
+.breakdown-table .total-row {
+  border-top: 1px solid var(--color-gray-border);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.breakdown-table .total-row td {
+  padding-top: 12px;
+  color: var(--color-dark);
+}
+
+.breakdown-table .total-row .text-right {
+  color: var(--color-gold);
+  font-size: 16px;
+}
+
+/* Trust links and customization options */
+.pdp-trust-links {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.pdp-trust-links a {
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pdp-trust-links a svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-gold);
+}
+
+.pdp-customization-options {
+  margin-bottom: 30px;
+}
+
+.customization-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pdp-engrave-input {
+  width: 100%;
+  border: 1px solid var(--color-gray-border);
+  padding: 10px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* Add to Cart Actions styling */
+.pdp-add-to-cart-btn {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.pdp-booking-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Sticky ATC bottom bar layout */
+.sticky-atc-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: var(--color-dark);
+  border-top: 1px solid var(--color-gold);
+  z-index: 996;
+  display: flex;
+  align-items: center;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.sticky-atc-bar.active {
+  transform: translateY(0);
+}
+
+.sticky-atc-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: var(--color-light);
+}
+
+.sticky-atc-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.sticky-atc-product img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.sticky-atc-product h4 {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--color-light);
+}
+
+.sticky-atc-product span {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+
+.sticky-atc-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.sticky-atc-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+@media (max-width: 991px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sticky-atc-bar {
+    display: none; /* Hide on mobile to prioritize bottom mobile bar navigation */
+  }
+}
+</style>
+
+<script>
+function switchPDPImage(src) {
+  const mainImg = document.getElementById('pdpMainImage');
+  if (mainImg) mainImg.src = src;
+
+  // Active thumb highlight toggle
+  document.querySelectorAll('.pdp-thumb').forEach(el => {
+    el.classList.remove('active');
+    if (el.src === src) el.classList.add('active');
+  });
+}
+
+function toggleAccordion(btn) {
+  const content = btn.nextElementSibling;
+  btn.classList.toggle('active');
+  
+  if (content.style.display === 'block') {
+    content.style.display = 'none';
+  } else {
+    content.style.display = 'block';
+  }
+}
+
+function togglePDPEngraveText(check) {
+  const input = document.getElementById('pdpLaserEngraveText');
+  if (input) {
+    input.style.display = check.checked ? 'block' : 'none';
+    if (!check.checked) input.value = '';
+  }
+}
+
+// Show/Hide Sticky ATC Bar on scroll
+document.addEventListener('DOMContentLoaded', () => {
+  const stickyAtc = document.getElementById('stickyAtcBar');
+  const triggerElement = document.getElementById('pdpAddToCartBtn');
+  
+  if (!stickyAtc || !triggerElement) return;
+
+  window.addEventListener('scroll', () => {
+    const triggerY = triggerElement.getBoundingClientRect().top + window.scrollY;
+    
+    if (window.scrollY > triggerY + 100) {
+      stickyAtc.classList.add('active');
+    } else {
+      stickyAtc.classList.remove('active');
+    }
+  });
+});
+</script>
