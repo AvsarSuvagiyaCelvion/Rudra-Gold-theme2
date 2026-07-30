@@ -717,26 +717,51 @@ function initQuickView() {
 }
 
 /* 11. WISHLIST SYSTEM */
+function getWishlist() {
+  try { return JSON.parse(localStorage.getItem('rudra_gold_wishlist') || '[]'); }
+  catch { return []; }
+}
+
+function saveWishlist(items) {
+  localStorage.setItem('rudra_gold_wishlist', JSON.stringify(items));
+  document.querySelectorAll('.wishlist-count').forEach(el => el.textContent = items.length);
+}
+
 function initWishlist() {
   const wishlistTriggers = document.querySelectorAll('.wishlist-btn');
-  const wishlistCounter = document.querySelector('.wishlist-count');
 
-  let currentWishlistCount = 0;
+  // Restore active state from localStorage
+  const saved = getWishlist();
+  wishlistTriggers.forEach(btn => {
+    const title = btn.dataset.title;
+    if (title && saved.find(i => i.title === title)) {
+      btn.classList.add('active');
+    }
+  });
+
+  // Sync counter on load
+  document.querySelectorAll('.wishlist-count').forEach(el => el.textContent = saved.length);
 
   wishlistTriggers.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      btn.classList.toggle('active');
-      
-      if (btn.classList.contains('active')) {
-        currentWishlistCount++;
+      const title = btn.dataset.title || 'Rudra Gold Piece';
+      const price = btn.dataset.price || '0';
+      const rawPrice = parseInt(btn.dataset.rawPrice || btn.dataset.price || '0');
+      const img = btn.dataset.img || '';
+
+      let items = getWishlist();
+      const existingIndex = items.findIndex(i => i.title === title);
+
+      if (existingIndex > -1) {
+        items.splice(existingIndex, 1);
+        btn.classList.remove('active');
       } else {
-        currentWishlistCount = Math.max(0, currentWishlistCount - 1);
+        items.push({ title, price, rawPrice, img });
+        btn.classList.add('active');
       }
 
-      if (wishlistCounter) {
-        wishlistCounter.textContent = currentWishlistCount;
-      }
+      saveWishlist(items);
     });
   });
 }

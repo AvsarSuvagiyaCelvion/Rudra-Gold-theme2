@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "gold_rate_tracker": {
+      "type": "gold-rate-tracker",
+      "settings": {}
+    }
+  },
+  "order": ["gold_rate_tracker"]
+}

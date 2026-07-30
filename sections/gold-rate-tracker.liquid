@@ -1,0 +1,264 @@
+{% schema %}
+{
+  "name": "Gold Rate Tracker",
+  "settings": []
+}
+{% endschema %}
+
+<section class="gold-tracker-page section-padding">
+  <div class="container">
+
+    <div class="section-header">
+      <p class="section-subtitle">Updated Every 12 Seconds</p>
+      <h1 class="section-title">Live Gold Rate Tracker</h1>
+    </div>
+
+    <!-- Live Rate Cards -->
+    <div class="gold-rate-cards">
+      <div class="gold-rate-card">
+        <div class="gold-rate-card-purity">22K Gold</div>
+        <div class="gold-rate-card-label">916 Hallmark</div>
+        <div class="gold-rate-card-price" id="rate22k">₹6,850/g</div>
+        <div class="gold-rate-card-change" id="change22k">— Live</div>
+      </div>
+      <div class="gold-rate-card">
+        <div class="gold-rate-card-purity">18K Gold</div>
+        <div class="gold-rate-card-label">750 Hallmark</div>
+        <div class="gold-rate-card-price" id="rate18k">₹5,605/g</div>
+        <div class="gold-rate-card-change" id="change18k">— Live</div>
+      </div>
+      <div class="gold-rate-card">
+        <div class="gold-rate-card-purity">24K Gold</div>
+        <div class="gold-rate-card-label">999 Pure</div>
+        <div class="gold-rate-card-price" id="rate24k">₹7,480/g</div>
+        <div class="gold-rate-card-change" id="change24k">— Live</div>
+      </div>
+      <div class="gold-rate-card">
+        <div class="gold-rate-card-purity">Silver</div>
+        <div class="gold-rate-card-label">999 Pure</div>
+        <div class="gold-rate-card-price" id="rateSilver">₹92/g</div>
+        <div class="gold-rate-card-change" id="changeSilver">— Live</div>
+      </div>
+    </div>
+
+    <!-- Rate History Table -->
+    <div class="gold-rate-table-wrapper">
+      <h2 class="gold-rate-table-title">7-Day Rate History (22K Gold)</h2>
+      <table class="gold-rate-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Morning Rate</th>
+            <th>Evening Rate</th>
+            <th>Change</th>
+          </tr>
+        </thead>
+        <tbody id="rateHistoryBody">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Disclaimer -->
+    <p class="gold-rate-disclaimer">
+      * Rates shown are indicative and for reference only. Actual making charges, GST (3%), and wastage will apply. Final jewellery price may vary. Please contact our boutique for exact pricing.
+    </p>
+
+  </div>
+</section>
+
+<style>
+.gold-rate-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 60px;
+}
+
+.gold-rate-card {
+  background-color: var(--color-dark);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 30px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.gold-rate-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-gold-glow));
+}
+
+.gold-rate-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-4px);
+}
+
+.gold-rate-card-purity {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--color-gold);
+  margin-bottom: 4px;
+}
+
+.gold-rate-card-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+
+.gold-rate-card-price {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-light);
+  margin-bottom: 8px;
+  transition: color 0.3s;
+}
+
+.gold-rate-card-change {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+}
+
+.gold-rate-card-change.up { color: #4ade80; }
+.gold-rate-card-change.down { color: #f87171; }
+
+.gold-rate-table-wrapper {
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-gray-border);
+  padding: 40px;
+  margin-bottom: 30px;
+}
+
+.gold-rate-table-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: var(--color-dark);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-gray-border);
+}
+
+.gold-rate-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.gold-rate-table th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+  border-bottom: 1px solid var(--color-gray-border);
+}
+
+.gold-rate-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(11,11,11,0.05);
+  color: var(--color-dark);
+}
+
+.gold-rate-table tr:last-child td { border-bottom: none; }
+.gold-rate-table tr:hover td { background-color: rgba(212,175,55,0.04); }
+
+.rate-up { color: #16a34a; font-weight: 600; }
+.rate-down { color: #dc2626; font-weight: 600; }
+
+.gold-rate-disclaimer {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  border-left: 2px solid var(--color-gold);
+  padding-left: 16px;
+}
+
+@media (max-width: 991px) {
+  .gold-rate-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 575px) {
+  .gold-rate-cards { grid-template-columns: 1fr; }
+  .gold-rate-table-wrapper { padding: 20px; overflow-x: auto; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  let rates = { g22: 6850, g18: 5605, g24: 7480, silver: 92 };
+  let prev = { ...rates };
+
+  function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
+
+  function updateRates() {
+    prev = { ...rates };
+    const fluctuate = (v) => Math.round(v * (1 + (Math.random() * 0.004 - 0.002)));
+    rates.g22 = fluctuate(rates.g22);
+    rates.g18 = fluctuate(rates.g18);
+    rates.g24 = fluctuate(rates.g24);
+    rates.silver = fluctuate(rates.silver);
+
+    const pairs = [
+      ['rate22k', 'change22k', rates.g22, prev.g22, '/g'],
+      ['rate18k', 'change18k', rates.g18, prev.g18, '/g'],
+      ['rate24k', 'change24k', rates.g24, prev.g24, '/g'],
+      ['rateSilver', 'changeSilver', rates.silver, prev.silver, '/g']
+    ];
+
+    pairs.forEach(([rateId, changeId, cur, prv, unit]) => {
+      const rateEl = document.getElementById(rateId);
+      const changeEl = document.getElementById(changeId);
+      if (!rateEl) return;
+      rateEl.textContent = fmt(cur) + unit;
+      const diff = cur - prv;
+      if (diff > 0) {
+        changeEl.textContent = `▲ +${fmt(diff)} today`;
+        changeEl.className = 'gold-rate-card-change up';
+      } else if (diff < 0) {
+        changeEl.textContent = `▼ ${fmt(diff)} today`;
+        changeEl.className = 'gold-rate-card-change down';
+      } else {
+        changeEl.textContent = '— No change';
+        changeEl.className = 'gold-rate-card-change';
+      }
+    });
+  }
+
+  // Build 7-day history table
+  function buildHistory() {
+    const tbody = document.getElementById('rateHistoryBody');
+    if (!tbody) return;
+    const today = new Date();
+    let base = 6850;
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const morning = base + Math.round((Math.random() * 60) - 30);
+      const evening = morning + Math.round((Math.random() * 40) - 20);
+      const change = evening - morning;
+      const changeClass = change >= 0 ? 'rate-up' : 'rate-down';
+      const changeStr = (change >= 0 ? '+' : '') + '₹' + Math.abs(change);
+      tbody.innerHTML += `<tr>
+        <td>${dateStr}</td>
+        <td>₹${morning.toLocaleString('en-IN')}/g</td>
+        <td>₹${evening.toLocaleString('en-IN')}/g</td>
+        <td class="${changeClass}">${changeStr}</td>
+      </tr>`;
+      base = evening;
+    }
+  }
+
+  buildHistory();
+  setInterval(updateRates, 12000);
+});
+</script>

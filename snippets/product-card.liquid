@@ -42,7 +42,11 @@
     <div class="purity-badge">{{ card_purity }}</div>
 
     <!-- Wishlist Button -->
-    <button class="wishlist-btn" aria-label="Add to Wishlist">
+    <button class="wishlist-btn" aria-label="Add to Wishlist"
+      data-title="{{ card_title | escape }}"
+      data-price="₹{{ card_price }}"
+      data-raw-price="{{ card_price }}"
+      data-img="{{ card_img }}">
       {% render 'icon-wishlist' %}
     </button>
 

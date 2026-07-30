@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "wishlist": {
+      "type": "wishlist-page",
+      "settings": {
+        "heading": "My Wishlist",
+        "subheading": "Your curated collection of desires"
+      }
+    }
+  },
+  "order": ["wishlist"]
+}

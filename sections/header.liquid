@@ -194,6 +194,15 @@
       <li class="mobile-nav-item">
         <a href="#" data-modal-type="vip-visit" class="mobile-nav-link vip-link">VIP Home Trial</a>
       </li>
+      <li class="mobile-nav-item">
+        <a href="/pages/contact" class="mobile-nav-link">Contact</a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="/pages/faq" class="mobile-nav-link">FAQ</a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="/pages/store-locator" class="mobile-nav-link">Store Locator</a>
+      </li>
     </ul>
   </div>
   <div class="mobile-menu-footer">
@@ -219,6 +228,15 @@
 
 .announcement-bar-section ~ .site-header {
   top: auto;
+}
+
+/* Force dark header on pages without a hero (contact, cart, collection, etc.) */
+.template-page .site-header,
+.template-cart .site-header,
+.template-collection .site-header,
+.template-product .site-header {
+  background-color: var(--color-dark);
+  border-bottom-color: rgba(212, 175, 55, 0.2);
 }
 
 .site-header.scrolled {

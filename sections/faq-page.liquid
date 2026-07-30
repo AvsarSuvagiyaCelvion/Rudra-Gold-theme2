@@ -1,0 +1,301 @@
+{% schema %}
+{
+  "name": "FAQ Page",
+  "settings": []
+}
+{% endschema %}
+
+<section class="faq-page section-padding">
+  <div class="container">
+
+    <div class="section-header">
+      <p class="section-subtitle">Everything You Need to Know</p>
+      <h1 class="section-title">Frequently Asked Questions</h1>
+    </div>
+
+    <div class="faq-layout">
+
+      <!-- Category Tabs -->
+      <div class="faq-categories">
+        <button class="faq-cat-btn active" data-cat="all">All Questions</button>
+        <button class="faq-cat-btn" data-cat="hallmark">Hallmark & Purity</button>
+        <button class="faq-cat-btn" data-cat="exchange">Exchange & Buyback</button>
+        <button class="faq-cat-btn" data-cat="shipping">Shipping & Delivery</button>
+        <button class="faq-cat-btn" data-cat="custom">Custom Orders</button>
+        <button class="faq-cat-btn" data-cat="care">Jewellery Care</button>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="faq-accordion" id="faqAccordion">
+
+        <div class="faq-item" data-cat="hallmark">
+          <button class="faq-question">
+            What is BIS Hallmark and why does it matter?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>BIS (Bureau of Indian Standards) Hallmark is India's official gold purity certification. Every Rudra Gold piece carries a unique HUID (Hallmark Unique ID) code that you can verify on the BIS Care App. It guarantees the exact gold purity — 916 for 22K, 750 for 18K, and 999 for 24K gold.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="hallmark">
+          <button class="faq-question">
+            How do I verify the hallmark on my jewellery?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Download the <strong>BIS Care App</strong> from the Play Store or App Store. Go to "Verify HUID" and enter the 6-character alphanumeric HUID code stamped on your jewellery. You'll instantly see the certified purity, assaying centre, and jeweller details.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="exchange">
+          <button class="faq-question">
+            What is your lifetime exchange policy?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>We offer <strong>100% lifetime exchange</strong> on all Rudra Gold jewellery at the prevailing gold rate on the day of exchange. The piece must be in its original condition with the hallmark intact. Making charges are non-refundable but are waived on your next purchase above ₹50,000.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="exchange">
+          <button class="faq-question">
+            Do you offer gold buyback?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. We offer buyback at <strong>95% of the prevailing 22K gold rate</strong> for hallmarked pieces purchased from Rudra Gold. For third-party hallmarked gold, buyback is offered at 90% after purity verification at our boutique.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="shipping">
+          <button class="faq-question">
+            How is my jewellery shipped and insured?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>All orders are shipped via <strong>fully insured, tamper-proof courier</strong> with real-time tracking. Orders above ₹1,50,000 qualify for free insured delivery. Each piece is packed in our signature velvet box with a certificate of authenticity.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="shipping">
+          <button class="faq-question">
+            How long does delivery take?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Standard delivery: <strong>5–7 business days</strong> across India. Express delivery (2–3 days) is available for select pin codes at an additional charge. Custom and made-to-order pieces require 15–21 business days.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="shipping">
+          <button class="faq-question">
+            Can I return or cancel my order?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Orders can be cancelled within <strong>24 hours</strong> of placement for a full refund. Post-dispatch, we accept returns within 7 days for unused, unaltered pieces in original packaging. Custom and engraved orders are non-returnable.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="custom">
+          <button class="faq-question">
+            Can I place a custom or bespoke jewellery order?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. Our master karigars specialise in bespoke bridal sets, custom engagement rings, and personalised heirloom pieces. <a href="/pages/contact" style="color: var(--color-gold);">Contact us</a> or book a VIP store visit to begin your custom curation journey. Typical lead time is 21–45 days.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="custom">
+          <button class="faq-question">
+            Do you offer laser engraving?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Yes, we offer precision laser engraving on rings, bangles, and pendants. You can add a name, date, or short message (up to 20 characters). Engraving is available at ₹500 per piece and can be selected at checkout or in-store.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="care">
+          <button class="faq-question">
+            How do I clean and care for my gold jewellery?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Clean gold jewellery with a soft cloth and mild soap solution. Avoid harsh chemicals, perfumes, and chlorine. Store pieces separately in the provided velvet pouch to prevent scratching. We recommend a professional polish at our boutique every 12–18 months — complimentary for Rudra Gold purchases.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="care">
+          <button class="faq-question">
+            How do I maintain diamond jewellery?
+            <svg class="faq-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Diamonds attract grease and oils. Clean with a soft toothbrush, warm water, and a drop of dish soap. Rinse thoroughly and pat dry. Avoid ultrasonic cleaners for pieces with pavé settings. Bring your diamond jewellery to us annually for a complimentary prong check and professional cleaning.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Still have questions CTA -->
+    <div class="faq-contact-cta">
+      <h3>Still Have Questions?</h3>
+      <p>Our jewellery concierge team is available 7 days a week to assist you.</p>
+      <div class="faq-cta-btns">
+        <a href="/pages/contact" class="btn-primary">Contact Us</a>
+        <a href="https://wa.me/917405544338" target="_blank" rel="noopener" class="btn-secondary">WhatsApp Us</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.faq-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 50px;
+  align-items: start;
+  margin-bottom: 60px;
+}
+
+.faq-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: sticky;
+  top: 110px;
+}
+
+.faq-cat-btn {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  background: none;
+}
+
+.faq-cat-btn:hover,
+.faq-cat-btn.active {
+  color: var(--color-dark);
+  border-color: var(--color-gold);
+  background-color: rgba(212,175,55,0.06);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--color-gray-border);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-dark);
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: none;
+  gap: 16px;
+  transition: color 0.2s;
+}
+
+.faq-question:hover { color: var(--color-gold); }
+
+.faq-icon {
+  flex-shrink: 0;
+  color: var(--color-gold);
+  transition: transform 0.3s;
+}
+
+.faq-item.open .faq-icon { transform: rotate(180deg); }
+
+.faq-answer {
+  display: none;
+  padding: 0 0 20px;
+}
+
+.faq-item.open .faq-answer { display: block; }
+
+.faq-answer p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+.faq-contact-cta {
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-gray-border);
+  border-top: 3px solid var(--color-gold);
+  padding: 50px;
+  text-align: center;
+}
+
+.faq-contact-cta h3 {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  color: var(--color-dark);
+  margin-bottom: 10px;
+}
+
+.faq-contact-cta p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 28px;
+}
+
+.faq-cta-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .faq-layout { grid-template-columns: 1fr; gap: 24px; }
+  .faq-categories { flex-direction: row; flex-wrap: wrap; position: static; }
+  .faq-cat-btn { font-size: 10px; padding: 8px 12px; }
+  .faq-contact-cta { padding: 30px 20px; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Category filter
+  document.querySelectorAll('.faq-cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.faq-cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.style.display = (cat === 'all' || item.dataset.cat === cat) ? 'block' : 'none';
+      });
+    });
+  });
+});
+</script>
