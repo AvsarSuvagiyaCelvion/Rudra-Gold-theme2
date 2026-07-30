@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "contact": {
+      "type": "contact-page",
+      "settings": {
+        "heading": "Get In Touch",
+        "subheading": "We'd love to hear from you",
+        "address": "340, First Floor, Varsha Society, Matavadi, Varachha, Surat - 395006",
+        "phone": "+91 74055 44338",
+        "email": "hello@rudragold.com",
+        "hours": "Mon – Sat: 10:00 AM – 8:00 PM"
+      }
+    }
+  },
+  "order": ["contact"]
+}

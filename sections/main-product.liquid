@@ -5,25 +5,41 @@
 }
 {% endschema %}
 
+{%- assign pdp_title = product.title | default: "Rudra Royal Signature Necklace" -%}
+{%- assign pdp_price = product.price | money | default: "₹2,45,000" -%}
+{%- assign pdp_weight = product.metafields.custom.metal_weight | default: "32.4" -%}
+{%- assign pdp_purity = product.metafields.custom.purity | default: "22K Gold" -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
 <section class="main-product-section section-padding">
   <div class="container product-detail-grid">
     
     <!-- Left: Product Image Gallery -->
     <div class="product-gallery-wrapper">
       <div class="product-main-image-box">
-        <img id="pdpMainImage" src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=800&q=80" alt="Rudra Royal Signature Necklace">
+        {%- if product != blank and product.featured_image != blank -%}
+          <img id="pdpMainImage" src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ pdp_title }}">
+        {%- else -%}
+          <img id="pdpMainImage" src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=800&q=80" alt="Rudra Royal Signature Necklace">
+        {%- endif -%}
       </div>
       <div class="product-thumbnails-grid">
-        <img class="pdp-thumb active" src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 1" onclick="switchPDPImage(this.src)">
-        <img class="pdp-thumb" src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 2" onclick="switchPDPImage(this.src)">
-        <img class="pdp-thumb" src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 3" onclick="switchPDPImage(this.src)">
+        {%- if product != blank and product.images.size > 0 -%}
+          {%- for img in product.images limit: 3 -%}
+            <img class="pdp-thumb {% if forloop.first %}active{% endif %}" src="{{ img | image_url: width: 200 }}" alt="Thumbnail {{ forloop.index }}" onclick="switchPDPImage(this.src)">
+          {%- endfor -%}
+        {%- else -%}
+          <img class="pdp-thumb active" src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 1" onclick="switchPDPImage(this.src)">
+          <img class="pdp-thumb" src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 2" onclick="switchPDPImage(this.src)">
+          <img class="pdp-thumb" src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=200&q=80" alt="Thumbnail 3" onclick="switchPDPImage(this.src)">
+        {%- endif -%}
       </div>
     </div>
 
     <!-- Right: Product Context Details -->
     <div class="product-info-wrapper">
-      <span class="product-pdp-subtitle">Royal Heritage Collection</span>
-      <h1 class="product-pdp-title">Rudra Royal Signature Necklace</h1>
+      <span class="product-pdp-subtitle">{% if product != blank and product.collections.first.title != blank %}{{ product.collections.first.title }}{% else %}Royal Heritage Collection{% endif %}</span>
+      <h1 class="product-pdp-title">{{ pdp_title }}</h1>
       
       <!-- Ratings -->
       <div class="product-pdp-rating">
@@ -37,23 +53,38 @@
 
       <!-- Live Pricing Display -->
       <div class="product-pdp-price" id="pdpPriceDisplay">
-        ₹2,45,000
+        {{ pdp_price }}
       </div>
 
       <!-- Variant Selectors -->
       <div class="product-pdp-variants">
         
-        <div class="variant-field">
-          <label for="puritySelector">Select Metal Purity:</label>
-          <select id="puritySelector" class="purity-select-dropdown" data-purity-selector>
-            <option value="22k" selected>22 Karat Gold (916 Purity)</option>
-            <option value="18k">18 Karat Gold (750 Purity)</option>
-          </select>
-        </div>
+        {%- if product != blank and product.variants.size > 1 -%}
+          <!-- Dynamic Purity Options -->
+          <div class="variant-field">
+            <label for="puritySelector">Select Metal Purity:</label>
+            <select id="puritySelector" class="purity-select-dropdown" data-purity-selector onchange="updateShopifyVariant(this.value)">
+              {%- for variant in product.variants -%}
+                <option value="{{ variant.id }}" data-purity="{% if variant.title contains '18K' or variant.title contains '18k' %}18k{% else %}22k{% endif %}" data-price="{{ variant.price | divided_by: 100 }}" {% if variant == current_variant %}selected{% endif %}>
+                  {{ variant.title }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- else -%}
+          <!-- Fallback Mock Purity dropdown -->
+          <div class="variant-field">
+            <label for="puritySelector">Select Metal Purity:</label>
+            <select id="puritySelector" class="purity-select-dropdown" data-purity-selector>
+              <option value="22k" selected>22 Karat Gold (916 Purity)</option>
+              <option value="18k">18 Karat Gold (750 Purity)</option>
+            </select>
+          </div>
+        {%- endif -%}
 
         <div class="variant-field">
           <span class="weight-label">Approx Metal Weight:</span>
-          <span class="weight-value" id="pdpMetalWeight">32.4</span> grams
+          <span class="weight-value" id="pdpMetalWeight">{{ pdp_weight }}</span> grams
         </div>
 
       </div>
@@ -71,7 +102,7 @@
               <td id="breakupGoldRate" class="text-right">₹6,850/g</td>
             </tr>
             <tr>
-              <td>Metal Value (32.4g)</td>
+              <td>Metal Value (<span id="breakdownWeightText">{{ pdp_weight }}</span>g)</td>
               <td id="breakupMetalPrice" class="text-right">₹2,21,940</td>
             </tr>
             <tr>
@@ -107,7 +138,15 @@
 
       <!-- Actions -->
       <div class="pdp-action-buttons">
-        <button class="btn-primary pdp-add-to-cart-btn" id="pdpAddToCartBtn">
+        {%- if product != blank -%}
+          {%- assign pdp_variant_id = current_variant.id -%}
+          {%- assign pdp_card_price = current_variant.price | divided_by: 100 -%}
+        {%- else -%}
+          {%- assign pdp_variant_id = "" -%}
+          {%- assign pdp_card_price = 245000 -%}
+        {%- endif -%}
+        
+        <button class="btn-primary pdp-add-to-cart-btn" id="pdpAddToCartBtn" onclick="addToCartAjax('{{ pdp_title | escape }}', {{ pdp_card_price }}, '{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% endif %}', '{{ pdp_purity }}', '{{ pdp_variant_id }}')">
           Add to Curation Bag
         </button>
         
@@ -126,14 +165,18 @@
 <div class="sticky-atc-bar" id="stickyAtcBar">
   <div class="container sticky-atc-container">
     <div class="sticky-atc-product">
-      <img src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=80&q=80" alt="Necklace">
+      {%- if product != blank and product.featured_image != blank -%}
+        <img src="{{ product.featured_image | image_url: width: 80 }}" alt="{{ pdp_title }}">
+      {%- else -%}
+        <img src="https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=80&q=80" alt="Necklace">
+      {%- endif -%}
       <div>
-        <h4>Rudra Royal Signature Necklace</h4>
-        <span>22K Gold • 32.4 grams</span>
+        <h4>{{ pdp_title }}</h4>
+        <span>{{ pdp_purity }} • {{ pdp_weight }} grams</span>
       </div>
     </div>
     <div class="sticky-atc-actions">
-      <span class="sticky-atc-price">₹2,56,029</span>
+      <span class="sticky-atc-price" id="pdpStickyPrice">{{ pdp_price }}</span>
       <button class="btn-primary" onclick="document.getElementById('pdpAddToCartBtn').click();">Quick Add</button>
     </div>
   </div>
@@ -463,12 +506,57 @@
 
 @media (max-width: 768px) {
   .sticky-atc-bar {
-    display: none; /* Hide on mobile to prioritize bottom mobile bar navigation */
+    display: flex !important;
+    bottom: 0;
+    height: 70px;
+    z-index: 1002;
+  }
+  .sticky-atc-product {
+    display: none !important;
+  }
+  .sticky-atc-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+  .sticky-atc-actions .btn-primary {
+    flex: 1;
+    padding: 12px 24px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  .sticky-atc-price {
+    font-size: 16px;
   }
 }
 </style>
 
 <script>
+function updateShopifyVariant(variantId) {
+  const select = document.getElementById('puritySelector');
+  if (!select) return;
+  const option = select.options[select.selectedIndex];
+  const price = parseFloat(option.getAttribute('data-price')) || 0;
+  
+  // Set variant values for PDP Cart Button
+  const addBtn = document.getElementById('pdpAddToCartBtn');
+  if (addBtn) {
+    const title = "{{ pdp_title | escape }}";
+    const img = "{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% endif %}";
+    const purity = option.text.trim();
+    addBtn.setAttribute('onclick', `addToCartAjax('${title}', ${price}, '${img}', '${purity}', '${variantId}')`);
+  }
+
+  // Update dynamic price displays
+  const priceDisplay = document.getElementById('pdpPriceDisplay');
+  const stickyPrice = document.getElementById('pdpStickyPrice');
+  const formatted = "₹" + Math.round(price).toLocaleString('en-IN');
+  if (priceDisplay) priceDisplay.textContent = formatted;
+  if (stickyPrice) stickyPrice.textContent = formatted;
+}
+
 function switchPDPImage(src) {
   const mainImg = document.getElementById('pdpMainImage');
   if (mainImg) mainImg.src = src;

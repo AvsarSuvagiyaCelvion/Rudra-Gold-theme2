@@ -17,10 +17,12 @@
   {%- assign card_img = image | default: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80" -%}
   {%- assign card_hover_img = hover_image | default: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80" -%}
   {%- assign card_url = "#" -%}
+  {%- assign card_variant_id = "" -%}
 
   {%- if product != blank -%}
     {%- assign card_title = product.title -%}
     {%- assign card_price = product.price | money_without_currency | replace: ',', '' | plus: 0 -%}
+    {%- assign card_variant_id = product.first_available_variant.id -%}
     {%- assign card_purity = "22K Gold" -%}
     {%- if product.metafields.custom.purity != blank -%}
       {%- assign card_purity = product.metafields.custom.purity -%}
@@ -52,8 +54,8 @@
 
     <!-- Hover Action Overlay -->
     <div class="product-card-actions">
-      <span class="card-action-btn" onclick="addToCartAjax('{{ card_title | escape }}', {{ card_price }}, '{{ card_img }}', '{{ card_purity }}')">Quick Add</span>
-      <span class="card-action-btn" onclick="triggerQuickView('{{ card_title | escape }}', {{ card_price }}, '{{ card_img }}')">Quick View</span>
+      <span class="card-action-btn" onclick="addToCartAjax('{{ card_title | escape }}', {{ card_price }}, '{{ card_img }}', '{{ card_purity }}', '{{ card_variant_id }}')">Quick Add</span>
+      <span class="card-action-btn" onclick="triggerQuickView('{{ card_title | escape }}', {{ card_price }}, '{{ card_img }}', '', '{{ card_variant_id }}')">Quick View</span>
     </div>
   </div>
 
@@ -67,7 +69,11 @@
       {%- endfor -%}
     </div>
     <div class="product-card-price">
-      ₹{{ card_price | number_with_delimiter | default: card_price }}
+      {%- if product != blank -%}
+        {{ product.price | money }}
+      {%- else -%}
+        ₹{{ card_price | number_with_delimiter | default: card_price }}
+      {%- endif -%}
     </div>
   </div>
 </div>

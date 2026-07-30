@@ -56,7 +56,27 @@
   flex: 1;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
+  .announcement-bar-section {
+    padding: 4px 0;
+  }
+  .announcement-bar-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
+  .announcement-message {
+    display: none !important;
+  }
+  .announcement-gold-ticker {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 991px) and (min-width: 769px) {
   .announcement-bar-container {
     flex-direction: column;
     gap: 8px;

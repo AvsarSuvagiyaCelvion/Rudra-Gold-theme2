@@ -90,59 +90,74 @@
 
       <!-- Right Side: Product Grid -->
       <div class="collection-content-grid-wrapper">
+        {%- paginate collection.products by 6 -%}
         <div class="collection-grid cols-3" id="collectionProductGrid">
-          
-          {% render 'product-card',
-            title: "Mayur Heritage Temple Ring",
-            price: 68000,
-            image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+          {%- if collection.products.size > 0 -%}
+            {%- for product in collection.products -%}
+              {%- render 'product-card', product: product -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Fallback mock items if no catalog products are set up yet {%- endcomment -%}
+            {%- render 'product-card',
+              title: "Mayur Heritage Temple Ring",
+              price: 68000,
+              image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            -%}
 
-          {% render 'product-card',
-            title: "Royal Peacock Gold Band",
-            price: 49500,
-            image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
-            purity: "18K Gold"
-          %}
+            {%- render 'product-card',
+              title: "Royal Peacock Gold Band",
+              price: 49500,
+              image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
+              purity: "18K Gold"
+            -%}
 
-          {% render 'product-card',
-            title: "Rudra Royal Signature Necklace",
-            price: 245000,
-            image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+            {%- render 'product-card',
+              title: "Rudra Royal Signature Necklace",
+              price: 245000,
+              image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            -%}
 
-          {% render 'product-card',
-            title: "Nizami Pearl Heritage Choker",
-            price: 380000,
-            image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+            {%- render 'product-card',
+              title: "Nizami Pearl Heritage Choker",
+              price: 380000,
+              image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            -%}
 
-          {% render 'product-card',
-            title: "Glow Silhouette Bangles Set",
-            price: 165000,
-            image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+            {%- render 'product-card',
+              title: "Glow Silhouette Bangles Set",
+              price: 165000,
+              image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            -%}
 
-          {% render 'product-card',
-            title: "Classic Solitaire Tennis Bracelet",
-            price: 450000,
-            image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-            purity: "18K Gold"
-          %}
-
+            {%- render 'product-card',
+              title: "Classic Solitaire Tennis Bracelet",
+              price: 450000,
+              image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+              purity: "18K Gold"
+            -%}
+          {%- endif -%}
         </div>
 
-        <!-- Infinite Scroll simulated trigger button -->
+        <!-- Load More Trigger Button -->
         <div class="collection-load-more-wrapper">
-          <button class="btn-secondary" id="loadMoreBtn" onclick="simulateLoadMore()">
-            Discover More Pieces
-          </button>
+          {%- if collection.products.size > 0 -%}
+            {%- if paginate.next -%}
+              <button class="btn-secondary" id="loadMoreBtn" data-next-url="{{ paginate.next.url }}" onclick="loadMoreProductsAJAX()">
+                Discover More Pieces
+              </button>
+            {%- endif -%}
+          {%- else -%}
+            <button class="btn-secondary" id="loadMoreBtn" onclick="simulateLoadMore()">
+              Discover More Pieces
+            </button>
+          {%- endif -%}
         </div>
+        {%- endpaginate -%}
       </div>
 
     </div>
@@ -309,6 +324,52 @@
 </style>
 
 <script>
+// Real dynamic AJAX pagination for collection products
+async function loadMoreProductsAJAX() {
+  const btn = document.getElementById('loadMoreBtn');
+  const grid = document.getElementById('collectionProductGrid');
+  if (!btn || !grid) return;
+
+  const nextUrl = btn.getAttribute('data-next-url');
+  if (!nextUrl) return;
+
+  btn.textContent = "Loading Curation...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(nextUrl);
+    if (!res.ok) throw new Error("Failed to load products");
+    const htmlText = await res.text();
+    
+    // Parse the retrieved document
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlText, 'text/html');
+    
+    // Select product cards from retrieved grid
+    const newCards = doc.querySelectorAll('#collectionProductGrid .product-card');
+    newCards.forEach(card => {
+      grid.appendChild(card);
+    });
+
+    // Extract next URL from loaded button
+    const nextBtn = doc.getElementById('loadMoreBtn');
+    if (nextBtn && nextBtn.getAttribute('data-next-url')) {
+      btn.setAttribute('data-next-url', nextBtn.getAttribute('data-next-url'));
+      btn.textContent = "Discover More Pieces";
+      btn.disabled = false;
+    } else {
+      btn.style.display = 'none'; // No more pages
+    }
+
+    // Re-trigger custom tilts and cursor bindings for newly appended items
+    if (window.initCustomCursor) initCustomCursor();
+  } catch (err) {
+    console.error("Failed to load AJAX products, redirecting to page:", err);
+    window.location.href = nextUrl;
+  }
+}
+
+// Client-side fallback simulation avoiding raw server-side liquid in JS
 function simulateLoadMore() {
   const grid = document.getElementById('collectionProductGrid');
   const btn = document.getElementById('loadMoreBtn');
@@ -318,30 +379,71 @@ function simulateLoadMore() {
   btn.disabled = true;
 
   setTimeout(() => {
-    // Add 3 mock items
-    const newItems = `
-      {% render 'product-card',
-        title: 'Mayura Filigree Kada',
-        price: 215000,
-        image: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80',
-        purity: '22K Gold'
-      %}
-      {% render 'product-card',
-        title: 'Aura Solitaire Drop Necklace',
-        price: 320000,
-        image: 'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80',
-        purity: '18K Gold'
-      %}
-      {% render 'product-card',
-        title: 'Chandra Prabha Temple Necklace',
-        price: 195000,
-        image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80',
-        purity: '22K Gold'
-      %}
+    const newItemsHTML = `
+      <div class="product-card tilt-card" data-purity="22k gold">
+        <div class="product-card-img-wrapper">
+          <div class="purity-badge">22K Gold</div>
+          <button class="wishlist-btn" aria-label="Add to Wishlist">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          <a href="#">
+            <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80" alt="Mayura Filigree Kada" class="product-card-img primary-img" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80" alt="Mayura Filigree Kada" class="product-card-img hover-img" loading="lazy">
+          </a>
+          <div class="product-card-actions">
+            <span class="card-action-btn" onclick="addToCartAjax('Mayura Filigree Kada', 215000, 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80', '22K Gold')">Quick Add</span>
+            <span class="card-action-btn" onclick="triggerQuickView('Mayura Filigree Kada', 215000, 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80')">Quick View</span>
+          </div>
+        </div>
+        <div class="product-card-info">
+          <h3 class="product-card-title"><a href="#">Mayura Filigree Kada</a></h3>
+          <div class="product-card-rating">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <div class="product-card-price">₹2,15,000</div>
+        </div>
+      </div>
+      <div class="product-card tilt-card" data-purity="18k gold">
+        <div class="product-card-img-wrapper">
+          <div class="purity-badge">18K Gold</div>
+          <button class="wishlist-btn" aria-label="Add to Wishlist">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          <a href="#">
+            <img src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80" alt="Aura Solitaire Drop Necklace" class="product-card-img primary-img" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80" alt="Aura Solitaire Drop Necklace" class="product-card-img hover-img" loading="lazy">
+          </a>
+          <div class="product-card-actions">
+            <span class="card-action-btn" onclick="addToCartAjax('Aura Solitaire Drop Necklace', 320000, 'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80', '18K Gold')">Quick Add</span>
+            <span class="card-action-btn" onclick="triggerQuickView('Aura Solitaire Drop Necklace', 320000, 'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80')">Quick View</span>
+          </div>
+        </div>
+        <div class="product-card-info">
+          <h3 class="product-card-title"><a href="#">Aura Solitaire Drop Necklace</a></h3>
+          <div class="product-card-rating">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <div class="product-card-price">₹3,20,000</div>
+        </div>
+      </div>
     `;
-    grid.insertAdjacentHTML('beforeend', newItems);
-    
-    btn.style.display = 'none'; // Hide load more after first load simulation
+    grid.insertAdjacentHTML('beforeend', newItemsHTML);
+    btn.style.display = 'none'; // Hide button after fallback simulation
+
+    // Re-bind hover interactions for newly added items
+    if (window.initCustomCursor) initCustomCursor();
   }, 1000);
 }
 </script>

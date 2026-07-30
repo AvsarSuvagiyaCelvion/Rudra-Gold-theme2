@@ -5,9 +5,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initPreloader();
   initLenis();
-  initCustomCursor();
   initCanvasSparkles();
   initHeaderScroll();
   initGoldRateTicker();
@@ -18,36 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initVariantPriceBreakdown();
   initCollectionFilters();
   initMobileMenu();
+  triggerHeroAnimations();
 });
-
-/* 1. PRELOADER */
-function initPreloader() {
-  const preloader = document.getElementById('preloader');
-  const counter = document.querySelector('.preloader-counter');
-  const bar = document.getElementById('preloaderBar');
-  if (!preloader) return;
-
-  let width = 0;
-  const interval = setInterval(() => {
-    if (width >= 100) {
-      clearInterval(interval);
-      setTimeout(() => {
-        // Fade out transition
-        preloader.style.opacity = '0';
-        preloader.style.visibility = 'hidden';
-        document.body.classList.remove('loading');
-        
-        // Trigger GSAP hero animations once preloader is gone
-        triggerHeroAnimations();
-      }, 500);
-    } else {
-      width += Math.floor(Math.random() * 8) + 4;
-      if (width > 100) width = 100;
-      if (counter) counter.textContent = `${width}%`;
-      if (bar) bar.style.width = `${width}%`;
-    }
-  }, 80);
-}
 
 /* 2. LENIS SMOOTH SCROLL */
 let lenisInst;
@@ -78,49 +48,6 @@ function initLenis() {
     });
     gsap.ticker.lagSmoothing(0);
   }
-}
-
-/* 3. CUSTOM CURSOR & MAGNETIC BUTTONS */
-function initCustomCursor() {
-  const dot = document.getElementById('customCursorDot');
-  const follower = document.getElementById('customCursorFollower');
-  if (!dot || !follower) return;
-
-  let posX = 0, posY = 0;
-  let mouseX = 0, mouseY = 0;
-
-  // Track mouse move
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    dot.style.left = `${mouseX}px`;
-    dot.style.top = `${mouseY}px`;
-  });
-
-  // Smooth follower logic
-  gsap.to({}, {
-    duration: 0.012,
-    repeat: -1,
-    onRepeat: () => {
-      posX += (mouseX - posX) * 0.12;
-      posY += (mouseY - posY) * 0.12;
-      
-      follower.style.left = `${posX}px`;
-      follower.style.top = `${posY}px`;
-    }
-  });
-
-  // Magnetic hover states on buttons and links
-  const targetElements = document.querySelectorAll('a, button, .wishlist-btn, .qty-btn, .product-card-actions span, input[type="submit"]');
-  targetElements.forEach(elem => {
-    elem.addEventListener('mouseenter', () => {
-      follower.classList.add('hovered');
-    });
-    elem.addEventListener('mouseleave', () => {
-      follower.classList.remove('hovered');
-    });
-  });
 }
 
 /* 4. CANVAS GOLD SPARKLES */
@@ -348,6 +275,149 @@ let cartData = {
   item_count: 0
 };
 
+// Fallback to local storage for persistence of mock cart
+function loadMockCartFromLocalStorage() {
+  const stored = localStorage.getItem('rudra_gold_mock_cart');
+  if (stored) {
+    try {
+      cartData = JSON.parse(stored);
+    } catch (e) {
+      console.error("Failed to parse mock cart from local storage:", e);
+    }
+  }
+}
+
+function saveMockCartToLocalStorage() {
+  localStorage.setItem('rudra_gold_mock_cart', JSON.stringify(cartData));
+}
+
+// Fetch Cart from Shopify API with local storage fallback
+async function fetchCart() {
+  try {
+    const res = await fetch('/cart.js');
+    if (!res.ok) throw new Error('Not Shopify environment');
+    const data = await res.json();
+    
+    // Map Shopify Cart data to our cartData structure
+    cartData.item_count = data.item_count;
+    cartData.total_price = data.total_price / 100;
+    cartData.items = data.items.map(item => ({
+      key: item.key,
+      id: item.variant_id,
+      title: item.product_title,
+      price: item.price / 100,
+      img: item.image || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80',
+      purity: item.variant_title || '22K Gold',
+      quantity: item.quantity
+    }));
+    
+    updateCartDrawerUI();
+  } catch (err) {
+    console.warn("Shopify Cart API failed, using mock cart with localStorage persistence:", err);
+    loadMockCartFromLocalStorage();
+    updateCartDrawerUI();
+  }
+}
+
+async function addAjaxCartItem(title, price, img, purity = '22K Gold', variantId = '') {
+  // If we have a valid variant ID and are in a real Shopify context
+  if (variantId && !isNaN(variantId) && variantId !== '') {
+    try {
+      const res = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
+      });
+      if (res.ok) {
+        await fetchCart();
+        openCartDrawer();
+        return;
+      }
+    } catch (err) {
+      console.error("Real Add to Cart failed, falling back to mock:", err);
+    }
+  }
+
+  // Fallback Mock Add
+  const existingItemIndex = cartData.items.findIndex(item => item.title === title && item.purity === purity);
+  if (existingItemIndex > -1) {
+    cartData.items[existingItemIndex].quantity += 1;
+  } else {
+    cartData.items.push({
+      title: title,
+      price: price,
+      img: img || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80',
+      purity: purity,
+      quantity: 1,
+      id: variantId || ''
+    });
+  }
+
+  saveMockCartToLocalStorage();
+  updateCartDrawerUI();
+  openCartDrawer();
+}
+
+async function adjustCartQuantity(index, action) {
+  const item = cartData.items[index];
+  
+  if (item && item.key) {
+    // Real Shopify cart change
+    try {
+      const newQty = action === 'plus' ? item.quantity + 1 : item.quantity - 1;
+      const res = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.key, quantity: newQty })
+      });
+      if (res.ok) {
+        await fetchCart();
+        return;
+      }
+    } catch (err) {
+      console.error("Real Adjust Qty failed, falling back to mock:", err);
+    }
+  }
+
+  // Fallback Mock Adjust
+  if (action === 'plus') {
+    cartData.items[index].quantity += 1;
+  } else if (action === 'minus') {
+    cartData.items[index].quantity -= 1;
+    if (cartData.items[index].quantity <= 0) {
+      cartData.items.splice(index, 1);
+    }
+  }
+  saveMockCartToLocalStorage();
+  updateCartDrawerUI();
+}
+
+async function removeCartItem(index) {
+  const item = cartData.items[index];
+  
+  if (item && item.key) {
+    // Real Shopify cart remove
+    try {
+      const res = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.key, quantity: 0 })
+      });
+      if (res.ok) {
+        await fetchCart();
+        return;
+      }
+    } catch (err) {
+      console.error("Real Remove failed, falling back to mock:", err);
+    }
+  }
+
+  // Fallback Mock Remove
+  cartData.items.splice(index, 1);
+  saveMockCartToLocalStorage();
+  updateCartDrawerUI();
+}
+
 function initAjaxCart() {
   const drawer = document.getElementById('cartDrawer');
   const overlay = document.getElementById('cartDrawerOverlay');
@@ -386,7 +456,7 @@ function initAjaxCart() {
     if (e.target.classList.contains('qty-btn')) {
       const action = e.target.dataset.action;
       const index = parseInt(e.target.dataset.index);
-      adjustQuantity(index, action);
+      adjustCartQuantity(index, action);
     } else if (e.target.classList.contains('cart-drawer-item-remove')) {
       const index = parseInt(e.target.dataset.index);
       removeCartItem(index);
@@ -394,14 +464,18 @@ function initAjaxCart() {
       const title = e.target.dataset.title;
       const price = parseInt(e.target.dataset.price);
       const img = e.target.dataset.img;
-      addMockCartItem(title, price, img);
+      const variantId = e.target.dataset.variantId || '';
+      addAjaxCartItem(title, price, img, '22K Gold', variantId);
     }
   });
 
   // Expose function globally for quick buy triggers
-  window.addToCartAjax = function(title, price, img, purity = '22K Gold') {
-    addMockCartItem(title, price, img, purity);
+  window.addToCartAjax = function(title, price, img, purity = '22K Gold', variantId = '') {
+    addAjaxCartItem(title, price, img, purity, variantId);
   };
+
+  // Fetch initial cart data on load
+  fetchCart();
 }
 
 function openCartDrawer() {
@@ -411,6 +485,7 @@ function openCartDrawer() {
     drawer.classList.add('active');
     overlay.classList.add('active');
     if (lenisInst) lenisInst.stop(); // Lock page scroll
+    trapFocus(drawer);
   }
 }
 
@@ -424,43 +499,6 @@ function closeCartDrawer() {
   }
 }
 
-function addMockCartItem(title, price, img, purity = '22K Gold') {
-  // Check if item already in cart
-  const existingItemIndex = cartData.items.findIndex(item => item.title === title && item.purity === purity);
-  
-  if (existingItemIndex > -1) {
-    cartData.items[existingItemIndex].quantity += 1;
-  } else {
-    cartData.items.push({
-      title: title,
-      price: price,
-      img: img || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80',
-      purity: purity,
-      quantity: 1
-    });
-  }
-
-  updateCartDrawerUI();
-  openCartDrawer();
-}
-
-function adjustQuantity(index, action) {
-  if (action === 'plus') {
-    cartData.items[index].quantity += 1;
-  } else if (action === 'minus') {
-    cartData.items[index].quantity -= 1;
-    if (cartData.items[index].quantity <= 0) {
-      cartData.items.splice(index, 1);
-    }
-  }
-  updateCartDrawerUI();
-}
-
-function removeCartItem(index) {
-  cartData.items.splice(index, 1);
-  updateCartDrawerUI();
-}
-
 function updateCartDrawerUI() {
   const container = document.getElementById('cartDrawerItemsContainer');
   const subtotalEl = document.getElementById('cartSubtotalAmount');
@@ -472,6 +510,7 @@ function updateCartDrawerUI() {
   let totalCount = 0;
   let subtotal = 0;
 
+  if (!container) return;
   container.innerHTML = '';
 
   if (cartData.items.length === 0) {
@@ -631,6 +670,7 @@ function initModals() {
 
     modal.classList.add('active');
     if (lenisInst) lenisInst.stop();
+    trapFocus(modal);
   }
 }
 
@@ -652,7 +692,7 @@ function initQuickView() {
     if (lenisInst) lenisInst.start();
   });
 
-  window.triggerQuickView = function(title, price, img, desc = '') {
+  window.triggerQuickView = function(title, price, img, desc = '', variantId = '') {
     content.innerHTML = `
       <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; align-items: center;">
         <div style="background-color: var(--color-cream); border: 1px solid var(--color-gray-border);">
@@ -664,7 +704,7 @@ function initQuickView() {
           <p style="font-size: 18px; font-weight: 600; color: var(--color-dark); margin-bottom: 15px;">₹${price.toLocaleString('en-IN')}</p>
           <p style="font-size: 13px; color: var(--color-text-muted); margin-bottom: 25px;">${desc || 'Handcrafted meticulously by our master artisans in 22 Karat gold featuring brilliant cut VS1 ethical diamonds. Inspired by royal Indian heritage.'}</p>
           
-          <button class="btn-primary" style="width: 100%;" onclick="addToCartAjax('${title}', ${price}, '${img}', '22K Gold'); document.getElementById('quickViewClose').click();">
+          <button class="btn-primary" style="width: 100%;" onclick="addToCartAjax('${title}', ${price}, '${img}', '22K Gold', '${variantId}'); document.getElementById('quickViewClose').click();">
             Add to Curation Bag
           </button>
         </div>
@@ -672,6 +712,7 @@ function initQuickView() {
     `;
     modal.classList.add('active');
     if (lenisInst) lenisInst.stop();
+    trapFocus(modal);
   };
 }
 
@@ -807,6 +848,7 @@ function initMobileMenu() {
     if (overlay) overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     if (lenisInst) lenisInst.stop();
+    trapFocus(drawer);
   };
 
   const closeDrawer = () => {
@@ -839,4 +881,38 @@ function initMobileMenu() {
       }
     });
   }
+}
+
+// Accessibility focus trap helper
+function trapFocus(element) {
+  if (!element) return;
+  const focusableElements = element.querySelectorAll('button, [href], input, select, textarea, [tabindex="0"]');
+  const firstFocusable = focusableElements[0];
+  const lastFocusable = focusableElements[focusableElements.length - 1];
+
+  if (!firstFocusable) return;
+
+  // Set focus on first element
+  setTimeout(() => firstFocusable.focus(), 120);
+
+  // Remove existing listeners if any, by cloning and replacing (simple approach or handle keydown)
+  const keyHandler = function(e) {
+    if (e.key === 'Tab') {
+      if (e.shiftKey) { // Shift + Tab
+        if (document.activeElement === firstFocusable) {
+          lastFocusable.focus();
+          e.preventDefault();
+        }
+      } else { // Tab
+        if (document.activeElement === lastFocusable) {
+          firstFocusable.focus();
+          e.preventDefault();
+        }
+      }
+    }
+  };
+
+  element.removeEventListener('keydown', element._trapKeyHandler);
+  element._trapKeyHandler = keyHandler;
+  element.addEventListener('keydown', keyHandler);
 }
