@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initWishlist();
   initVariantPriceBreakdown();
   initCollectionFilters();
+  initMobileMenu();
 });
 
 /* 1. PRELOADER */
@@ -790,4 +791,52 @@ function initCollectionFilters() {
       }, 350);
     });
   });
+}
+
+/* 14. MOBILE NAVIGATION DRAWER */
+function initMobileMenu() {
+  const trigger = document.getElementById('mobileMenuTrigger');
+  const drawer = document.getElementById('mobileMenuDrawer');
+  const closeBtn = document.getElementById('mobileMenuClose');
+  const overlay = document.getElementById('mobileMenuOverlay');
+
+  if (!trigger || !drawer) return;
+
+  const openDrawer = () => {
+    drawer.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (lenisInst) lenisInst.stop();
+  };
+
+  const closeDrawer = () => {
+    drawer.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    if (lenisInst) lenisInst.start();
+  };
+
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    openDrawer();
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (overlay) overlay.addEventListener('click', closeDrawer);
+
+  // Handle collapsible submenus
+  const submenuToggle = document.getElementById('mobileCollectionsToggle');
+  if (submenuToggle) {
+    submenuToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isExpanded = submenuToggle.getAttribute('aria-expanded') === 'true';
+      submenuToggle.setAttribute('aria-expanded', !isExpanded);
+      submenuToggle.classList.toggle('active');
+      
+      const submenu = submenuToggle.nextElementSibling;
+      if (submenu) {
+        submenu.classList.toggle('active');
+      }
+    });
+  }
 }
