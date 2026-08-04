@@ -812,6 +812,8 @@ function calculateVariantPricing() {
   const puritySel = document.querySelector('[data-purity-selector]');
   const weightValEl = document.getElementById('pdpMetalWeight');
   const priceDisplayEl = document.getElementById('pdpPriceDisplay');
+  const stickyPrice = document.getElementById('pdpStickyPrice');
+  const stickyPurityWeight = document.getElementById('pdpStickyPurityWeight');
 
   // Breakdown values
   const breakupGoldRate = document.getElementById('breakupGoldRate');
@@ -822,8 +824,20 @@ function calculateVariantPricing() {
 
   if (!puritySel || !priceDisplayEl) return;
 
-  const purity = puritySel.value; // '22k' or '18k'
-  const weight = parseFloat(weightValEl ? weightValEl.textContent : 10); // grams default
+  // Extract selected option and its details
+  const selectedOption = puritySel.options[puritySel.selectedIndex];
+  if (selectedOption) {
+    const dataWeight = selectedOption.getAttribute('data-weight');
+    if (dataWeight && weightValEl) {
+      weightValEl.textContent = dataWeight;
+      const breakdownWeightText = document.getElementById('breakdownWeightText');
+      if (breakdownWeightText) breakdownWeightText.textContent = dataWeight;
+    }
+  }
+
+  const weight = parseFloat(weightValEl ? weightValEl.textContent : 32.4);
+  const purityVal = selectedOption ? (selectedOption.getAttribute('data-purity') || puritySel.value) : puritySel.value;
+  const purity = purityVal.toLowerCase();
 
   // Base live price per gram
   const goldRate = purity === '18k' ? currentGold18K : currentGold22K;
@@ -836,21 +850,34 @@ function calculateVariantPricing() {
   const finalPrice = subtotal + gst;
 
   // Update Main Price Display
-  priceDisplayEl.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+  const formattedPrice = `₹${finalPrice.toLocaleString('en-IN')}`;
+  priceDisplayEl.textContent = formattedPrice;
+  if (stickyPrice) stickyPrice.textContent = formattedPrice;
+
+  // Update Sticky Purity & Weight Label
+  if (stickyPurityWeight) {
+    stickyPurityWeight.textContent = `${purity.toUpperCase()} Gold • ${weight} grams`;
+  }
 
   // Update Breakdown Accordion Table
   if (breakupGoldRate) breakupGoldRate.textContent = `₹${goldRate.toLocaleString('en-IN')}/g`;
   if (breakupMetalPrice) breakupMetalPrice.textContent = `₹${metalPrice.toLocaleString('en-IN')}`;
   if (breakupMaking) breakupMaking.textContent = `₹${makingCharges.toLocaleString('en-IN')}`;
   if (breakupGst) breakupGst.textContent = `₹${gst.toLocaleString('en-IN')}`;
-  if (breakupTotal) breakupTotal.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+  if (breakupTotal) breakupTotal.textContent = formattedPrice;
   
   // Set variant image context values for Quick Add
   const addBtn = document.getElementById('pdpAddToCartBtn');
   if (addBtn) {
-    addBtn.setAttribute('onclick', `addToCartAjax('Rudra Royal Signature Necklace', ${finalPrice}, '', '${purity.toUpperCase()} Gold, ${weight}g')`);
+    const productTitle = addBtn.getAttribute('data-product-title') || 'Rudra Royal Signature Necklace';
+    const productImg = addBtn.getAttribute('data-product-img') || '';
+    const variantId = addBtn.getAttribute('data-variant-id') || (selectedOption ? selectedOption.value : '');
+    addBtn.setAttribute('onclick', `addToCartAjax('${productTitle.replace(/'/g, "\\'")}', ${finalPrice}, '${productImg}', '${purity.toUpperCase()} Gold, ${weight}g', '${variantId}')`);
   }
 }
+
+// Expose globally
+window.calculateVariantPricing = calculateVariantPricing;
 
 /* 13. COLLECTION TEMPLATE AJAX FILTERS & GRID SWITCHER */
 function initCollectionFilters() {

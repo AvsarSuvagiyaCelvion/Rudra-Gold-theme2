@@ -7,7 +7,14 @@
 
 {%- assign pdp_title = product.title | default: "Rudra Royal Signature Necklace" -%}
 {%- assign pdp_price = product.price | money | default: "₹2,45,000" -%}
-{%- assign pdp_weight = product.metafields.custom.metal_weight | default: "32.4" -%}
+{%- assign pdp_weight = product.metafields.custom.metal_weight | default: product.variants.first.weight -%}
+{%- if pdp_weight != blank and pdp_weight > 0 -%}
+  {%- if pdp_weight < 1.0 -%}
+    {%- assign pdp_weight = pdp_weight | times: 1000 -%}
+  {%- endif -%}
+{%- else -%}
+  {%- assign pdp_weight = "32.4" -%}
+{%- endif -%}
 {%- assign pdp_purity = product.metafields.custom.purity | default: "22K Gold" -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
@@ -65,7 +72,15 @@
             <label for="puritySelector">Select Metal Purity:</label>
             <select id="puritySelector" class="purity-select-dropdown" data-purity-selector onchange="updateShopifyVariant(this.value)">
               {%- for variant in product.variants -%}
-                <option value="{{ variant.id }}" data-purity="{% if variant.title contains '18K' or variant.title contains '18k' %}18k{% else %}22k{% endif %}" data-price="{{ variant.price | divided_by: 100 }}" {% if variant == current_variant %}selected{% endif %}>
+                {%- assign var_weight = variant.metafields.custom.metal_weight | default: variant.weight -%}
+                {%- if var_weight != blank and var_weight > 0 -%}
+                  {%- if var_weight < 1.0 -%}
+                    {%- assign var_weight = var_weight | times: 1000 -%}
+                  {%- endif -%}
+                {%- else -%}
+                  {%- assign var_weight = pdp_weight -%}
+                {%- endif -%}
+                <option value="{{ variant.id }}" data-purity="{% if variant.title contains '18K' or variant.title contains '18k' %}18k{% else %}22k{% endif %}" data-price="{{ variant.price | divided_by: 100 }}" data-weight="{{ var_weight }}" {% if variant == current_variant %}selected{% endif %}>
                   {{ variant.title }}
                 </option>
               {%- endfor -%}
@@ -76,8 +91,8 @@
           <div class="variant-field">
             <label for="puritySelector">Select Metal Purity:</label>
             <select id="puritySelector" class="purity-select-dropdown" data-purity-selector>
-              <option value="22k" selected>22 Karat Gold (916 Purity)</option>
-              <option value="18k">18 Karat Gold (750 Purity)</option>
+              <option value="22k" data-purity="22k" data-weight="{{ pdp_weight }}" selected>22 Karat Gold (916 Purity)</option>
+              <option value="18k" data-purity="18k" data-weight="{{ pdp_weight }}">18 Karat Gold (750 Purity)</option>
             </select>
           </div>
         {%- endif -%}
@@ -146,7 +161,11 @@
           {%- assign pdp_card_price = 245000 -%}
         {%- endif -%}
         
-        <button class="btn-primary pdp-add-to-cart-btn" id="pdpAddToCartBtn" onclick="addToCartAjax('{{ pdp_title | escape }}', {{ pdp_card_price }}, '{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% endif %}', '{{ pdp_purity }}', '{{ pdp_variant_id }}')">
+        <button class="btn-primary pdp-add-to-cart-btn" id="pdpAddToCartBtn" 
+          data-product-title="{{ pdp_title | escape }}"
+          data-product-img="{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% else %}https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=200&q=80{% endif %}"
+          data-variant-id="{{ pdp_variant_id }}"
+          onclick="addToCartAjax('{{ pdp_title | escape }}', {{ pdp_card_price }}, '{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% else %}https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=200&q=80{% endif %}', '{{ pdp_purity }}', '{{ pdp_variant_id }}')">
           Add to Curation Bag
         </button>
         
@@ -172,7 +191,7 @@
       {%- endif -%}
       <div>
         <h4>{{ pdp_title }}</h4>
-        <span>{{ pdp_purity }} • {{ pdp_weight }} grams</span>
+        <span id="pdpStickyPurityWeight">{{ pdp_purity }} • {{ pdp_weight }} grams</span>
       </div>
     </div>
     <div class="sticky-atc-actions">
@@ -563,24 +582,17 @@
 function updateShopifyVariant(variantId) {
   const select = document.getElementById('puritySelector');
   if (!select) return;
-  const option = select.options[select.selectedIndex];
-  const price = parseFloat(option.getAttribute('data-price')) || 0;
   
-  // Set variant values for PDP Cart Button
+  // Set variant ID for PDP Cart Button data attribute
   const addBtn = document.getElementById('pdpAddToCartBtn');
   if (addBtn) {
-    const title = "{{ pdp_title | escape }}";
-    const img = "{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% endif %}";
-    const purity = option.text.trim();
-    addBtn.setAttribute('onclick', `addToCartAjax('${title}', ${price}, '${img}', '${purity}', '${variantId}')`);
+    addBtn.setAttribute('data-variant-id', variantId);
   }
 
-  // Update dynamic price displays
-  const priceDisplay = document.getElementById('pdpPriceDisplay');
-  const stickyPrice = document.getElementById('pdpStickyPrice');
-  const formatted = "₹" + Math.round(price).toLocaleString('en-IN');
-  if (priceDisplay) priceDisplay.textContent = formatted;
-  if (stickyPrice) stickyPrice.textContent = formatted;
+  // Trigger pricing recalculation inside theme.js
+  if (typeof calculateVariantPricing === 'function') {
+    calculateVariantPricing();
+  }
 }
 
 function switchPDPImage(src) {
