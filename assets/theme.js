@@ -270,6 +270,9 @@ function initGoldRateTicker() {
     }
   });
 
+  // Calculate product card prices based on loaded rates
+  recalculateCardPrices();
+
   // Simple animation loop updating gold price fluctuations every 12 seconds
   setInterval(() => {
     const changePercent = (Math.random() * 0.4 - 0.2) / 100; // ±0.2% fluctuation
@@ -285,12 +288,63 @@ function initGoldRateTicker() {
       }
     });
 
+    // Recalculate all product card prices dynamically
+    recalculateCardPrices();
+
     // Update PDP pricing breakdown if active
     const activePDP = document.querySelector('[data-purity-selector]');
     if (activePDP) {
       calculateVariantPricing();
     }
   }, 12000);
+}
+
+// Dynamically calculate and update product card pricing details (including add-to-cart & quick view actions)
+function recalculateCardPrices() {
+  const cardPriceElements = document.querySelectorAll('[data-card-price-el]');
+  cardPriceElements.forEach(el => {
+    const purity = (el.getAttribute('data-purity') || '22k').toLowerCase();
+    const weight = parseFloat(el.getAttribute('data-weight')) || 0;
+    if (weight <= 0) return;
+
+    const goldRate = purity.includes('18k') ? currentGold18K : currentGold22K;
+    const metalPrice = Math.round(weight * goldRate);
+    const makingCharges = Math.round(metalPrice * 0.12);
+    const subtotal = metalPrice + makingCharges;
+    const gst = Math.round(subtotal * 0.03);
+    const finalPrice = subtotal + gst;
+
+    // Update displayed price
+    el.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+
+    // Find parent card and update action button parameters
+    const card = el.closest('.product-card');
+    if (card) {
+      const title = el.getAttribute('data-title') || '';
+      const img = el.getAttribute('data-img') || '';
+      const purityLabel = el.getAttribute('data-purity') || '';
+      const variantId = el.getAttribute('data-variant-id') || '';
+
+      // Update Quick Add button
+      const quickAddBtn = card.querySelector('.product-card-actions .card-action-btn[onclick^="addToCartAjax"]');
+      if (quickAddBtn) {
+        quickAddBtn.setAttribute('onclick', `addToCartAjax('${title.replace(/'/g, "\\'")}', ${finalPrice}, '${img}', '${purityLabel}', '${variantId}')`);
+      }
+
+      // Update Quick View button
+      const quickViewBtn = card.querySelector('.product-card-actions .card-action-btn[onclick^="triggerQuickView"]');
+      if (quickViewBtn) {
+        quickViewBtn.setAttribute('onclick', `triggerQuickView('${title.replace(/'/g, "\\'")}', ${finalPrice}, '${img}', '', '${variantId}')`);
+      }
+
+      // Update Wishlist button
+      const wishlistBtn = card.querySelector('.wishlist-btn');
+      if (wishlistBtn) {
+        wishlistBtn.setAttribute('data-price', `₹${finalPrice.toLocaleString('en-IN')}`);
+        wishlistBtn.setAttribute('data-raw-price', finalPrice);
+      }
+    }
+  });
 }
 
 /* 8. AJAX CART DRAWER SYSTEM */

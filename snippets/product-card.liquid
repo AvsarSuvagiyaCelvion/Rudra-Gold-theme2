@@ -45,6 +45,17 @@
     {%- assign card_url = product.url -%}
   {%- endif -%}
 
+  {%- assign gold_rate = 6850 -%}
+  {%- if card_purity contains '18K' or card_purity contains '18k' -%}
+    {%- assign gold_rate = 5605 -%}
+  {%- endif -%}
+  {%- assign weight_num = card_weight | plus: 0 -%}
+  {%- assign metal_price = weight_num | times: gold_rate | round -%}
+  {%- assign making_charges = metal_price | times: 0.12 | round -%}
+  {%- assign subtotal = metal_price | plus: making_charges -%}
+  {%- assign gst = subtotal | times: 0.03 | round -%}
+  {%- assign dynamic_price = subtotal | plus: gst -%}
+
 <div class="product-card tilt-card" data-purity="{{ card_purity | downcase }}">
   <div class="product-card-img-wrapper">
     <!-- Purity Badge -->
@@ -53,8 +64,8 @@
     <!-- Wishlist Button -->
     <button class="wishlist-btn" aria-label="Add to Wishlist"
       data-title="{{ card_title | escape }}"
-      data-price="₹{{ card_price }}"
-      data-raw-price="{{ card_price }}"
+      data-price="₹{{ dynamic_price | number_with_delimiter }}"
+      data-raw-price="{{ dynamic_price }}"
       data-img="{{ card_img }}">
       {% render 'icon-wishlist' %}
     </button>
@@ -67,8 +78,8 @@
 
     <!-- Hover Action Overlay -->
     <div class="product-card-actions">
-      <span class="card-action-btn" onclick="addToCartAjax('{{ card_title | escape }}', {{ card_price }}, '{{ card_img }}', '{{ card_purity }}', '{{ card_variant_id }}')">Quick Add</span>
-      <span class="card-action-btn" onclick="triggerQuickView('{{ card_title | escape }}', {{ card_price }}, '{{ card_img }}', '', '{{ card_variant_id }}')">Quick View</span>
+      <span class="card-action-btn" onclick="addToCartAjax('{{ card_title | escape }}', {{ dynamic_price }}, '{{ card_img }}', '{{ card_purity }}', '{{ card_variant_id }}')">Quick Add</span>
+      <span class="card-action-btn" onclick="triggerQuickView('{{ card_title | escape }}', {{ dynamic_price }}, '{{ card_img }}', '', '{{ card_variant_id }}')">Quick View</span>
     </div>
   </div>
 
@@ -84,12 +95,8 @@
     <div class="product-card-weight" style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px; margin-bottom: 4px;">
       {{ card_weight }} grams
     </div>
-    <div class="product-card-price">
-      {%- if product != blank -%}
-        {{ product.price | money }}
-      {%- else -%}
-        ₹{{ card_price | number_with_delimiter | default: card_price }}
-      {%- endif -%}
+    <div class="product-card-price" data-card-price-el data-purity="{{ card_purity }}" data-weight="{{ card_weight }}" data-title="{{ card_title | escape }}" data-img="{{ card_img }}" data-variant-id="{{ card_variant_id }}">
+      ₹{{ dynamic_price | number_with_delimiter }}
     </div>
   </div>
 </div>
