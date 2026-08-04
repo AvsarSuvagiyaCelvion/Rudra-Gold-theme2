@@ -245,6 +245,31 @@ function initGoldRateTicker() {
   const tickerItems = document.querySelectorAll('.gold-rate-ticker-value');
   if (tickerItems.length === 0) return;
 
+  // Read base rates from DOM attributes (configured in Shopify Admin announcement bar section settings)
+  const el22k = document.getElementById('globalGold22k');
+  const el18k = document.getElementById('globalGold18k');
+  if (el22k && el22k.dataset.baseRate) {
+    const parsed22k = parseInt(el22k.dataset.baseRate.replace(/[^0-9]/g, ''));
+    if (!isNaN(parsed22k)) {
+      currentGold22K = parsed22k;
+    }
+  }
+  if (el18k && el18k.dataset.baseRate) {
+    const parsed18k = parseInt(el18k.dataset.baseRate.replace(/[^0-9]/g, ''));
+    if (!isNaN(parsed18k)) {
+      currentGold18K = parsed18k;
+    }
+  }
+
+  // Format and show the admin defined rates immediately on load
+  tickerItems.forEach(el => {
+    if (el.dataset.purity === '22k') {
+      el.textContent = `₹${currentGold22K.toLocaleString('en-IN')}/g (22K)`;
+    } else if (el.dataset.purity === '18k') {
+      el.textContent = `₹${currentGold18K.toLocaleString('en-IN')}/g (18K)`;
+    }
+  });
+
   // Simple animation loop updating gold price fluctuations every 12 seconds
   setInterval(() => {
     const changePercent = (Math.random() * 0.4 - 0.2) / 100; // ±0.2% fluctuation
@@ -254,9 +279,9 @@ function initGoldRateTicker() {
     // Update ticker displays
     tickerItems.forEach(el => {
       if (el.dataset.purity === '22k') {
-        el.textContent = `₹${currentGold22K.toLocaleString('en-IN')}/g`;
+        el.textContent = `₹${currentGold22K.toLocaleString('en-IN')}/g (22K)`;
       } else if (el.dataset.purity === '18k') {
-        el.textContent = `₹${currentGold18K.toLocaleString('en-IN')}/g`;
+        el.textContent = `₹${currentGold18K.toLocaleString('en-IN')}/g (18K)`;
       }
     });
 

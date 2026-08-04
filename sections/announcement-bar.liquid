@@ -13,6 +13,18 @@
       "id": "show_gold_rate",
       "label": "Show Live Gold Rate Ticker",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "gold_rate_22k",
+      "label": "Base Gold Rate 22K (per gram in INR)",
+      "default": "6,850"
+    },
+    {
+      "type": "text",
+      "id": "gold_rate_18k",
+      "label": "Base Gold Rate 18K (per gram in INR)",
+      "default": "5,605"
     }
   ]
 }
@@ -25,7 +37,7 @@
     </div>
     {% if section.settings.show_gold_rate %}
       <div class="announcement-gold-ticker slide-item">
-        {% render 'gold-rate-ticker' %}
+        {% render 'gold-rate-ticker', gold_rate_22k: section.settings.gold_rate_22k, gold_rate_18k: section.settings.gold_rate_18k %}
       </div>
     {% endif %}
   </div>

@@ -1,8 +1,10 @@
+{%- assign rate_22k = gold_rate_22k | default: "6,850" -%}
+{%- assign rate_18k = gold_rate_18k | default: "5,605" -%}
 <div class="gold-rate-ticker-widget" data-modal-type="hallmark">
   <span class="gold-rate-ticker-dot"></span>
   <span class="gold-rate-ticker-label">Live Gold Rate:</span>
-  <span class="gold-rate-ticker-value" data-purity="22k" id="globalGold22k">₹6,850/g (22K)</span>
-  <span class="gold-rate-ticker-value" data-purity="18k" id="globalGold18k">₹5,605/g (18K)</span>
+  <span class="gold-rate-ticker-value" data-purity="22k" id="globalGold22k" data-base-rate="{{ rate_22k }}">₹{{ rate_22k }}/g (22K)</span>
+  <span class="gold-rate-ticker-value" data-purity="18k" id="globalGold18k" data-base-rate="{{ rate_18k }}">₹{{ rate_18k }}/g (18K)</span>
   <span class="gold-rate-ticker-transparency">(Verify Purity)</span>
 </div>
 
