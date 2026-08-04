@@ -272,31 +272,6 @@ function initGoldRateTicker() {
 
   // Calculate product card prices based on loaded rates
   recalculateCardPrices();
-
-  // Simple animation loop updating gold price fluctuations every 12 seconds
-  setInterval(() => {
-    const changePercent = (Math.random() * 0.4 - 0.2) / 100; // ±0.2% fluctuation
-    currentGold22K = Math.round(currentGold22K * (1 + changePercent));
-    currentGold18K = Math.round(currentGold18K * (1 + changePercent));
-    
-    // Update ticker displays
-    tickerItems.forEach(el => {
-      if (el.dataset.purity === '22k') {
-        el.textContent = `₹${currentGold22K.toLocaleString('en-IN')}/g (22K)`;
-      } else if (el.dataset.purity === '18k') {
-        el.textContent = `₹${currentGold18K.toLocaleString('en-IN')}/g (18K)`;
-      }
-    });
-
-    // Recalculate all product card prices dynamically
-    recalculateCardPrices();
-
-    // Update PDP pricing breakdown if active
-    const activePDP = document.querySelector('[data-purity-selector]');
-    if (activePDP) {
-      calculateVariantPricing();
-    }
-  }, 12000);
 }
 
 // Dynamically calculate and update product card pricing details (including add-to-cart & quick view actions)
