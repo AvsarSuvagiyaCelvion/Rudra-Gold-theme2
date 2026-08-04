@@ -9,6 +9,31 @@
  */
 {
   "current": {
-    "presets": {}
+    "presets": {},
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "announcement_text": "✨ Exclusive Bridal Curation: Complimentary Home Trials Available Across Selected Flagships",
+          "show_gold_rate": true,
+          "gold_rate_22k": "13000",
+          "gold_rate_18k": "12000"
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "brand_name": "RUDRA GOLD",
+          "tagline": "Timeless Purity, Crafted for Royalty"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "copyright_text": "© 2026 RUDRA GOLD. All Rights Reserved."
+        }
+      }
+    },
+    "content_for_index": []
   }
 }
