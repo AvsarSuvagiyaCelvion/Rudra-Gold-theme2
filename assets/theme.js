@@ -355,15 +355,47 @@ async function fetchCart() {
     // Map Shopify Cart data to our cartData structure
     cartData.item_count = data.item_count;
     cartData.total_price = data.total_price / 100;
-    cartData.items = data.items.map(item => ({
-      key: item.key,
-      id: item.variant_id,
-      title: item.product_title,
-      price: item.price / 100,
-      img: item.image || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80',
-      purity: item.variant_title || '22K Gold',
-      quantity: item.quantity
-    }));
+    cartData.items = data.items.map(item => {
+      let calculatedPrice = item.price / 100;
+      if (calculatedPrice === 0) {
+        // Parse weight from variant title (e.g. "10", "25", "18K Gold, 24g")
+        let itemWeight = parseFloat(item.variant_title);
+        if (isNaN(itemWeight) || itemWeight <= 0) {
+          const weightMatch = (item.variant_title || '').match(/(\d+(?:\.\d+)?)\s*(?:g|gram)/i);
+          if (weightMatch) {
+            itemWeight = parseFloat(weightMatch[1]);
+          } else {
+            // Fallback to Shopify's item weight in grams
+            itemWeight = (item.grams || item.weight) || 0;
+          }
+        }
+
+        // Determine gold rate based on variant title or product title
+        let goldRate = currentGold22K; // default 22K
+        const purityStr = ((item.variant_title || '') + " " + (item.product_title || '')).toLowerCase();
+        if (purityStr.includes('18k') || purityStr.includes('18 karat')) {
+          goldRate = currentGold18K;
+        }
+
+        if (itemWeight > 0) {
+          const metalPrice = Math.round(itemWeight * goldRate);
+          const makingCharges = Math.round(metalPrice * 0.12);
+          const subtotal = metalPrice + makingCharges;
+          const gst = Math.round(subtotal * 0.03);
+          calculatedPrice = subtotal + gst;
+        }
+      }
+
+      return {
+        key: item.key,
+        id: item.variant_id,
+        title: item.product_title,
+        price: calculatedPrice,
+        img: item.image || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80',
+        purity: item.variant_title || '22K Gold',
+        quantity: item.quantity
+      };
+    });
     
     updateCartDrawerUI();
   } catch (err) {
