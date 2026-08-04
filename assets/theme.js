@@ -916,21 +916,21 @@ function initMobileMenu() {
   if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
   if (overlay) overlay.addEventListener('click', closeDrawer);
 
-  // Handle collapsible submenus
-  const submenuToggle = document.getElementById('mobileCollectionsToggle');
-  if (submenuToggle) {
-    submenuToggle.addEventListener('click', (e) => {
+  // Handle collapsible submenus dynamically
+  const submenuToggles = document.querySelectorAll('.mobile-submenu-toggle');
+  submenuToggles.forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
       e.preventDefault();
-      const isExpanded = submenuToggle.getAttribute('aria-expanded') === 'true';
-      submenuToggle.setAttribute('aria-expanded', !isExpanded);
-      submenuToggle.classList.toggle('active');
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', !isExpanded);
+      toggle.classList.toggle('active');
       
-      const submenu = submenuToggle.nextElementSibling;
+      const submenu = toggle.nextElementSibling;
       if (submenu) {
         submenu.classList.toggle('active');
       }
     });
-  }
+  });
 }
 
 // Accessibility focus trap helper
