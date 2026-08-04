@@ -374,6 +374,42 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-gold);
 }
 
+@media (max-width: 575px) {
+  .luxury-modal-container {
+    padding: 30px 16px 20px;
+    max-height: 90vh;
+  }
+  .luxury-modal-container h2 {
+    font-size: 18px !important;
+    margin-top: 10px;
+  }
+  .luxury-modal-container p {
+    font-size: 11px !important;
+    margin-bottom: 15px !important;
+  }
+  .luxury-modal-container form {
+    gap: 10px !important;
+  }
+  .luxury-modal-container input[type="text"],
+  .luxury-modal-container input[type="email"],
+  .luxury-modal-container input[type="tel"],
+  .luxury-modal-container select {
+    padding: 10px !important;
+    font-size: 12px !important;
+  }
+  .luxury-modal-container .btn-primary {
+    font-size: 10px !important;
+    letter-spacing: 0.05em !important;
+    padding: 12px 16px !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+  .quickview-container .luxury-modal-content > div {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+}
+
 /* Slide-out Cart Drawer */
 .cart-drawer-overlay {
   position: fixed;

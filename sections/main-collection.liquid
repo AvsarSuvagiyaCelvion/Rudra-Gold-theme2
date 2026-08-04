@@ -6,6 +6,9 @@
 {% endschema %}
 
 <section class="main-collection-section section-padding">
+  <!-- Mobile Filter Overlay Drawer -->
+  <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
+
   <div class="container">
     
     <!-- Top Filter & Sort Bar -->
@@ -16,6 +19,14 @@
       </div>
 
       <div class="top-bar-right">
+        <!-- Filter Button on Mobile -->
+        <button class="mobile-filter-trigger-btn" id="mobileFilterTriggerBtn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+          Filter
+        </button>
+
         <!-- Sort By -->
         <div class="sort-wrapper">
           <label for="sortBySelect">Sort By:</label>
@@ -40,7 +51,16 @@
     <div class="collection-main-layout">
       
       <!-- Left Sidebar: Filters -->
-      <aside class="collection-sidebar-filters">
+      <aside class="collection-sidebar-filters" id="collectionSidebarFilters">
+        <div class="sidebar-header-mobile">
+          <h3>Refine Curation</h3>
+          <button class="sidebar-close-btn-mobile" id="mobileFilterClose" aria-label="Close filters">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
         <h3 class="filter-sidebar-title">Refine By</h3>
 
         <div class="filter-group">
@@ -301,12 +321,100 @@
   margin-top: 50px;
 }
 
+.mobile-filter-trigger-btn {
+  display: none;
+}
+.sidebar-header-mobile {
+  display: none;
+}
+.mobile-filter-overlay {
+  display: none;
+}
+
 @media (max-width: 991px) {
   .collection-main-layout {
     grid-template-columns: 1fr;
   }
   .collection-sidebar-filters {
-    display: none; /* Hide filter on tablet/mobile default, could toggle */
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    max-width: 320px;
+    height: 100%;
+    background-color: var(--color-light);
+    z-index: 1008;
+    padding: 30px 24px;
+    overflow-y: auto;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+    transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .collection-sidebar-filters.active {
+    left: 0;
+  }
+  .sidebar-header-mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1.5px solid var(--color-gold);
+    padding-bottom: 12px;
+  }
+  .sidebar-header-mobile h3 {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    color: var(--color-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .sidebar-close-btn-mobile {
+    cursor: pointer;
+    color: var(--color-dark);
+    transition: var(--transition-fast);
+  }
+  .sidebar-close-btn-mobile:hover {
+    color: var(--color-gold);
+  }
+  .filter-sidebar-title {
+    display: none !important;
+  }
+  .mobile-filter-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--color-gray-border);
+    padding: 8px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: var(--color-light);
+    color: var(--color-dark);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  .mobile-filter-trigger-btn:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  .mobile-filter-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(11, 11, 11, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1007;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.4s ease, visibility 0.4s;
+  }
+  .mobile-filter-overlay.active {
+    visibility: visible;
+    opacity: 1;
   }
   .grid-switcher {
     display: none; /* Hide grid layouts switcher on tablet */
@@ -319,6 +427,27 @@
 @media (max-width: 575px) {
   .collection-grid {
     grid-template-columns: 1fr !important;
+  }
+  .collection-top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .top-bar-right {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .sort-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .sort-select-dropdown {
+    flex: 1;
+    max-width: 160px;
   }
 }
 </style>
@@ -446,4 +575,30 @@ function simulateLoadMore() {
     if (window.initCustomCursor) initCustomCursor();
   }, 1000);
 }
+
+// Mobile Filter Sidebar Toggle listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const filterBtn = document.getElementById('mobileFilterTriggerBtn');
+  const filterClose = document.getElementById('mobileFilterClose');
+  const filterOverlay = document.getElementById('mobileFilterOverlay');
+  const filterSidebar = document.getElementById('collectionSidebarFilters');
+
+  if (filterBtn && filterSidebar) {
+    const openFilters = () => {
+      filterSidebar.classList.add('active');
+      if (filterOverlay) filterOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+    
+    const closeFilters = () => {
+      filterSidebar.classList.remove('active');
+      if (filterOverlay) filterOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    filterBtn.addEventListener('click', openFilters);
+    if (filterClose) filterClose.addEventListener('click', closeFilters);
+    if (filterOverlay) filterOverlay.addEventListener('click', closeFilters);
+  }
+});
 </script>

@@ -331,10 +331,71 @@
 }
 
 @media (max-width: 768px) {
+  .site-footer {
+    text-align: center !important;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center !important;
+  }
+  .footer-col h3,
+  .footer-col ul,
+  .footer-col ul li,
+  .footer-col ul li a,
+  .brand-col h2,
+  .footer-tagline,
+  .footer-about {
+    text-align: center !important;
+  }
+  .footer-col ul {
+    width: 100%;
+    padding: 0;
+  }
+  .footer-col ul li a:hover {
+    padding-left: 0;
+  }
+  
+  /* Center the block of contact info, but keep text left-aligned inside it for clean vertical alignment */
+  .footer-contact-info {
+    text-align: left !important;
+    width: fit-content !important;
+    margin: 0 auto 20px !important;
+  }
+  .footer-contact-info p {
+    text-align: left !important;
+  }
+  
+  /* Center the certifications block, but left-align the list items internally so icons align vertically */
+  .certifications-logos {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    width: fit-content !important;
+    margin: 0 auto !important;
+  }
+  .cert-item {
+    text-align: left !important;
+    justify-content: flex-start !important;
+    width: 100%;
+  }
+  
   .footer-bottom-container {
     flex-direction: column;
     gap: 20px;
     text-align: center;
+  }
+  .footer-selectors {
+    justify-content: center;
+  }
+  .footer-payments {
+    justify-content: center;
+  }
+  .store-locator-cta {
+    justify-content: center;
+    width: 100%;
+    max-width: 280px;
   }
 }
 

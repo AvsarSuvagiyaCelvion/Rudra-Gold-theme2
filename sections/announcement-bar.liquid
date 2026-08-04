@@ -20,11 +20,11 @@
 
 <div class="announcement-bar-section">
   <div class="container announcement-bar-container">
-    <div class="announcement-message">
+    <div class="announcement-message slide-item active">
       {{ section.settings.announcement_text }}
     </div>
     {% if section.settings.show_gold_rate %}
-      <div class="announcement-gold-ticker">
+      <div class="announcement-gold-ticker slide-item">
         {% render 'gold-rate-ticker' %}
       </div>
     {% endif %}
@@ -58,32 +58,97 @@
 
 @media (max-width: 768px) {
   .announcement-bar-section {
-    padding: 4px 0;
+    padding: 8px 0;
   }
   .announcement-bar-container {
-    flex-direction: row;
+    position: relative;
+    height: 24px;
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0;
+    overflow: hidden;
+  }
+  .announcement-bar-container .slide-item {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .announcement-bar-container .slide-item.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
   .announcement-message {
-    display: none !important;
+    display: block !important;
+    font-size: 9px;
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    color: var(--color-light);
+    max-width: 90%;
   }
   .announcement-gold-ticker {
     width: 100%;
-    display: flex;
+    display: flex !important;
     justify-content: center;
   }
 }
-
-@media (max-width: 991px) and (min-width: 769px) {
-  .announcement-bar-container {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-  .announcement-message {
-    font-size: 10px;
-  }
-}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const slides = document.querySelectorAll('.announcement-bar-container .slide-item');
+  if (slides.length <= 1) return;
+
+  const isMobile = () => window.innerWidth <= 768;
+  let currentIndex = 0;
+
+  function showNextSlide() {
+    if (!isMobile()) {
+      slides.forEach(slide => {
+        slide.classList.remove('active');
+        slide.style.opacity = '';
+        slide.style.transform = '';
+      });
+      return;
+    }
+
+    slides[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex + 1) % slides.length;
+    slides[currentIndex].classList.add('active');
+  }
+
+  // Auto-slide transition every 4.5 seconds
+  setInterval(showNextSlide, 4500);
+
+  // Initial layout activation
+  if (isMobile()) {
+    slides.forEach((slide, idx) => {
+      if (idx === 0) slide.classList.add('active');
+      else slide.classList.remove('active');
+    });
+  }
+
+  window.addEventListener('resize', () => {
+    if (!isMobile()) {
+      slides.forEach(slide => {
+        slide.classList.remove('active');
+        slide.style.opacity = '';
+        slide.style.transform = '';
+      });
+    } else {
+      slides.forEach((slide, idx) => {
+        if (idx === currentIndex) slide.classList.add('active');
+        else slide.classList.remove('active');
+      });
+    }
+  });
+});
+</script>

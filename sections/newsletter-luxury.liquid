@@ -152,6 +152,28 @@
   border-radius: 2px;
   animation: fadeIn 0.4s ease forwards;
 }
+
+@media (max-width: 480px) {
+  .newsletter-input-group {
+    flex-direction: column;
+    background-color: transparent;
+    border: none;
+    gap: 10px;
+    padding: 0;
+  }
+  .newsletter-input {
+    background-color: var(--color-light);
+    border: 1px solid var(--color-gray-border);
+    border-radius: 2px;
+    width: 100%;
+  }
+  .newsletter-submit-btn {
+    padding: 12px 24px;
+    justify-content: center;
+    border-radius: 2px;
+    width: 100%;
+  }
+}
 </style>
 
 <script>

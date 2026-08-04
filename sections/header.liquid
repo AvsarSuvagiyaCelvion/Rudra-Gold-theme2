@@ -230,13 +230,16 @@
   top: auto;
 }
 
-/* Force dark header on pages without a hero (contact, cart, collection, etc.) */
+/* Force dark header on pages without a hero (contact, cart, collection, list-collections, search, etc.) */
 .template-page .site-header,
 .template-cart .site-header,
 .template-collection .site-header,
+.template-list-collections .site-header,
+.template-search .site-header,
+.template-404 .site-header,
 .template-product .site-header {
-  background-color: var(--color-dark);
-  border-bottom-color: rgba(212, 175, 55, 0.2);
+  background-color: var(--color-dark) !important;
+  border-bottom-color: rgba(212, 175, 55, 0.2) !important;
 }
 
 .site-header.scrolled {
@@ -485,6 +488,37 @@
   }
   .mega-menu {
     display: none; /* Hide standard desktop mega menu */
+  }
+  .logo-title {
+    font-size: 18px !important;
+    letter-spacing: 0.1em !important;
+  }
+  .logo-tagline {
+    font-size: 7px !important;
+    letter-spacing: 0.1em !important;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-title {
+    font-size: 15px !important;
+    letter-spacing: 0.08em !important;
+  }
+  .logo-tagline {
+    display: none !important; /* Hide tagline on small screens to prevent vertical/horizontal overflow */
+  }
+  .header-left {
+    gap: 8px !important;
+  }
+  .header-right {
+    gap: 10px !important;
+  }
+  .site-header {
+    height: 60px !important; /* Reduce height slightly on mobile for a tighter, premium feel */
   }
 }
 
@@ -743,8 +777,24 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             products.forEach(p => {
               // Convert price to number without cents for quickview display if needed
-              const priceInt = Math.round(parseFloat(p.price) || 0);
-              const formattedPrice = "₹" + priceInt.toLocaleString('en-IN');
+              let rawPriceStr = String(p.price || '');
+              let priceInt = 0;
+              let formattedPrice = '';
+              
+              if (rawPriceStr.includes('₹') || rawPriceStr.includes(',') || rawPriceStr.includes('Rs')) {
+                // If it is already formatted, use it directly
+                formattedPrice = rawPriceStr;
+                priceInt = Math.round(parseFloat(rawPriceStr.replace(/[^\d.]/g, '')) || 0);
+              } else {
+                // If it is a raw number (rupees or cents)
+                let numVal = parseFloat(rawPriceStr) || 0;
+                if (numVal > 99999) {
+                  // Standard Shopify cents conversion
+                  numVal = numVal / 100;
+                }
+                priceInt = Math.round(numVal);
+                formattedPrice = "₹" + priceInt.toLocaleString('en-IN');
+              }
               
               resultsOutput.innerHTML += `
                 <a href="${p.url}" class="search-result-item">

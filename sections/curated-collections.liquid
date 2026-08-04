@@ -27,67 +27,86 @@
     </div>
 
     <div class="collections-grid">
-      
-      <!-- Card 1: Bridal (Large/Hero block) -->
-      <a href="/collections/bridal" class="collection-item large-item">
-        <div class="collection-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" alt="Bridal Heritage" loading="lazy">
-        </div>
-        <div class="collection-overlay-content">
-          <span class="collection-tag">Exquisite Craft</span>
-          <h3>Bridal Heritage</h3>
-          <span class="collection-cta">Discover Royalty</span>
-        </div>
-      </a>
+      {%- if collections.size > 0 -%}
+        {%- for collection in collections limit: 5 -%}
+          <a href="{{ collection.url }}" class="collection-item {% if forloop.first %}large-item{% endif %}">
+            <div class="collection-img-wrapper">
+              {%- if collection.image != blank -%}
+                <img src="{{ collection.image | image_url: width: 800 }}" alt="{{ collection.title }}" loading="lazy">
+              {%- elsif collection.products.first.featured_image != blank -%}
+                <img src="{{ collection.products.first.featured_image | image_url: width: 800 }}" alt="{{ collection.title }}" loading="lazy">
+              {%- else -%}
+                <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" alt="{{ collection.title }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="collection-overlay-content">
+              <span class="collection-tag">Collection</span>
+              <h3>{{ collection.title }}</h3>
+              <span class="collection-cta">Discover Pieces</span>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Card 1: Bridal (Large/Hero block) -->
+        <a href="/collections/bridal" class="collection-item large-item">
+          <div class="collection-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" alt="Bridal Heritage" loading="lazy">
+          </div>
+          <div class="collection-overlay-content">
+            <span class="collection-tag">Exquisite Craft</span>
+            <h3>Bridal Heritage</h3>
+            <span class="collection-cta">Discover Royalty</span>
+          </div>
+        </a>
 
-      <!-- Card 2: Temple Gold -->
-      <a href="/collections/temple" class="collection-item">
-        <div class="collection-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=500&q=80" alt="Temple Gold" loading="lazy">
-        </div>
-        <div class="collection-overlay-content">
-          <span class="collection-tag">Traditional</span>
-          <h3>Temple Gold</h3>
-          <span class="collection-cta">View Pieces</span>
-        </div>
-      </a>
+        <!-- Card 2: Temple Gold -->
+        <a href="/collections/temple" class="collection-item">
+          <div class="collection-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=500&q=80" alt="Temple Gold" loading="lazy">
+          </div>
+          <div class="collection-overlay-content">
+            <span class="collection-tag">Traditional</span>
+            <h3>Temple Gold</h3>
+            <span class="collection-cta">View Pieces</span>
+          </div>
+        </a>
 
-      <!-- Card 3: Solitaire Diamonds -->
-      <a href="/collections/solitaires" class="collection-item">
-        <div class="collection-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=500&q=80" alt="Solitaires" loading="lazy">
-        </div>
-        <div class="collection-overlay-content">
-          <span class="collection-tag">Brilliance</span>
-          <h3>Solitaire Diamonds</h3>
-          <span class="collection-cta">Explore Rare</span>
-        </div>
-      </a>
+        <!-- Card 3: Solitaire Diamonds -->
+        <a href="/collections/solitaires" class="collection-item">
+          <div class="collection-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=500&q=80" alt="Solitaires" loading="lazy">
+          </div>
+          <div class="collection-overlay-content">
+            <span class="collection-tag">Brilliance</span>
+            <h3>Solitaire Diamonds</h3>
+            <span class="collection-cta">Explore Rare</span>
+          </div>
+        </a>
 
-      <!-- Card 4: Daily Wear Essentials -->
-      <a href="/collections/daily-wear" class="collection-item">
-        <div class="collection-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=500&q=80" alt="Daily Wear" loading="lazy">
-        </div>
-        <div class="collection-overlay-content">
-          <span class="collection-tag">Modern Elegant</span>
-          <h3>Daily Wear</h3>
-          <span class="collection-cta">Shop Minimalist</span>
-        </div>
-      </a>
+        <!-- Card 4: Daily Wear Essentials -->
+        <a href="/collections/daily-wear" class="collection-item">
+          <div class="collection-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=500&q=80" alt="Daily Wear" loading="lazy">
+          </div>
+          <div class="collection-overlay-content">
+            <span class="collection-tag">Modern Elegant</span>
+            <h3>Daily Wear</h3>
+            <span class="collection-cta">Shop Minimalist</span>
+          </div>
+        </a>
 
-      <!-- Card 5: Fine Necklaces -->
-      <a href="/collections/necklaces" class="collection-item">
-        <div class="collection-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=500&q=80" alt="Necklaces" loading="lazy">
-        </div>
-        <div class="collection-overlay-content">
-          <span class="collection-tag">Masterpieces</span>
-          <h3>Fine Necklaces</h3>
-          <span class="collection-cta">View Collection</span>
-        </div>
-      </a>
-
+        <!-- Card 5: Fine Necklaces -->
+        <a href="/collections/necklaces" class="collection-item">
+          <div class="collection-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=500&q=80" alt="Necklaces" loading="lazy">
+          </div>
+          <div class="collection-overlay-content">
+            <span class="collection-tag">Masterpieces</span>
+            <h3>Fine Necklaces</h3>
+            <span class="collection-cta">View Collection</span>
+          </div>
+        </a>
+      {%- endif -%}
     </div>
 
   </div>

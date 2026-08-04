@@ -29,132 +29,152 @@
     <!-- Category Tabs Navigation -->
     <div class="tabs-nav-wrapper">
       <div class="tabs-nav">
-        <button class="tab-btn active" data-tab-target="rings">Royal Rings</button>
-        <button class="tab-btn" data-tab-target="necklaces">Heritage Necklaces</button>
-        <button class="tab-btn" data-tab-target="solitaires">Solitaires & Bangles</button>
+        {%- if collections.size > 0 -%}
+          {%- for collection in collections limit: 3 -%}
+            <button class="tab-btn {% if forloop.first %}active{% endif %}" data-tab-target="{{ collection.handle }}">{{ collection.title }}</button>
+          {%- endfor -%}
+        {%- else -%}
+          <button class="tab-btn active" data-tab-target="rings">Royal Rings</button>
+          <button class="tab-btn" data-tab-target="necklaces">Heritage Necklaces</button>
+          <button class="tab-btn" data-tab-target="solitaires">Solitaires & Bangles</button>
+        {%- endif -%}
       </div>
     </div>
 
     <!-- Tabs Content Grids -->
     <div class="tabs-content">
-      
-      <!-- Tab 1: Rings -->
-      <div class="tab-pane active" id="tab-rings">
-        <div class="product-grid">
-          
-          {% render 'product-card',
-            title: "Mayur Heritage Temple Ring",
-            price: 68000,
-            image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+      {%- if collections.size > 0 -%}
+        {%- for collection in collections limit: 3 -%}
+          <div class="tab-pane {% if forloop.first %}active{% endif %}" id="tab-{{ collection.handle }}">
+            <div class="product-grid">
+              {%- if collection.products.size > 0 -%}
+                {%- for product in collection.products limit: 4 -%}
+                  {% render 'product-card', product: product %}
+                {%- endfor -%}
+              {%- else -%}
+                <p class="text-center" style="grid-column: span 4; color: var(--color-text-muted); padding: 40px 0; width: 100%;">No products found in this collection.</p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Tab 1: Rings -->
+        <div class="tab-pane active" id="tab-rings">
+          <div class="product-grid">
+            
+            {% render 'product-card',
+              title: "Mayur Heritage Temple Ring",
+              price: 68000,
+              image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Royal Peacock Gold Band",
-            price: 49500,
-            image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-            purity: "18K Gold"
-          %}
+            {% render 'product-card',
+              title: "Royal Peacock Gold Band",
+              price: 49500,
+              image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+              purity: "18K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Imperial Diamond Solitaire Ring",
-            price: 185000,
-            image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
-            purity: "18K Gold"
-          %}
+            {% render 'product-card',
+              title: "Imperial Diamond Solitaire Ring",
+              price: 185000,
+              image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
+              purity: "18K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Ganga Jamuna Antique Ring",
-            price: 72000,
-            image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+            {% render 'product-card',
+              title: "Ganga Jamuna Antique Ring",
+              price: 72000,
+              image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            %}
 
+          </div>
         </div>
-      </div>
 
-      <!-- Tab 2: Necklaces -->
-      <div class="tab-pane" id="tab-necklaces">
-        <div class="product-grid">
-          
-          {% render 'product-card',
-            title: "Rudra Royal Signature Necklace",
-            price: 245000,
-            image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+        <!-- Tab 2: Necklaces -->
+        <div class="tab-pane" id="tab-necklaces">
+          <div class="product-grid">
+            
+            {% render 'product-card',
+              title: "Rudra Royal Signature Necklace",
+              price: 245000,
+              image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Nizami Pearl Heritage Choker",
-            price: 380000,
-            image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+            {% render 'product-card',
+              title: "Nizami Pearl Heritage Choker",
+              price: 380000,
+              image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Chandra Prabha Temple Necklace",
-            price: 195000,
-            image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+            {% render 'product-card',
+              title: "Chandra Prabha Temple Necklace",
+              price: 195000,
+              image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Vajra Sparkling Solitaire Drops",
-            price: 290000,
-            image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-            purity: "18K Gold"
-          %}
+            {% render 'product-card',
+              title: "Vajra Sparkling Solitaire Drops",
+              price: 290000,
+              image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+              purity: "18K Gold"
+            %}
 
+          </div>
         </div>
-      </div>
 
-      <!-- Tab 3: Solitaires -->
-      <div class="tab-pane" id="tab-solitaires">
-        <div class="product-grid">
-          
-          {% render 'product-card',
-            title: "Glow Silhouette Bangles Set",
-            price: 165000,
-            image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+        <!-- Tab 3: Solitaires -->
+        <div class="tab-pane" id="tab-solitaires">
+          <div class="product-grid">
+            
+            {% render 'product-card',
+              title: "Glow Silhouette Bangles Set",
+              price: 165000,
+              image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Classic Solitaire Tennis Bracelet",
-            price: 450000,
-            image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-            purity: "18K Gold"
-          %}
+            {% render 'product-card',
+              title: "Classic Solitaire Tennis Bracelet",
+              price: 450000,
+              image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+              purity: "18K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Mayura Filigree Kada",
-            price: 215000,
-            image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-            purity: "22K Gold"
-          %}
+            {% render 'product-card',
+              title: "Mayura Filigree Kada",
+              price: 215000,
+              image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+              purity: "22K Gold"
+            %}
 
-          {% render 'product-card',
-            title: "Aura Solitaire Drop Necklace",
-            price: 320000,
-            image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-            hover_image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
-            purity: "18K Gold"
-          %}
+            {% render 'product-card',
+              title: "Aura Solitaire Drop Necklace",
+              price: 320000,
+              image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+              hover_image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
+              purity: "18K Gold"
+            %}
 
+          </div>
         </div>
-      </div>
-
+      {%- endif -%}
     </div>
 
   </div>

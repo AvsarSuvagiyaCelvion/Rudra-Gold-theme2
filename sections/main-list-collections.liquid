@@ -1,0 +1,270 @@
+<section class="main-list-collections-section section-padding">
+  <div class="container">
+    
+    <div class="section-header text-center">
+      <span class="section-subtitle">Royal Artistry</span>
+      <h1 class="section-title">The Curated Collections</h1>
+      <p class="section-desc">Explore our signature gold and diamond ranges, meticulously handcrafted by royal master artisans.</p>
+    </div>
+
+    <div class="collections-list-grid">
+      {%- if collections.size > 0 -%}
+        {%- for collection in collections -%}
+          <div class="collection-list-card">
+            <a href="{{ collection.url }}" class="card-img-link">
+              <div class="card-img-wrapper">
+                {%- if collection.image != blank -%}
+                  <img src="{{ collection.image | image_url: width: 800 }}" alt="{{ collection.title }}" class="collection-card-img" loading="lazy">
+                {%- elsif collection.products.first.featured_image != blank -%}
+                  <img src="{{ collection.products.first.featured_image | image_url: width: 800 }}" alt="{{ collection.title }}" class="collection-card-img" loading="lazy">
+                {%- else -%}
+                  <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" alt="{{ collection.title }}" class="collection-card-img" loading="lazy">
+                {%- endif -%}
+                <div class="card-image-overlay"></div>
+              </div>
+            </a>
+            <div class="collection-card-content">
+              <h3>{{ collection.title }}</h3>
+              <p>{{ collection.description | strip_html | truncatewords: 25 | default: "Explore our collection of handcrafted gold and diamond masterworks of timeless purity." }}</p>
+              <a href="{{ collection.url }}" class="explore-collection-btn">
+                Explore Collection
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Collection 1: Bridal Heritage -->
+        <div class="collection-list-card">
+          <a href="/collections/bridal" class="card-img-link">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" alt="Bridal Heritage" class="collection-card-img" loading="lazy">
+              <div class="card-image-overlay"></div>
+            </div>
+          </a>
+          <div class="collection-card-content">
+            <h3>Bridal Heritage</h3>
+            <p>Grand, heavy filigree necklaces, choker sets, and bespoke bridal kada crafted for royal wedding affairs.</p>
+            <a href="/collections/bridal" class="explore-collection-btn">
+              Explore Collection
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Collection 2: Temple Gold -->
+        <div class="collection-list-card">
+          <a href="/collections/temple" class="card-img-link">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=800&q=80" alt="Temple Gold" class="collection-card-img" loading="lazy">
+              <div class="card-image-overlay"></div>
+            </div>
+          </a>
+          <div class="collection-card-content">
+            <h3>Temple Gold</h3>
+            <p>Traditional hand-carved heritage pieces depicting antique nakshi work, deities, and sacred symbolism.</p>
+            <a href="/collections/temple" class="explore-collection-btn">
+              Explore Collection
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Collection 3: Daily Wear -->
+        <div class="collection-list-card">
+          <a href="/collections/daily-wear" class="card-img-link">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=800&q=80" alt="Daily Wear" class="collection-card-img" loading="lazy">
+              <div class="card-image-overlay"></div>
+            </div>
+          </a>
+          <div class="collection-card-content">
+            <h3>Daily Wear</h3>
+            <p>Minimalist modern essentials, delicate chains, and solid gold rings crafted for understated daily luxury.</p>
+            <a href="/collections/daily-wear" class="explore-collection-btn">
+              Explore Collection
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Collection 4: Solitaires -->
+        <div class="collection-list-card">
+          <a href="/collections/solitaires" class="card-img-link">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80" alt="Solitaires" class="collection-card-img" loading="lazy">
+              <div class="card-image-overlay"></div>
+            </div>
+          </a>
+          <div class="collection-card-content">
+            <h3>Solitaires</h3>
+            <p>Brilliant cut, conflict-free ethically sourced diamonds set in 18K and 22K gold rings and pendants.</p>
+            <a href="/collections/solitaires" class="explore-collection-btn">
+              Explore Collection
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+<style>
+.main-list-collections-section {
+  background-color: var(--color-light);
+}
+
+.collections-list-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.collection-list-card {
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-gray-border);
+  transition: transform 0.4s ease, border-color 0.4s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.collection-list-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-gold);
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+}
+
+.collection-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.collection-list-card:hover .collection-card-img {
+  transform: scale(1.05);
+}
+
+.card-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(11,11,11,0) 60%, rgba(11,11,11,0.4) 100%);
+  opacity: 0.8;
+}
+
+.collection-card-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.collection-card-content h3 {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: var(--color-dark);
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.collection-card-content p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+
+.explore-collection-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-dark);
+  transition: var(--transition-fast);
+  width: fit-content;
+}
+
+.explore-collection-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.explore-collection-btn:hover {
+  color: var(--color-gold);
+}
+
+.explore-collection-btn:hover svg {
+  transform: translateX(4px);
+  color: var(--color-gold);
+}
+
+/* Mobile & Tablet Responsiveness */
+@media (max-width: 991px) {
+  .collections-list-grid {
+    gap: 30px;
+  }
+  .card-img-wrapper {
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .collections-list-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .collection-card-content {
+    padding: 20px;
+    text-align: center;
+    align-items: center;
+  }
+  .explore-collection-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-img-wrapper {
+    height: 220px;
+  }
+  .collection-card-content h3 {
+    font-size: 20px;
+  }
+  .collection-card-content p {
+    font-size: 13px;
+  }
+}
+</style>
