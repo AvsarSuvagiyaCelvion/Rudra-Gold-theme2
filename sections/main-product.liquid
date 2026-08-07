@@ -7,15 +7,41 @@
 
 {%- assign pdp_title = product.title | default: "Rudra Royal Signature Necklace" -%}
 {%- assign pdp_price = product.price | money | default: "₹2,45,000" -%}
+
+{%- assign is_silver = false -%}
+{%- if product != blank -%}
+  {%- assign product_tags_str = product.tags | join: ',' | downcase -%}
+  {%- assign product_title_down = product.title | downcase -%}
+  {%- if product_tags_str contains 'silver' or product_tags_str contains 'grand-mother' or product_title_down contains 'silver' or product_title_down contains 'grand mother' or product.type contains 'Silver' -%}
+    {%- assign is_silver = true -%}
+  {%- endif -%}
+{%- else -%}
+  {%- if request.path contains 'grand-mother' or request.path contains 'silver' or request.query_string contains 'brand=silver' -%}
+    {%- assign is_silver = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if is_silver -%}
+  {%- assign pdp_title = product.title | default: "The Grand Mother Sterling Band" -%}
+  {%- assign pdp_price = product.price | money | default: "₹8,500" -%}
+  {%- assign pdp_purity = "925 Silver" -%}
+{%- else -%}
+  {%- assign pdp_purity = product.metafields.custom.purity | default: "22K Gold" -%}
+{%- endif -%}
+
 {%- assign pdp_weight = product.metafields.custom.metal_weight | default: product.variants.first.weight -%}
 {%- if pdp_weight != blank and pdp_weight > 0 -%}
   {%- if pdp_weight < 1.0 -%}
     {%- assign pdp_weight = pdp_weight | times: 1000 -%}
   {%- endif -%}
 {%- else -%}
-  {%- assign pdp_weight = "32.4" -%}
+  {%- if is_silver -%}
+    {%- assign pdp_weight = "6.2" -%}
+  {%- else -%}
+    {%- assign pdp_weight = "32.4" -%}
+  {%- endif -%}
 {%- endif -%}
-{%- assign pdp_purity = product.metafields.custom.purity | default: "22K Gold" -%}
+
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
 <section class="main-product-section section-padding">
@@ -45,7 +71,13 @@
 
     <!-- Right: Product Context Details -->
     <div class="product-info-wrapper">
-      <span class="product-pdp-subtitle">{% if product != blank and product.collections.first.title != blank %}{{ product.collections.first.title }}{% else %}Royal Heritage Collection{% endif %}</span>
+      <span class="product-pdp-subtitle">
+        {%- if is_silver -%}
+          The Grand Mother Silver
+        {%- else -%}
+          {% if product != blank and product.collections.first.title != blank %}{{ product.collections.first.title }}{% else %}Royal Heritage Collection{% endif %}
+        {%- endif -%}
+      </span>
       <h1 class="product-pdp-title">{{ pdp_title }}</h1>
       
       <!-- Ratings -->
@@ -67,9 +99,9 @@
       <div class="product-pdp-variants">
         
         {%- if product != blank and product.variants.size > 1 -%}
-          <!-- Dynamic Purity Options -->
+          <!-- Dynamic Purity / Finish Options -->
           <div class="variant-field">
-            <label for="puritySelector">Select Metal Purity:</label>
+            <label for="puritySelector">{% if is_silver %}Select Finish Option:{% else %}Select Metal Purity:{% endif %}</label>
             <select id="puritySelector" class="purity-select-dropdown" data-purity-selector onchange="updateShopifyVariant(this.value)">
               {%- for variant in product.variants -%}
                 {%- assign var_weight = variant.metafields.custom.metal_weight | default: variant.weight -%}
@@ -80,19 +112,24 @@
                 {%- else -%}
                   {%- assign var_weight = pdp_weight -%}
                 {%- endif -%}
-                <option value="{{ variant.id }}" data-purity="{% if variant.title contains '18K' or variant.title contains '18k' %}18k{% else %}22k{% endif %}" data-price="{{ variant.price | divided_by: 100 }}" data-weight="{{ var_weight }}" {% if variant == current_variant %}selected{% endif %}>
+                <option value="{{ variant.id }}" data-purity="{% if is_silver %}925silver{% elsif variant.title contains '18K' or variant.title contains '18k' %}18k{% else %}22k{% endif %}" data-price="{{ variant.price | divided_by: 100 }}" data-weight="{{ var_weight }}" {% if variant == current_variant %}selected{% endif %}>
                   {{ variant.title }}
                 </option>
               {%- endfor -%}
             </select>
           </div>
         {%- else -%}
-          <!-- Fallback Mock Purity dropdown -->
+          <!-- Fallback Mock dropdown -->
           <div class="variant-field">
-            <label for="puritySelector">Select Metal Purity:</label>
+            <label for="puritySelector">{% if is_silver %}Select Finish Option:{% else %}Select Metal Purity:{% endif %}</label>
             <select id="puritySelector" class="purity-select-dropdown" data-purity-selector>
-              <option value="22k" data-purity="22k" data-weight="{{ pdp_weight }}" selected>22 Karat Gold (916 Purity)</option>
-              <option value="18k" data-purity="18k" data-weight="{{ pdp_weight }}">18 Karat Gold (750 Purity)</option>
+              {%- if is_silver -%}
+                <option value="925-sterling" data-purity="925silver" data-weight="{{ pdp_weight }}" selected>925 Sterling Silver (Rhodium Plated)</option>
+                <option value="925-gold-plated" data-purity="925silver" data-weight="{{ pdp_weight }}">925 Sterling Silver (18K Gold Plated)</option>
+              {%- else -%}
+                <option value="22k" data-purity="22k" data-weight="{{ pdp_weight }}" selected>22 Karat Gold (916 Purity)</option>
+                <option value="18k" data-purity="18k" data-weight="{{ pdp_weight }}">18 Karat Gold (750 Purity)</option>
+              {%- endif -%}
             </select>
           </div>
         {%- endif -%}
@@ -107,32 +144,61 @@
       <!-- Price Breakdown Accordion -->
       <div class="luxury-accordion">
         <button class="accordion-header active" onclick="toggleAccordion(this)">
-          Transparent Pricing Breakdown
+          {% if is_silver %}Certified Specifications & Care{% else %}Transparent Pricing Breakdown{% endif %}
           <span class="accordion-arrow">▼</span>
         </button>
         <div class="accordion-content" style="display: block;">
-          <table class="breakdown-table">
-            <tr>
-              <td>Gold Rate (Per Gram)</td>
-              <td id="breakupGoldRate" class="text-right">₹6,850/g</td>
-            </tr>
-            <tr>
-              <td>Metal Value (<span id="breakdownWeightText">{{ pdp_weight }}</span>g)</td>
-              <td id="breakupMetalPrice" class="text-right">₹2,21,940</td>
-            </tr>
-            <tr>
-              <td>Making Charges (12%)</td>
-              <td id="breakupMaking" class="text-right">₹26,632</td>
-            </tr>
-            <tr>
-              <td>GST (3% Jewel Tax)</td>
-              <td id="breakupGst" class="text-right">₹7,457</td>
-            </tr>
-            <tr class="total-row">
-              <td>Total Certified Price</td>
-              <td id="breakupTotal" class="text-right">₹2,56,029</td>
-            </tr>
-          </table>
+          {% if is_silver %}
+            <table class="breakdown-table">
+              <tr>
+                <td>Silver Purity</td>
+                <td class="text-right">92.5% Pure Sterling Silver (925 Stamp)</td>
+              </tr>
+              <tr>
+                <td>Anti-Tarnish Plating</td>
+                <td class="text-right">Dual Rhodium Guard Coating</td>
+              </tr>
+              <tr>
+                <td>Net Silver Weight</td>
+                <td class="text-right"><span id="breakdownWeightText">{{ pdp_weight }}</span> grams</td>
+              </tr>
+              <tr>
+                <td>Gemstone Detail</td>
+                <td class="text-right">Precision AAAAA Cubic Zirconia Accent</td>
+              </tr>
+              <tr>
+                <td>Authenticity Certification</td>
+                <td class="text-right" style="color: #00796B; font-weight: 600;">Lifetime Quality Card Included</td>
+              </tr>
+              <tr class="total-row">
+                <td>Care Guideline</td>
+                <td class="text-right" style="font-size: 11px; font-weight: normal; line-height: 1.4; color: var(--color-text-muted);">Store in moisture-free pouch. Avoid sprays & sanitizers.</td>
+              </tr>
+            </table>
+          {% else %}
+            <table class="breakdown-table">
+              <tr>
+                <td>Gold Rate (Per Gram)</td>
+                <td id="breakupGoldRate" class="text-right">₹6,850/g</td>
+              </tr>
+              <tr>
+                <td>Metal Value (<span id="breakdownWeightText">{{ pdp_weight }}</span>g)</td>
+                <td id="breakupMetalPrice" class="text-right">₹2,21,940</td>
+              </tr>
+              <tr>
+                <td>Making Charges (12%)</td>
+                <td id="breakupMaking" class="text-right">₹26,632</td>
+              </tr>
+              <tr>
+                <td>GST (3% Jewel Tax)</td>
+                <td id="breakupGst" class="text-right">₹7,457</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total Certified Price</td>
+                <td id="breakupTotal" class="text-right">₹2,56,029</td>
+              </tr>
+            </table>
+          {% endif %}
         </div>
       </div>
 
@@ -164,6 +230,158 @@
         </div>
       </div>
 
+    </div>
+
+  </div>
+</section>
+
+<!-- Premium Trust Badges & Detailed Tabs Section -->
+<section class="pdp-details-trust-section" style="border-top: 1px solid var(--color-gray-border); padding: 60px 0; background-color: var(--color-cream); transition: var(--transition-smooth);">
+  <div class="container">
+    
+    <!-- Trust Badges Grid -->
+    <div class="trust-badges-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; margin-bottom: 60px;">
+      <div class="trust-badge-item glass-card" style="padding: 24px;">
+        <span style="font-size: 28px; display: block; margin-bottom: 12px;">🛡️</span>
+        <h4 style="font-family: var(--font-serif); font-size: 16px; margin-bottom: 8px; color: var(--color-gold);">100% Insured Delivery</h4>
+        <p style="font-size: 11px; color: var(--color-text-muted); line-height: 1.4;">Fully secured door-to-door transit protection across major cities.</p>
+      </div>
+      <div class="trust-badge-item glass-card" style="padding: 24px;">
+        <span style="font-size: 28px; display: block; margin-bottom: 12px;">🔄</span>
+        <h4 style="font-family: var(--font-serif); font-size: 16px; margin-bottom: 8px; color: var(--color-gold);">Easy 15-Day Exchange</h4>
+        <p style="font-size: 11px; color: var(--color-text-muted); line-height: 1.4;">Smooth and hassle-free lifetime buyback & gold exchange values.</p>
+      </div>
+      <div class="trust-badge-item glass-card" style="padding: 24px;">
+        <span style="font-size: 28px; display: block; margin-bottom: 12px;">💎</span>
+        <h4 style="font-family: var(--font-serif); font-size: 16px; margin-bottom: 8px; color: var(--color-gold);">Lifetime Authenticity</h4>
+        <p style="font-size: 11px; color: var(--color-text-muted); line-height: 1.4;">Every piece is official laboratory certified with purity certificate card.</p>
+      </div>
+      <div class="trust-badge-item glass-card" style="padding: 24px;">
+        <span style="font-size: 28px; display: block; margin-bottom: 12px;">📞</span>
+        <h4 style="font-family: var(--font-serif); font-size: 16px; margin-bottom: 8px; color: var(--color-gold);">VIP Concierge Support</h4>
+        <p style="font-size: 11px; color: var(--color-text-muted); line-height: 1.4;">24/7 dedicated support via WhatsApp and free hallmark home trials.</p>
+      </div>
+    </div>
+
+    <!-- Product Description, Heritage & Shipping Tabs -->
+    <div class="pdp-tabs-container" style="margin-bottom: 60px;">
+      <div class="pdp-tabs-headers" style="display: flex; justify-content: center; gap: 40px; border-bottom: 1.5px solid var(--color-gray-border); padding-bottom: 12px; margin-bottom: 30px; flex-wrap: wrap;">
+        <button class="tab-header-btn active" onclick="switchPDPTab(event, 'tabDesc')" style="font-family: var(--font-serif); font-size: 18px; text-transform: uppercase; background: none; border: none; cursor: pointer; color: var(--color-dark); padding-bottom: 8px; border-bottom: 2px solid var(--color-gold); transition: var(--transition-fast);">Description</button>
+        <button class="tab-header-btn" onclick="switchPDPTab(event, 'tabHeritage')" style="font-family: var(--font-serif); font-size: 18px; text-transform: uppercase; background: none; border: none; cursor: pointer; color: var(--color-dark); padding-bottom: 8px; border-bottom: 2px solid transparent; transition: var(--transition-fast);">Brand Legacy</button>
+        <button class="tab-header-btn" onclick="switchPDPTab(event, 'tabShipping')" style="font-family: var(--font-serif); font-size: 18px; text-transform: uppercase; background: none; border: none; cursor: pointer; color: var(--color-dark); padding-bottom: 8px; border-bottom: 2px solid transparent; transition: var(--transition-fast);">Shipping & Insure</button>
+      </div>
+      <div class="pdp-tabs-contents">
+        <div id="tabDesc" class="tab-content-panel active-panel" style="font-size: 14px; line-height: 1.7; color: #444; max-width: 800px; margin: 0 auto;">
+          {%- if product.description != blank -%}
+            {{ product.description }}
+          {%- else -%}
+            <p>Indulge in absolute luxury with this masterfully crafted piece. Meticulously hand-refined by our master craftsmen, this designer creation showcases high-grade polished cuts, premium metals, and a flawless finish. Tailored for bridal curations, royal heritage collectors, and lovers of grand jewellery designs.</p>
+          {%- endif -%}
+        </div>
+        <div id="tabHeritage" class="tab-content-panel" style="display: none; font-size: 14px; line-height: 1.7; color: #444; max-width: 800px; margin: 0 auto; text-align: center;">
+          {%- if is_silver -%}
+            <h4 style="font-family: var(--font-serif); font-size: 20px; color: var(--color-gold); margin-bottom: 12px;">THE GRAND MOTHER • STERLING LEGACY</h4>
+            <p>The Grand Mother brand honors a legacy of pure sterling craftsmanship. Handcrafting bespoke 925 sterling silver jewelry, we combine modern contemporary accents with age-old vintage filigree and oxidized polishing. Made for daily luxury and fast-fashion styles, our collections represent purity, care, and modern elegant grace.</p>
+          {%- else -%}
+            <h4 style="font-family: var(--font-serif); font-size: 20px; color: var(--color-gold); margin-bottom: 12px;">RUDRA GOLD • ESTD 1918</h4>
+            <p>For over a century, Rudra Gold has stood as the pinnacle of royal bridal heritage, catering to prestigious royalty and high-end luxury connoisseurs. Our signature designs are handcrafted in pure 22 Karat gold with selected diamond solitaires, celebrating traditional heritage temple carving and lifetime exchange credibility.</p>
+          {%- endif -%}
+        </div>
+        <div id="tabShipping" class="tab-content-panel" style="display: none; font-size: 14px; line-height: 1.7; color: #444; max-width: 800px; margin: 0 auto;">
+          <p>We provide complimentary, white-glove fully insured shipping across India. Every shipment is tracked from our high-security vault directly to your doorstep. Due to the high value of gold and silver masterworks, packages require physical signature authentication upon delivery.</p>
+          <ul style="margin-top: 15px; padding-left: 20px;">
+            <li>VAULT TO HOME: Shipped in solid, tamper-evident security containers.</li>
+            <li>PHYSICAL OTP VERIFICATION: Verification required at delivery.</li>
+            <li>15-DAY NO QUESTIONS RETURNS: Returned items are fully inspected at vaults for absolute security.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product FAQs -->
+    <div class="pdp-faqs" style="max-width: 800px; margin: 0 auto 60px;">
+      <h3 style="font-family: var(--font-serif); font-size: 24px; text-align: center; margin-bottom: 30px; color: var(--color-gold); text-transform: uppercase;">Curated FAQs</h3>
+      
+      <div class="faq-accordion-item" style="border-bottom: 1px solid var(--color-gray-border); padding: 16px 0;">
+        <button onclick="togglePDPFAQ(this)" style="width: 100%; display: flex; justify-content: space-between; background: none; border: none; font-family: var(--font-serif); font-size: 16px; font-weight: 600; cursor: pointer; text-align: left; color: var(--color-dark);">
+          Is the hallmark certification genuine?
+          <span style="font-size: 18px; font-weight: normal;">+</span>
+        </button>
+        <div class="faq-content" style="display: none; padding-top: 10px; font-size: 13px; color: var(--color-text-muted); line-height: 1.6;">
+          Yes, absolutely. All gold products are stamped with the government-approved BIS Hallmark (916 Purity for 22K and 750 for 18K). All silver pieces from The Grand Mother include an official 925 sterling silver authenticity card.
+        </div>
+      </div>
+
+      <div class="faq-accordion-item" style="border-bottom: 1px solid var(--color-gray-border); padding: 16px 0;">
+        <button onclick="togglePDPFAQ(this)" style="width: 100%; display: flex; justify-content: space-between; background: none; border: none; font-family: var(--font-serif); font-size: 16px; font-weight: 600; cursor: pointer; text-align: left; color: var(--color-dark);">
+          Do you offer home trials for bridal collections?
+          <span style="font-size: 18px; font-weight: normal;">+</span>
+        </button>
+        <div class="faq-content" style="display: none; padding-top: 10px; font-size: 13px; color: var(--color-text-muted); line-height: 1.6;">
+          Yes, we offer complimentary VIP home trials across major metropolitan cities. You can schedule a home trial by clicking the 'VIP Home Trial' button above.
+        </div>
+      </div>
+
+      <div class="faq-accordion-item" style="border-bottom: 1px solid var(--color-gray-border); padding: 16px 0;">
+        <button onclick="togglePDPFAQ(this)" style="width: 100%; display: flex; justify-content: space-between; background: none; border: none; font-family: var(--font-serif); font-size: 16px; font-weight: 600; cursor: pointer; text-align: left; color: var(--color-dark);">
+          What is your lifetime exchange policy?
+          <span style="font-size: 18px; font-weight: normal;">+</span>
+        </button>
+        <div class="faq-content" style="display: none; padding-top: 10px; font-size: 13px; color: var(--color-text-muted); line-height: 1.6;">
+          We offer 100% buyback value on gold metal rates and up to 90% buyback values on silver and diamond rates during exchanges across any of our flagship boutiques.
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Reviews -->
+    <div class="pdp-reviews-section" style="max-width: 800px; margin: 0 auto;">
+      <h3 style="font-family: var(--font-serif); font-size: 24px; text-align: center; margin-bottom: 30px; color: var(--color-gold); text-transform: uppercase;">Patron Testimonials</h3>
+      
+      <div style="display: flex; gap: 40px; align-items: center; border-bottom: 1px solid var(--color-gray-border); padding-bottom: 24px; margin-bottom: 30px; flex-wrap: wrap;">
+        <div style="text-align: center; min-width: 120px;">
+          <h4 style="font-size: 48px; font-family: var(--font-serif); color: var(--color-dark); margin: 0;">4.9</h4>
+          <div style="color: var(--color-gold); margin: 8px 0; font-size: 14px;">★★★★★</div>
+          <span style="font-size: 12px; color: var(--color-text-muted);">24 Verified Reviews</span>
+        </div>
+        <div style="flex: 1; min-width: 250px;">
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 6px;">
+            <span style="width: 50px;">5 Star</span>
+            <div style="flex: 1; height: 6px; background-color: var(--color-gray-border); border-radius: 3px; overflow: hidden;"><div style="width: 92%; height: 100%; background-color: var(--color-gold);"></div></div>
+            <span style="width: 30px; text-align: right;">92%</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 6px;">
+            <span style="width: 50px;">4 Star</span>
+            <div style="flex: 1; height: 6px; background-color: var(--color-gray-border); border-radius: 3px; overflow: hidden;"><div style="width: 8%; height: 100%; background-color: var(--color-gold);"></div></div>
+            <span style="width: 30px; text-align: right;">8%</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 12px;">
+            <span style="width: 50px;">3 Star</span>
+            <div style="flex: 1; height: 6px; background-color: var(--color-gray-border); border-radius: 3px; overflow: hidden;"><div style="width: 0%; height: 100%; background-color: var(--color-gold);"></div></div>
+            <span style="width: 30px; text-align: right;">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed of Reviews -->
+      <div class="reviews-feed">
+        <div class="review-item" style="border-bottom: 1px solid var(--color-gray-border); padding: 20px 0;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <strong style="font-size: 14px; color: var(--color-dark);">Aditi Sharma</strong>
+            <span style="font-size: 11px; color: var(--color-text-muted);">Verified Buyer • 2 weeks ago</span>
+          </div>
+          <div style="color: var(--color-gold); font-size: 12px; margin-bottom: 8px;">★★★★★</div>
+          <p style="font-size: 13px; color: #555; line-height: 1.6;">The craftsmanship is absolutely breathtaking. I bought this piece for my wedding and the detailing on the carvings exceeded my expectations. Transparent pricing breakup was very reassuring!</p>
+        </div>
+
+        <div class="review-item" style="border-bottom: 1px solid var(--color-gray-border); padding: 20px 0;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <strong style="font-size: 14px; color: var(--color-dark);">Vikram Malhotra</strong>
+            <span style="font-size: 11px; color: var(--color-text-muted);">Verified Buyer • 1 month ago</span>
+          </div>
+          <div style="color: var(--color-gold); font-size: 12px; margin-bottom: 8px;">★★★★★</div>
+          <p style="font-size: 13px; color: #555; line-height: 1.6;">Excellent delivery service. Safe fully insured transit. The piece itself looks very premium and has solid weight. Highly recommend their VIP store consultation as well.</p>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -268,7 +486,7 @@
 
 .product-pdp-title {
   font-family: var(--font-serif);
-  font-size: 36px;
+  font-size: clamp(24px, 5vw, 36px);
   color: var(--color-dark);
   margin-bottom: 10px;
 }
@@ -581,6 +799,42 @@ function togglePDPEngraveText(check) {
   if (input) {
     input.style.display = check.checked ? 'block' : 'none';
     if (!check.checked) input.value = '';
+  }
+}
+
+function switchPDPTab(evt, tabId) {
+  // Hide all panels
+  document.querySelectorAll('.tab-content-panel').forEach(panel => {
+    panel.style.display = 'none';
+  });
+
+  // Remove active from headers
+  document.querySelectorAll('.tab-header-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.style.borderBottomColor = 'transparent';
+  });
+
+  // Show active panel
+  const activePanel = document.getElementById(tabId);
+  if (activePanel) {
+    activePanel.style.display = 'block';
+  }
+
+  // Set active class on target button
+  evt.currentTarget.classList.add('active');
+  evt.currentTarget.style.borderBottomColor = 'var(--color-gold)';
+}
+
+function togglePDPFAQ(btn) {
+  const content = btn.nextElementSibling;
+  const icon = btn.querySelector('span');
+  
+  if (content.style.display === 'block') {
+    content.style.display = 'none';
+    if (icon) icon.textContent = '+';
+  } else {
+    content.style.display = 'block';
+    if (icon) icon.textContent = '-';
   }
 }
 

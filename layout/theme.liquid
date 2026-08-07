@@ -1,6 +1,90 @@
+{%- assign selected_brand = 'gold' -%}
+{%- if request.query_string contains 'brand=silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.query_string contains 'brand=gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.path contains 'gold' or request.path contains 'rudra-gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif product != blank -%}
+  {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+  {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  {%- assign collection_handle_down = collection.handle | downcase -%}
+  {%- if collection_handle_down contains 'silver' or collection_handle_down contains 'grand-mother' or collection_handle_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- endif -%}
+{%- capture initial_theme -%}
+  theme-{{ selected_brand }}
+{%- endcapture -%}
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}">
+<html class="no-js {{ initial_theme | strip }}" lang="{{ request.locale.iso_code }}">
   <head>
+    <script>
+      (function() {
+        const params = new URLSearchParams(window.location.search);
+        let brand = params.get('brand') || params.get('theme');
+        
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('grand-mother') || path.includes('silver')) {
+          brand = 'silver';
+        } else if (path.includes('rudra-gold') || path.includes('gold')) {
+          brand = 'gold';
+        }
+        
+        if (!brand) {
+          try {
+            brand = localStorage.getItem('active_brand');
+          } catch(e) {}
+        }
+        
+        const isHomepage = window.location.pathname === '/';
+        const hasBrandQuery = params.has('brand');
+        
+        if (brand === 'silver') {
+          document.documentElement.classList.add('theme-silver');
+          document.documentElement.classList.remove('theme-gold', 'brand-not-selected');
+          try {
+            localStorage.setItem('active_brand', 'silver');
+          } catch(e) {}
+          
+          if (isHomepage && !hasBrandQuery) {
+            window.location.replace('/?brand=silver');
+          }
+        } else if (brand === 'gold') {
+          document.documentElement.classList.add('theme-gold');
+          document.documentElement.classList.remove('theme-silver', 'brand-not-selected');
+          try {
+            localStorage.setItem('active_brand', 'gold');
+          } catch(e) {}
+          
+          if (isHomepage && !hasBrandQuery) {
+            window.location.replace('/?brand=gold');
+          }
+        } else if (isHomepage) {
+          // If homepage and brand is not chosen, show splash
+          document.documentElement.classList.add('brand-not-selected');
+        } else {
+          // Fallback default Gold if landing directly on non-homepage
+          document.documentElement.classList.add('theme-gold');
+          try {
+            localStorage.setItem('active_brand', 'gold');
+          } catch(e) {}
+        }
+      })();
+    </script>
+    <script>
+      window.ShopifyThemeSettings = {
+        goldWhatsappNumber: "{{ settings.whatsapp_gold_number | default: '917405544338' | escape }}",
+        goldWhatsappMessage: "{{ settings.whatsapp_gold_message | default: 'Hello Rudra Gold, I would like to inquire about your gold jewellery.' | escape }}",
+        silverWhatsappNumber: "{{ settings.whatsapp_silver_number | default: '918849486223' | escape }}",
+        silverWhatsappMessage: "{{ settings.whatsapp_silver_message | default: 'Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery.' | escape }}"
+      };
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -27,7 +111,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
 
     <!-- CSS Assets -->
     {{ 'theme.css' | asset_url | stylesheet_tag }}
@@ -61,6 +145,60 @@
   </head>
 
   <body class="template-{{ template.name }}">
+    <!-- Brand Selection Landing Screen -->
+    <div id="brandSelectionLanding" class="brand-selection-screen">
+      <div class="brand-selection-container">
+        <span class="selection-welcome">Welcome</span>
+        <h2 class="selection-heading Cormorant">Choose Your Jewellery Experience</h2>
+        
+        <div class="selection-cards-grid">
+          <!-- Card 1: Rudra Gold -->
+          <div class="selection-card card-gold-theme" onclick="selectBrandLanding('gold')">
+            <div class="selection-card-border"></div>
+            <div class="selection-card-content">
+              <span class="brand-badge gold-badge">✨</span>
+              <h3 class="brand-title Cormorant">Rudra Gold</h3>
+              <p class="brand-desc">Luxury Gold Jewellery</p>
+              <button class="selection-btn gold-btn">Enter Gold Collection</button>
+            </div>
+          </div>
+
+          <!-- Card 2: The Grand Mother -->
+          <div class="selection-card card-silver-theme" onclick="selectBrandLanding('silver')">
+            <div class="selection-card-border"></div>
+            <div class="selection-card-content">
+              <span class="brand-badge silver-badge">💎</span>
+              <h3 class="brand-title Cormorant">The Grand Mother</h3>
+              <p class="brand-desc">925 Sterling Silver Jewellery</p>
+              <button class="selection-btn silver-btn">Enter Silver Collection</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function selectBrandLanding(brand) {
+        try {
+          localStorage.setItem('active_brand', brand);
+        } catch(e) {}
+        
+        // Remove selection screen state
+        document.documentElement.classList.remove('brand-not-selected');
+        
+        if (brand === 'silver') {
+          document.documentElement.classList.add('theme-silver');
+          document.documentElement.classList.remove('theme-gold');
+        } else {
+          document.documentElement.classList.add('theme-gold');
+          document.documentElement.classList.remove('theme-silver');
+        }
+        
+        // Redirect to apply brand query parameter updates
+        window.location.href = '/?brand=' + brand;
+      }
+    </script>
+
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       Skip to content
     </a>
@@ -123,7 +261,13 @@
     </div>
 
     <!-- Floating VIP WhatsApp Concierge -->
-    <a href="https://wa.me/{{ settings.social_whatsapp_number }}" class="whatsapp-vip-concierge" target="_blank" rel="noopener" aria-label="Connect with VIP Concierge">
+    {%- assign whatsapp_number = settings.whatsapp_gold_number | default: '917405544338' -%}
+    {%- assign whatsapp_text = settings.whatsapp_gold_message | default: 'Hello Rudra Gold, I would like to inquire about your gold jewellery.' | url_encode -%}
+    {%- if selected_brand == 'silver' -%}
+      {%- assign whatsapp_number = settings.whatsapp_silver_number | default: '918849486223' -%}
+      {%- assign whatsapp_text = settings.whatsapp_silver_message | default: 'Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery.' | url_encode -%}
+    {%- endif -%}
+    <a href="https://wa.me/{{ whatsapp_number }}?text={{ whatsapp_text }}" data-whatsapp-concierge-link class="whatsapp-vip-concierge" target="_blank" rel="noopener" aria-label="Connect with VIP Concierge">
       <div class="whatsapp-pulse"></div>
       <svg viewBox="0 0 24 24" class="whatsapp-icon">
         <path fill="#FFFFFF" d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.233-1.371a9.945 9.945 0 0 0 4.773 1.216h.004c5.505 0 9.986-4.478 9.988-9.984A9.99 9.99 0 0 0 12.012 2zm5.72 13.56c-.244.688-1.22 1.253-1.676 1.302-.455.05-1.024.08-3.007-.74-2.535-1.048-4.17-3.626-4.297-3.796-.127-.17-.993-1.32-.993-2.52 0-1.198.625-1.787.848-2.028.224-.24.488-.301.65-.301.163 0 .325.002.467.008.148.007.348-.056.544.421.2.489.684 1.667.746 1.793.06.127.102.275.019.444-.083.17-.127.275-.253.422-.127.147-.267.33-.38.444-.127.12-.261.25-.112.505.15.253.66 1.09 1.417 1.76.977.868 1.797 1.14 2.054 1.267.257.127.408.106.56-.068.152-.174.65-.762.825-1.02.174-.258.349-.217.587-.127.24.09 1.517.715 1.777.846.26.13.433.195.497.302.064.106.064.617-.18 1.305z"/>

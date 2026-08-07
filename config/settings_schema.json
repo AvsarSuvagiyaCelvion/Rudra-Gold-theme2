@@ -64,5 +64,34 @@
         "default": "917405544338"
       }
     ]
+  },
+  {
+    "name": "Brand WhatsApp Inquiry Settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "whatsapp_gold_number",
+        "label": "Gold WhatsApp Number (e.g. 917405544338)",
+        "default": "917405544338"
+      },
+      {
+        "type": "textarea",
+        "id": "whatsapp_gold_message",
+        "label": "Gold WhatsApp Inquiry Message",
+        "default": "Hello Rudra Gold, I would like to inquire about your gold jewellery."
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_silver_number",
+        "label": "Silver WhatsApp Number (e.g. 918849486223)",
+        "default": "918849486223"
+      },
+      {
+        "type": "textarea",
+        "id": "whatsapp_silver_message",
+        "label": "Silver WhatsApp Inquiry Message",
+        "default": "Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery."
+      }
+    ]
   }
 ]

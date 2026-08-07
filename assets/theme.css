@@ -4,24 +4,40 @@
  */
 
 :root {
-  --color-gold: #D4AF37;
-  --color-gold-glow: #F3E5AB;
+  --color-gold: #C8A13D;
+  --color-gold-rgb: 200, 161, 61;
+  --color-gold-glow: #F9E8B9;
   --color-dark: #0B0B0B;
   --color-light: #FFFFFF;
   --color-cream: #FAF8F5;
   --color-gray-border: #E5E5E5;
   --color-text-muted: #666666;
 
-  --font-serif: 'Playfair Display', serif;
+  --font-serif: 'Cormorant Garamond', serif;
   --font-sans: 'Poppins', sans-serif;
 
   --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   --transition-fast: all 0.2s ease-out;
 
   --glass-bg: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(212, 175, 55, 0.25);
+  --glass-border: rgba(var(--color-gold-rgb), 0.25);
   --glass-blur: blur(12px);
 }
+
+/* Silver Theme Custom Tokens & Styling overrides */
+html.theme-silver,
+body.theme-silver {
+  --color-gold: #C0C0C0;         /* Sleek silver brand color */
+  --color-gold-rgb: 192, 192, 192; /* Silver brand RGB */
+  --color-gold-glow: #E5E5E5;    /* Silver brand glow */
+  --color-cream: #F5F5F7;        /* Cool light silver background instead of warm cream */
+}
+
+/* Target elements specifically for Silver styling theme */
+html.theme-silver .gold-gradient-text {
+  background: linear-gradient(135deg, #C0C0C0 0%, #FAF9F6 50%, #7E7E82 100%);
+}
+
 
 /* Global Reset */
 *,
@@ -90,7 +106,7 @@ h6 {
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #AA7C11 100%);
+  background: linear-gradient(135deg, #C8A13D 0%, #FAF8F5 50%, #A67B1E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -174,7 +190,7 @@ h6 {
 }
 
 .glass-card:hover {
-  border-color: rgba(212, 175, 55, 0.6);
+  border-color: rgba(var(--color-gold-rgb), 0.6);
   box-shadow: 0 10px 30px rgba(11, 11, 11, 0.05);
 }
 
@@ -265,7 +281,7 @@ h6 {
   width: 100%;
   height: 65px;
   background-color: var(--color-dark);
-  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  border-top: 1px solid rgba(var(--color-gold-rgb), 0.3);
   z-index: 998;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
@@ -906,6 +922,19 @@ h6 {
   color: var(--color-dark);
 }
 
+@media (max-width: 768px) {
+  .product-card-actions {
+    transform: translateY(0);
+  }
+  .card-action-btn {
+    padding: 12px 6px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 /* Responsive Grids & Base Layout classes */
 .container {
   width: 100%;
@@ -1064,4 +1093,509 @@ h6 {
 /* Hide mobile bottom navigation bar on product pages to prioritize sticky Add to Cart buy actions */
 .template-product .mobile-bottom-nav {
   display: none !important;
+}
+
+/* Luxury Brand Switcher Styling */
+.brand-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(var(--color-gold-rgb), 0.08);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.2);
+  border-radius: 30px;
+  padding: 3px;
+  margin-left: 24px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1001;
+  transition: var(--transition-smooth);
+}
+
+.brand-switcher .switcher-btn {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: var(--transition-smooth);
+  background: transparent;
+  border: none;
+  white-space: nowrap;
+}
+
+.brand-switcher .switcher-btn:hover {
+  color: var(--color-dark);
+}
+
+.brand-switcher .switcher-btn.active {
+  background-color: var(--color-gold);
+  color: var(--color-dark);
+  box-shadow: 0 4px 12px rgba(var(--color-gold-rgb), 0.25);
+}
+
+/* Mobile responsive switcher adjustments */
+@media (max-width: 768px) {
+  .brand-switcher {
+    display: none !important;
+  }
+  .brand-switcher .switcher-btn {
+    font-size: 9px;
+    padding: 6px 12px;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Brand Menu Navigation Visibility Controls */
+.brand-menu-silver {
+  display: none !important;
+}
+.brand-menu-gold {
+  display: inline-block !important;
+}
+
+html.theme-silver .brand-menu-silver {
+  display: inline-block !important;
+}
+html.theme-silver .brand-menu-gold {
+  display: none !important;
+}
+
+/* For mobile menu layout divs */
+.mobile-submenu .brand-menu-silver {
+  display: none !important;
+}
+.mobile-submenu .brand-menu-gold {
+  display: block !important;
+}
+html.theme-silver .mobile-submenu .brand-menu-silver {
+  display: block !important;
+}
+html.theme-silver .mobile-submenu .brand-menu-gold {
+  display: none !important;
+}
+
+/* Brand Selection Landing Screen Styling */
+.brand-selection-screen {
+  display: none; /* Hidden by default unless html has .brand-not-selected */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F5F7 50%, #FAF8F5 100%);
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+html.brand-not-selected .brand-selection-screen {
+  display: flex;
+}
+
+/* Hide normal layout when landing screen is active */
+html.brand-not-selected .announcement-bar-section,
+html.brand-not-selected .site-header,
+html.brand-not-selected main,
+html.brand-not-selected footer,
+html.brand-not-selected .mobile-bottom-nav,
+html.brand-not-selected .whatsapp-vip-concierge {
+  display: none !important;
+}
+
+.brand-selection-container {
+  max-width: 1100px;
+  width: 100%;
+  text-align: center;
+  margin: auto;
+}
+
+.selection-welcome {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.selection-heading {
+  font-size: 44px;
+  font-weight: 400;
+  margin-bottom: 50px;
+  color: var(--color-dark);
+}
+
+.selection-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.selection-card {
+  position: relative;
+  background: var(--color-light);
+  border: 1px solid var(--color-gray-border);
+  border-radius: 8px;
+  padding: 50px 30px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.selection-card-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  z-index: 2;
+  transition: border-color 0.5s ease;
+  pointer-events: none;
+}
+
+.card-gold-theme:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(200, 161, 61, 0.15);
+}
+
+.card-gold-theme:hover .selection-card-border {
+  border-color: rgba(200, 161, 61, 0.4);
+}
+
+.card-silver-theme:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(192, 192, 192, 0.2);
+}
+
+.card-silver-theme:hover .selection-card-border {
+  border-color: rgba(192, 192, 192, 0.5);
+}
+
+.brand-badge {
+  font-size: 32px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  transition: transform 0.5s ease;
+}
+
+.selection-card:hover .brand-badge {
+  transform: scale(1.1);
+}
+
+.gold-badge {
+  background-color: rgba(200, 161, 61, 0.08);
+  border: 1.5px solid rgba(200, 161, 61, 0.2);
+}
+
+.silver-badge {
+  background-color: rgba(192, 192, 192, 0.12);
+  border: 1.5px solid rgba(192, 192, 192, 0.25);
+}
+
+.brand-title {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--color-dark);
+}
+
+.brand-desc {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+
+.selection-btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 14px 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.4s ease;
+}
+
+.gold-btn {
+  border: 1px solid var(--color-gold);
+  color: var(--color-dark);
+}
+
+.selection-card:hover .gold-btn {
+  background-color: var(--color-gold);
+  color: var(--color-light);
+  border-color: var(--color-gold);
+}
+
+.silver-btn {
+  border: 1px solid #9E9E9E;
+  color: var(--color-dark);
+}
+
+.selection-card:hover .silver-btn {
+  background-color: #9E9E9E;
+  color: var(--color-light);
+  border-color: #9E9E9E;
+}
+
+/* Brand Switcher Modal Popup Styling */
+.brand-switcher-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(11, 11, 11, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10009;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+.brand-switcher-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.brand-switcher-modal {
+  background: var(--color-light);
+  border: 1px solid var(--color-gold-glow);
+  border-radius: 8px;
+  max-width: 760px;
+  width: 90%;
+  padding: 40px 30px;
+  position: relative;
+  transform: scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+.brand-switcher-modal-backdrop.active .brand-switcher-modal {
+  transform: scale(1);
+}
+
+.brand-switcher-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-dark);
+}
+
+.brand-switcher-modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.brand-switcher-modal-close:hover {
+  color: var(--color-gold);
+}
+
+.brand-switcher-modal h3 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: 400;
+  color: var(--color-dark);
+}
+
+/* Stacking and stacking classes for switcher modal */
+.brand-switcher-modal .selection-cards-grid {
+  gap: 20px;
+}
+
+.brand-switcher-modal .selection-card {
+  padding: 30px 20px;
+}
+
+.brand-switcher-modal .brand-title {
+  font-size: 24px;
+}
+
+.brand-switcher-modal .brand-desc {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .selection-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .selection-card {
+    padding: 36px 20px;
+  }
+  
+  .selection-heading {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+  
+  .brand-switcher-modal {
+    padding: 30px 16px;
+  }
+}
+
+/* Navigation menu visibility toggles */
+@media (min-width: 992px) {
+  .silver-nav {
+    display: none !important;
+  }
+  .gold-nav {
+    display: flex !important;
+  }
+
+  html.theme-silver .silver-nav {
+    display: flex !important;
+  }
+  html.theme-silver .gold-nav {
+    display: none !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .silver-nav,
+  .gold-nav {
+    display: none !important;
+  }
+}
+
+/* Dynamic brand block visibility controls */
+.brand-silver-only {
+  display: none !important;
+}
+.brand-gold-only {
+  display: block !important;
+}
+
+html.theme-silver .brand-silver-only {
+  display: block !important;
+}
+html.theme-silver .brand-gold-only {
+  display: none !important;
+}
+
+/* Flex layout versions of brand filters */
+.announcement-bar-container.brand-gold-only {
+  display: flex !important;
+}
+html.theme-silver .announcement-bar-container.brand-gold-only {
+  display: none !important;
+}
+.announcement-bar-container.brand-silver-only {
+  display: none !important;
+}
+html.theme-silver .announcement-bar-container.brand-silver-only {
+  display: flex !important;
+}
+.hero-full.pane-silver.brand-silver-only {
+  display: none !important;
+}
+.hero-full.pane-gold.brand-gold-only {
+  display: flex !important;
+}
+html.theme-silver .hero-full.pane-silver.brand-silver-only {
+  display: flex !important;
+}
+
+/* Premium Switch Brand Button styling */
+.switch-brand-popup-trigger {
+  font-weight: 600;
+  font-family: var(--font-sans);
+  letter-spacing: 0.05em;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 10px;
+  border: 1px solid var(--color-gold);
+  background: transparent;
+  color: var(--color-gold); /* Premium Gold color */
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-transform: uppercase;
+}
+
+/* On header overlay */
+.site-header .switch-brand-popup-trigger {
+  color: var(--color-gold) !important;
+  border-color: var(--color-gold) !important;
+}
+
+.site-header .switch-brand-popup-trigger:hover {
+  background-color: var(--color-gold) !important;
+  color: var(--color-dark) !important;
+}
+
+/* Silver brand customization */
+html.theme-silver .switch-brand-popup-trigger {
+  border-color: #C0C0C0 !important;
+  color: #C0C0C0 !important;
+}
+
+html.theme-silver .site-header .switch-brand-popup-trigger {
+  color: #C0C0C0 !important;
+  border-color: #C0C0C0 !important;
+}
+
+html.theme-silver .switch-brand-popup-trigger:hover {
+  background-color: #C0C0C0 !important;
+  color: var(--color-dark) !important;
+}
+
+/* Mobile Drawer inside menu - links are light text on dark overlay */
+.mobile-menu-drawer .switch-brand-popup-trigger {
+  color: var(--color-light) !important;
+  border-color: var(--color-gold) !important;
+  background-color: rgba(212, 175, 55, 0.1);
+}
+
+.mobile-menu-drawer .switch-brand-popup-trigger:hover {
+  background-color: var(--color-gold) !important;
+  color: var(--color-dark) !important;
+}
+
+html.theme-silver .mobile-menu-drawer .switch-brand-popup-trigger {
+  color: var(--color-light) !important;
+  border-color: #A0A0A0 !important;
+  background-color: rgba(160, 160, 160, 0.1);
+}
+
+html.theme-silver .mobile-menu-drawer .switch-brand-popup-trigger:hover {
+  background-color: #A0A0A0 !important;
+  color: var(--color-dark) !important;
+}
+
+.switch-brand-popup-trigger.mobile-switcher {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 11px;
 }

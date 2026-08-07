@@ -4,7 +4,89 @@
  * Ajax Cart Drawer, Variant Selector Price Breakup, Gold Rate Ticker, and Modals.
  */
 
+function applyBrandSectionVisibility() {
+  const activeBrand = document.documentElement.classList.contains('theme-silver') ? 'silver' : 'gold';
+  
+  document.querySelectorAll('.brand-gold-only').forEach(el => {
+    if (activeBrand === 'silver') {
+      el.style.setProperty('display', 'none', 'important');
+    } else {
+      el.style.removeProperty('display');
+    }
+  });
+
+  document.querySelectorAll('.brand-silver-only').forEach(el => {
+    if (activeBrand === 'gold') {
+      el.style.setProperty('display', 'none', 'important');
+    } else {
+      el.style.removeProperty('display');
+    }
+  });
+
+  const settings = window.ShopifyThemeSettings || {};
+  const goldNum = settings.goldWhatsappNumber || '917405544338';
+  const goldMsg = encodeURIComponent(settings.goldWhatsappMessage || 'Hello Rudra Gold, I would like to inquire about your gold jewellery.');
+  const silverNum = settings.silverWhatsappNumber || '918849486223';
+  const silverMsg = encodeURIComponent(settings.silverWhatsappMessage || 'Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery.');
+
+  // Swaps all phone numbers and WhatsApp concierge links dynamically depending on active brand
+  if (activeBrand === 'silver') {
+    let displayPhone = '+91 88494 86223';
+    if (settings.silverWhatsappNumber) {
+      const cleanNum = settings.silverWhatsappNumber.replace(/\D/g, '');
+      if (cleanNum.length === 12 && cleanNum.startsWith('91')) {
+        displayPhone = `+91 ${cleanNum.slice(2, 7)} ${cleanNum.slice(7)}`;
+      } else {
+        displayPhone = settings.silverWhatsappNumber;
+      }
+    }
+
+    document.querySelectorAll('[data-contact-phone-link]').forEach(el => {
+      el.textContent = displayPhone;
+      el.setAttribute('href', `https://wa.me/${silverNum}?text=${silverMsg}`);
+      if (el.style.color) {
+        el.style.setProperty('color', '#C0C0C0', 'important');
+      }
+    });
+
+    document.querySelectorAll('[data-contact-whatsapp-link]').forEach(el => {
+      el.setAttribute('href', `https://wa.me/${silverNum}?text=${silverMsg}`);
+    });
+
+    document.querySelectorAll('[data-whatsapp-concierge-link]').forEach(el => {
+      el.setAttribute('href', `https://wa.me/${silverNum}?text=${silverMsg}`);
+    });
+  } else {
+    let displayPhone = '+91 74055 44338';
+    if (settings.goldWhatsappNumber) {
+      const cleanNum = settings.goldWhatsappNumber.replace(/\D/g, '');
+      if (cleanNum.length === 12 && cleanNum.startsWith('91')) {
+        displayPhone = `+91 ${cleanNum.slice(2, 7)} ${cleanNum.slice(7)}`;
+      } else {
+        displayPhone = settings.goldWhatsappNumber;
+      }
+    }
+
+    document.querySelectorAll('[data-contact-phone-link]').forEach(el => {
+      el.textContent = displayPhone;
+      el.setAttribute('href', `https://wa.me/${goldNum}?text=${goldMsg}`);
+      if (el.style.color) {
+        el.style.setProperty('color', 'var(--color-gold)', 'important');
+      }
+    });
+
+    document.querySelectorAll('[data-contact-whatsapp-link]').forEach(el => {
+      el.setAttribute('href', `https://wa.me/${goldNum}?text=${goldMsg}`);
+    });
+
+    document.querySelectorAll('[data-whatsapp-concierge-link]').forEach(el => {
+      el.setAttribute('href', `https://wa.me/${goldNum}?text=${goldMsg}`);
+    });
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  applyBrandSectionVisibility();
   initLenis();
   initCanvasSparkles();
   initHeaderScroll();
@@ -900,15 +982,35 @@ function calculateVariantPricing() {
   const purityVal = selectedOption ? (selectedOption.getAttribute('data-purity') || puritySel.value) : puritySel.value;
   const purity = purityVal.toLowerCase();
 
-  // Base live price per gram
-  const goldRate = purity === '18k' ? currentGold18K : currentGold22K;
+  const isSilver = document.documentElement.classList.contains('theme-silver') || purity.includes('silver');
 
-  // Pricing calculations
-  const metalPrice = Math.round(weight * goldRate);
-  const makingCharges = Math.round(metalPrice * 0.12); // 12% making charges
-  const subtotal = metalPrice + makingCharges;
-  const gst = Math.round(subtotal * 0.03); // 3% jewelry GST
-  const finalPrice = subtotal + gst;
+  let finalPrice;
+  let purityText = '';
+
+  if (isSilver) {
+    // Silver Pricing is static based on Shopify variant price
+    const basePrice = selectedOption ? parseFloat(selectedOption.getAttribute('data-price')) : 0;
+    // Fallback if price is not set or mock
+    finalPrice = basePrice > 0 ? basePrice : 8500;
+    purityText = '925 Silver';
+  } else {
+    // Gold Pricing is dynamic based on live gold rate per gram
+    purityText = purity.toUpperCase() + ' Gold';
+    const goldRate = purity === '18k' ? currentGold18K : currentGold22K;
+
+    const metalPrice = Math.round(weight * goldRate);
+    const makingCharges = Math.round(metalPrice * 0.12); // 12% making charges
+    const subtotal = metalPrice + makingCharges;
+    const gst = Math.round(subtotal * 0.03); // 3% jewelry GST
+    finalPrice = subtotal + gst;
+
+    // Update Breakdown Accordion Table
+    if (breakupGoldRate) breakupGoldRate.textContent = `₹${goldRate.toLocaleString('en-IN')}/g`;
+    if (breakupMetalPrice) breakupMetalPrice.textContent = `₹${metalPrice.toLocaleString('en-IN')}`;
+    if (breakupMaking) breakupMaking.textContent = `₹${makingCharges.toLocaleString('en-IN')}`;
+    if (breakupGst) breakupGst.textContent = `₹${gst.toLocaleString('en-IN')}`;
+    if (breakupTotal) breakupTotal.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+  }
 
   // Update Main Price Display
   const formattedPrice = `₹${finalPrice.toLocaleString('en-IN')}`;
@@ -917,15 +1019,8 @@ function calculateVariantPricing() {
 
   // Update Sticky Purity & Weight Label
   if (stickyPurityWeight) {
-    stickyPurityWeight.textContent = `${purity.toUpperCase()} Gold • ${weight} grams`;
+    stickyPurityWeight.textContent = `${purityText} • ${weight} grams`;
   }
-
-  // Update Breakdown Accordion Table
-  if (breakupGoldRate) breakupGoldRate.textContent = `₹${goldRate.toLocaleString('en-IN')}/g`;
-  if (breakupMetalPrice) breakupMetalPrice.textContent = `₹${metalPrice.toLocaleString('en-IN')}`;
-  if (breakupMaking) breakupMaking.textContent = `₹${makingCharges.toLocaleString('en-IN')}`;
-  if (breakupGst) breakupGst.textContent = `₹${gst.toLocaleString('en-IN')}`;
-  if (breakupTotal) breakupTotal.textContent = formattedPrice;
   
   // Set variant image context values for Quick Add
   const addBtn = document.getElementById('pdpAddToCartBtn');
@@ -933,7 +1028,7 @@ function calculateVariantPricing() {
     const productTitle = addBtn.getAttribute('data-product-title') || 'Rudra Royal Signature Necklace';
     const productImg = addBtn.getAttribute('data-product-img') || '';
     const variantId = addBtn.getAttribute('data-variant-id') || (selectedOption ? selectedOption.value : '');
-    addBtn.setAttribute('onclick', `addToCartAjax('${productTitle.replace(/'/g, "\\'")}', ${finalPrice}, '${productImg}', '${purity.toUpperCase()} Gold, ${weight}g', '${variantId}')`);
+    addBtn.setAttribute('onclick', `addToCartAjax('${productTitle.replace(/'/g, "\\'")}', ${finalPrice}, '${productImg}', '${purityText}, ${weight}g', '${variantId}')`);
   }
 }
 

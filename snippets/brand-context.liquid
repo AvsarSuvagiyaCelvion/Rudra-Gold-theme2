@@ -1,0 +1,20 @@
+{%- assign selected_brand = 'gold' -%}
+{%- if request.query_string contains 'brand=silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.query_string contains 'brand=gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.path contains 'gold' or request.path contains 'rudra-gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif product != blank -%}
+  {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+  {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  {%- assign collection_handle_down = collection.handle | downcase -%}
+  {%- if collection_handle_down contains 'silver' or collection_handle_down contains 'grand-mother' or collection_handle_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- endif -%}

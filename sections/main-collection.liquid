@@ -5,6 +5,26 @@
 }
 {% endschema %}
 
+{%- assign selected_brand = 'gold' -%}
+{%- if request.query_string contains 'brand=silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.query_string contains 'brand=gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.path contains 'gold' or request.path contains 'rudra-gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif product != blank -%}
+  {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+  {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  {%- assign collection_handle_down = collection.handle | downcase -%}
+  {%- if collection_handle_down contains 'silver' or collection_handle_down contains 'grand-mother' or collection_handle_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- endif -%}
 <section class="main-collection-section section-padding">
   <!-- Mobile Filter Overlay Drawer -->
   <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
@@ -14,7 +34,13 @@
     <!-- Top Filter & Sort Bar -->
     <div class="collection-top-bar">
       <div class="top-bar-left">
-        <h2>Heritage Gold Jewellery</h2>
+        <h2 class="collection-page-title">
+          {%- if selected_brand == 'silver' -%}
+            The Grand Mother Silver Curation
+          {%- else -%}
+            Heritage Gold Jewellery
+          {%- endif -%}
+        </h2>
         <span class="product-count">12 Exquisite Pieces Found</span>
       </div>
 
@@ -63,6 +89,24 @@
         </div>
         <h3 class="filter-sidebar-title">Refine By</h3>
 
+        <!-- Metal Filter -->
+        <div class="filter-group">
+          <h4>Metal Type</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="gold" {% if selected_brand == 'gold' %}checked{% endif %}>
+            <span>Gold Jewellery</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="silver" {% if selected_brand == 'silver' %}checked{% endif %}>
+            <span>Sterling Silver</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="platinum">
+            <span>Platinum</span>
+          </label>
+        </div>
+
+        <!-- Purity Filter -->
         <div class="filter-group">
           <h4>Metal Purity</h4>
           <label class="filter-checkbox-row">
@@ -73,26 +117,36 @@
             <input type="checkbox" class="filter-checkbox" value="18k">
             <span>18K Gold (750)</span>
           </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="925">
+            <span>925 Sterling Silver</span>
+          </label>
         </div>
 
+        <!-- Price Range Filter -->
         <div class="filter-group">
           <h4>Price Range</h4>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="0-50">
-            <span>Under ₹50,000</span>
+            <input type="checkbox" class="filter-checkbox" value="under-15k">
+            <span>Under ₹15,000</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="50-150">
+            <input type="checkbox" class="filter-checkbox" value="15k-50k">
+            <span>₹15,000 - ₹50,000</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="50k-150k">
             <span>₹50,000 - ₹1,50,000</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="150-up" checked>
+            <input type="checkbox" class="filter-checkbox" value="150k-up" checked>
             <span>Over ₹1,50,000</span>
           </label>
         </div>
 
+        <!-- Category Filter -->
         <div class="filter-group">
-          <h4>Product Type</h4>
+          <h4>Category</h4>
           <label class="filter-checkbox-row">
             <input type="checkbox" class="filter-checkbox" value="rings">
             <span>Rings & Bands</span>
@@ -105,61 +159,185 @@
             <input type="checkbox" class="filter-checkbox" value="bangles">
             <span>Bangles & Kada</span>
           </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="earrings">
+            <span>Earrings & Studs</span>
+          </label>
+        </div>
+
+        <!-- Occasion Filter -->
+        <div class="filter-group">
+          <h4>Occasion</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="bridal">
+            <span>Bridal / Wedding</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="daily">
+            <span>Daily Essentials</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="gifting">
+            <span>Celebration Gifts</span>
+          </label>
+        </div>
+
+        <!-- Gender Filter -->
+        <div class="filter-group">
+          <h4>Gender</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="women" checked>
+            <span>Women</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="men">
+            <span>Men</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="unisex">
+            <span>Unisex</span>
+          </label>
+        </div>
+
+        <!-- Weight Range Filter -->
+        <div class="filter-group">
+          <h4>Metal Weight</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="under-5g">
+            <span>Under 5 grams</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="5g-15g">
+            <span>5 - 15 grams</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="15g-up">
+            <span>Over 15 grams</span>
+          </label>
+        </div>
+
+        <!-- Availability Filter -->
+        <div class="filter-group">
+          <h4>Availability</h4>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="instock" checked>
+            <span>Ready to Ship</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox" value="preorder">
+            <span>Made to Order</span>
+          </label>
         </div>
       </aside>
 
       <!-- Right Side: Product Grid -->
       <div class="collection-content-grid-wrapper">
-        {%- paginate collection.products by 6 -%}
+        {%- paginate collection.products by 12 -%}
         <div class="collection-grid cols-3" id="collectionProductGrid">
+          {%- assign rendered_any_product = false -%}
           {%- if collection.products.size > 0 -%}
             {%- for product in collection.products -%}
-              {%- render 'product-card', product: product -%}
+              {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+              {%- assign product_title_down = product.title | downcase -%}
+              {%- assign product_type_down = product.type | downcase -%}
+              
+              {%- assign is_silver_product = false -%}
+              {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' or product_title_down contains 'silver' or product_type_down contains 'silver' -%}
+                {%- assign is_silver_product = true -%}
+              {%- endif -%}
+              
+              {%- if selected_brand == 'silver' -%}
+                {%- if is_silver_product -%}
+                  {%- assign rendered_any_product = true -%}
+                  {%- render 'product-card', product: product -%}
+                {%- endif -%}
+              {%- else -%}
+                {%- unless is_silver_product -%}
+                  {%- assign rendered_any_product = true -%}
+                  {%- render 'product-card', product: product -%}
+                {%- endunless -%}
+              {%- endif -%}
             {%- endfor -%}
-          {%- else -%}
-            {%- comment -%} Fallback mock items if no catalog products are set up yet {%- endcomment -%}
-            {%- render 'product-card',
-              title: "Mayur Heritage Temple Ring",
-              price: 68000,
-              image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-              hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-              purity: "22K Gold"
-            -%}
-
-            {%- render 'product-card',
-              title: "Royal Peacock Gold Band",
-              price: 49500,
-              image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
-              purity: "18K Gold"
-            -%}
-
-            {%- render 'product-card',
-              title: "Rudra Royal Signature Necklace",
-              price: 245000,
-              image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
-              purity: "22K Gold"
-            -%}
-
-            {%- render 'product-card',
-              title: "Nizami Pearl Heritage Choker",
-              price: 380000,
-              image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-              purity: "22K Gold"
-            -%}
-
-            {%- render 'product-card',
-              title: "Glow Silhouette Bangles Set",
-              price: 165000,
-              image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-              purity: "22K Gold"
-            -%}
-
-            {%- render 'product-card',
-              title: "Classic Solitaire Tennis Bracelet",
-              price: 450000,
-              image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-              purity: "18K Gold"
-            -%}
+          {%- endif -%}
+          
+          {%- if collection.products.size == 0 or rendered_any_product == false -%}
+            {%- comment -%} Fallback mock items if no matching catalog products are rendered {%- endcomment -%}
+            {%- if selected_brand == 'silver' -%}
+              {%- render 'product-card',
+                title: "Contemporary Sterling Hoop Earrings",
+                price: 4200,
+                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
+                purity: "925 Sterling Silver"
+              -%}
+              {%- render 'product-card',
+                title: "Classic Silver Solitaire Ring",
+                price: 8500,
+                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+                purity: "925 Sterling Silver"
+              -%}
+              {%- render 'product-card',
+                title: "Vintage Oxidized Silver Choker",
+                price: 24000,
+                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+                purity: "925 Sterling Silver"
+              -%}
+              {%- render 'product-card',
+                title: "Minimalist Silver Stackable Band",
+                price: 3200,
+                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+                purity: "925 Sterling Silver"
+              -%}
+              {%- render 'product-card',
+                title: "Artisanal Silver Filigree Bangle",
+                price: 15500,
+                image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
+                purity: "925 Sterling Silver"
+              -%}
+              {%- render 'product-card',
+                title: "Silver Zirconia Tennis Bracelet",
+                price: 18000,
+                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80",
+                purity: "925 Sterling Silver"
+              -%}
+            {%- else -%}
+              {%- render 'product-card',
+                title: "Mayur Heritage Temple Ring",
+                price: 68000,
+                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+                hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+                purity: "22K Gold"
+              -%}
+              {%- render 'product-card',
+                title: "Royal Peacock Gold Band",
+                price: 49500,
+                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
+                purity: "18K Gold"
+              -%}
+              {%- render 'product-card',
+                title: "Rudra Royal Signature Necklace",
+                price: 245000,
+                image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
+                purity: "22K Gold"
+              -%}
+              {%- render 'product-card',
+                title: "Nizami Pearl Heritage Choker",
+                price: 380000,
+                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+                purity: "22K Gold"
+              -%}
+              {%- render 'product-card',
+                title: "Glow Silhouette Bangles Set",
+                price: 165000,
+                image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+                purity: "22K Gold"
+              -%}
+              {%- render 'product-card',
+                title: "Classic Solitaire Tennis Bracelet",
+                price: 450000,
+                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+                purity: "18K Gold"
+              -%}
+            {%- endif -%}
           {%- endif -%}
         </div>
 
@@ -424,10 +602,13 @@
   }
 }
 
-@media (max-width: 575px) {
+@media (max-width: 480px) {
   .collection-grid {
     grid-template-columns: 1fr !important;
   }
+}
+
+@media (max-width: 575px) {
   .collection-top-bar {
     flex-direction: column;
     align-items: flex-start;

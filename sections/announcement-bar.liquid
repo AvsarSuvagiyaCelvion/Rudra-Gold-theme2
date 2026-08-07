@@ -25,13 +25,20 @@
       "id": "gold_rate_18k",
       "label": "Base Gold Rate 18K (per gram in INR)",
       "default": "5,605"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text_silver",
+      "label": "Silver Announcement Text",
+      "default": "✨ The Grand Mother: Certified 925 Sterling Silver Masterpieces with Anti-Tarnish Lifetime Guarantee"
     }
   ]
 }
 {% endschema %}
 
 <div class="announcement-bar-section">
-  <div class="container announcement-bar-container">
+  <!-- Gold Announcement Bar -->
+  <div class="container announcement-bar-container brand-gold-only">
     <div class="announcement-message slide-item active">
       {{ section.settings.announcement_text }}
     </div>
@@ -41,12 +48,19 @@
       </div>
     {% endif %}
   </div>
+  
+  <!-- Silver Announcement Bar -->
+  <div class="container announcement-bar-container brand-silver-only">
+    <div class="announcement-message slide-item active" style="text-align: center; flex: 1;">
+      {{ section.settings.announcement_text_silver }}
+    </div>
+  </div>
 </div>
 
 <style>
 .announcement-bar-section {
   background-color: var(--color-dark);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  border-bottom: 1px solid rgba(var(--color-gold-rgb), 0.2);
   padding: 8px 0;
   z-index: 1000;
   position: relative;

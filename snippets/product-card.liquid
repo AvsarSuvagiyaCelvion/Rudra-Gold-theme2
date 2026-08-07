@@ -45,21 +45,43 @@
     {%- assign card_url = product.url -%}
   {%- endif -%}
 
-  {%- assign gold_rate = 6850 -%}
-  {%- if card_purity contains '18K' or card_purity contains '18k' -%}
-    {%- assign gold_rate = 5605 -%}
+  {%- assign is_silver = false -%}
+  {%- if product != blank -%}
+    {%- assign product_tags_str = product.tags | join: ',' | downcase -%}
+    {%- assign product_title_down = product.title | downcase -%}
+    {%- if product_tags_str contains 'silver' or product_tags_str contains 'grand-mother' or product_title_down contains 'silver' or product_title_down contains 'grand mother' or product.type contains 'Silver' -%}
+      {%- assign is_silver = true -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign card_title_down = card_title | downcase -%}
+    {%- if card_title_down contains 'silver' or card_title_down contains 'grand mother' -%}
+      {%- assign is_silver = true -%}
+    {%- endif -%}
   {%- endif -%}
-  {%- assign weight_num = card_weight | plus: 0 -%}
-  {%- assign metal_price = weight_num | times: gold_rate | round -%}
-  {%- assign making_charges = metal_price | times: 0.12 | round -%}
-  {%- assign subtotal = metal_price | plus: making_charges -%}
-  {%- assign gst = subtotal | times: 0.03 | round -%}
-  {%- assign dynamic_price = subtotal | plus: gst -%}
 
-<div class="product-card tilt-card" data-purity="{{ card_purity | downcase }}">
+  {%- if is_silver -%}
+    {%- assign card_purity = "925 Silver" -%}
+    {%- if product.metafields.custom.purity != blank -%}
+      {%- assign card_purity = product.metafields.custom.purity -%}
+    {%- endif -%}
+    {%- assign dynamic_price = card_price -%}
+  {%- else -%}
+    {%- assign gold_rate = 6850 -%}
+    {%- if card_purity contains '18K' or card_purity contains '18k' -%}
+      {%- assign gold_rate = 5605 -%}
+    {%- endif -%}
+    {%- assign weight_num = card_weight | plus: 0 -%}
+    {%- assign metal_price = weight_num | times: gold_rate | round -%}
+    {%- assign making_charges = metal_price | times: 0.12 | round -%}
+    {%- assign subtotal = metal_price | plus: making_charges -%}
+    {%- assign gst = subtotal | times: 0.03 | round -%}
+    {%- assign dynamic_price = subtotal | plus: gst -%}
+  {%- endif -%}
+
+<div class="product-card tilt-card {% if is_silver %}silver-product-card{% else %}gold-product-card{% endif %}" data-purity="{{ card_purity | downcase }}">
   <div class="product-card-img-wrapper">
     <!-- Purity Badge -->
-    <div class="purity-badge">{{ card_purity }}</div>
+    <div class="purity-badge">{% if is_silver %}925 Silver{% else %}{{ card_purity }}{% endif %}</div>
 
     <!-- Wishlist Button -->
     <button class="wishlist-btn" aria-label="Add to Wishlist"
@@ -92,6 +114,18 @@
         {% render 'icon-star' %}
       {%- endfor -%}
     </div>
+    
+    <!-- Dynamic Certification and Spec Overlay -->
+    <div class="product-card-spec-badges" style="margin: 4px 0; display: flex; gap: 4px; flex-wrap: wrap; justify-content: center;">
+      {%- if is_silver -%}
+        <span style="font-size: 9px; padding: 2px 6px; background: rgba(192, 192, 192, 0.15); border: 1px solid rgba(192, 192, 192, 0.3); border-radius: 2px; color: #555; text-transform: uppercase; font-weight: 600;">925 Certified</span>
+        <span style="font-size: 9px; padding: 2px 6px; background: rgba(0, 150, 136, 0.1); border: 1px solid rgba(0, 150, 136, 0.2); border-radius: 2px; color: #00796B; text-transform: uppercase; font-weight: 600;">Anti-Tarnish</span>
+      {%- else -%}
+        <span style="font-size: 9px; padding: 2px 6px; background: rgba(200, 161, 61, 0.15); border: 1px solid rgba(200, 161, 61, 0.3); border-radius: 2px; color: #8F6B25; text-transform: uppercase; font-weight: 600;">BIS Hallmark</span>
+        <span style="font-size: 9px; padding: 2px 6px; background: rgba(200, 161, 61, 0.1); border: 1px solid rgba(200, 161, 61, 0.2); border-radius: 2px; color: #8F6B25; text-transform: uppercase; font-weight: 600;">12% Making</span>
+      {%- endif -%}
+    </div>
+
     <div class="product-card-weight" style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px; margin-bottom: 4px;">
       {{ card_weight }} grams
     </div>

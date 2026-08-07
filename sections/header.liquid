@@ -16,14 +16,58 @@
     },
     {
       "type": "link_list",
-      "id": "menu",
-      "label": "Navigation Menu",
+      "id": "gold_menu",
+      "label": "Gold Navigation Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "silver_menu",
+      "label": "Silver Navigation Menu",
       "default": "main-menu"
     }
   ]
 }
 {% endschema %}
 
+{%- assign selected_brand = 'gold' -%}
+{%- if request.query_string contains 'brand=silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.query_string contains 'brand=gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.path contains 'gold' or request.path contains 'rudra-gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif product != blank -%}
+  {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+  {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  {%- assign collection_handle_down = collection.handle | downcase -%}
+  {%- if collection_handle_down contains 'silver' or collection_handle_down contains 'grand-mother' or collection_handle_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign gold_menu_handle = section.settings.gold_menu -%}
+{%- if gold_menu_handle == blank or gold_menu_handle == 'main-menu' -%}
+  {%- if linklists['gold-menu'] != blank and linklists['gold-menu'].links.size > 0 -%}
+    {%- assign gold_menu_handle = 'gold-menu' -%}
+  {%- else -%}
+    {%- assign gold_menu_handle = 'main-menu' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign silver_menu_handle = section.settings.silver_menu -%}
+{%- if silver_menu_handle == blank or silver_menu_handle == 'main-menu' -%}
+  {%- if linklists['silver-menu'] != blank and linklists['silver-menu'].links.size > 0 -%}
+    {%- assign silver_menu_handle = 'silver-menu' -%}
+  {%- else -%}
+    {%- assign silver_menu_handle = 'silver-menu' -%}
+  {%- endif -%}
+{%- endif -%}
 <header class="site-header" id="siteHeader">
   <div class="container header-container">
     
@@ -33,15 +77,30 @@
         {% render 'icon-hamburger' %}
       </button>
       <a href="/" class="header-logo-group">
-        <h1 class="logo-title">{{ section.settings.brand_name }}</h1>
-        <span class="logo-tagline">{{ section.settings.tagline }}</span>
+        <h1 class="logo-title">
+          {%- if selected_brand == 'silver' -%}
+            THE GRAND MOTHER
+          {%- else -%}
+            RUDRA GOLD
+          {%- endif -%}
+        </h1>
+        <span class="logo-tagline">
+          {%- if selected_brand == 'silver' -%}
+            Sleek Elegance, Silver & Diamond
+          {%- else -%}
+            Timeless Purity, Crafted for Royalty
+          {%- endif -%}
+        </span>
       </a>
+      <div class="brand-switcher">
+        <button class="switcher-btn switch-brand-popup-trigger" onclick="openBrandSwitcherModal()">Switch Brand</button>
+      </div>
     </div>
 
-    <!-- Center: Main Navigation & Mega Menus -->
-    <nav class="main-navigation" id="mainNavigation">
+    <!-- Center: Gold Navigation -->
+    <nav class="main-navigation gold-nav" id="goldNavigation">
       <ul class="nav-menu">
-        {%- assign menu_handle = section.settings.menu | default: "main-menu" -%}
+        {%- assign menu_handle = gold_menu_handle -%}
         {%- for link in linklists[menu_handle].links -%}
           {%- assign link_title_down = link.title | downcase -%}
           {%- if link.links != blank -%}
@@ -56,7 +115,6 @@
                 </a>
                 <div class="mega-menu">
                   <div class="container mega-menu-grid">
-                    
                     <a href="/collections/bridal" class="mega-menu-column">
                       <div class="mega-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=300&q=80" alt="Bridal Heritage">
@@ -64,7 +122,6 @@
                       <h4>Bridal Heritage</h4>
                       <span>Grand designs for royal weddings</span>
                     </a>
-
                     <a href="/collections/temple" class="mega-menu-column">
                       <div class="mega-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=300&q=80" alt="Temple Gold">
@@ -72,7 +129,6 @@
                       <h4>Temple Gold</h4>
                       <span>Traditional hand-carved heritage</span>
                     </a>
-
                     <a href="/collections/daily-wear" class="mega-menu-column">
                       <div class="mega-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=300&q=80" alt="Daily Wear">
@@ -80,15 +136,90 @@
                       <h4>Daily Wear</h4>
                       <span>Minimalist modern gold essentials</span>
                     </a>
-
                     <a href="/collections/solitaires" class="mega-menu-column">
                       <div class="mega-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=300&q=80" alt="Ethical Diamonds">
+                        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=300&q=80" alt="Solitaires">
                       </div>
                       <h4>Solitaires</h4>
                       <span>Rare diamonds of timeless purity</span>
                     </a>
+                  </div>
+                </div>
+              </li>
+            {%- else -%}
+              <!-- Standard Hover Dropdown -->
+              <li class="nav-item has-dropdown">
+                <a href="{{ link.url }}" class="nav-link">
+                  {{ link.title }}
+                  <svg class="nav-arrow" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </a>
+                <ul class="dropdown-menu">
+                  {%- for childlink in link.links -%}
+                    <li class="dropdown-item">
+                      <a href="{{ childlink.url }}" class="dropdown-link">{{ childlink.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </li>
+            {%- endif -%}
+          {%- else -%}
+            <!-- Standard Link -->
+            <li class="nav-item">
+              <a href="{{ link.url }}" class="nav-link {% if link.url contains '#vip' or link_title_down contains 'vip' %}vip-link{% endif %}" {% if link.url contains '#vip' or link_title_down contains 'vip' %}data-modal-type="vip-visit"{% endif %}>{{ link.title }}</a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
 
+    <!-- Center: Silver Navigation -->
+    <nav class="main-navigation silver-nav" id="silverNavigation">
+      <ul class="nav-menu">
+        {%- assign menu_handle = silver_menu_handle -%}
+        {%- for link in linklists[menu_handle].links -%}
+          {%- assign link_title_down = link.title | downcase -%}
+          {%- if link.links != blank -%}
+            {%- if link_title_down == 'collections' or link_title_down == 'collection' -%}
+              <!-- Visual Mega Menu -->
+              <li class="nav-item has-mega-menu">
+                <a href="{{ link.url }}" class="nav-link">
+                  {{ link.title }}
+                  <svg class="nav-arrow" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </a>
+                <div class="mega-menu">
+                  <div class="container mega-menu-grid">
+                    <a href="/collections/sterling-silver" class="mega-menu-column">
+                      <div class="mega-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=300&q=80" alt="Contemporary Sterling">
+                      </div>
+                      <h4>Contemporary Sterling</h4>
+                      <span>Elegant daily 925 silver pieces</span>
+                    </a>
+                    <a href="/collections/oxidized-silver" class="mega-menu-column">
+                      <div class="mega-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=300&q=80" alt="Oxidized Heritage">
+                      </div>
+                      <h4>Oxidized Heritage</h4>
+                      <span>Artisanal hand-crafted vintage styles</span>
+                    </a>
+                    <a href="/collections/silver-crystal" class="mega-menu-column">
+                      <div class="mega-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=300&q=80" alt="Zirconia Luxury">
+                      </div>
+                      <h4>Silver Zirconia</h4>
+                      <span>Sparkling diamond-cut crystal accents</span>
+                    </a>
+                    <a href="/collections/gifts-silver" class="mega-menu-column">
+                      <div class="mega-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1549439602-43ebca2327af?auto=format&fit=crop&w=300&q=80" alt="Luxury Gifts">
+                      </div>
+                      <h4>Luxury Gifting</h4>
+                      <span>Curated silver gifts for loved ones</span>
+                    </a>
                   </div>
                 </div>
               </li>
@@ -144,7 +275,13 @@
     {% render 'icon-close' %}
   </button>
   <div class="search-drawer-container">
-    <h3 style="font-family: var(--font-serif); font-size: 20px; text-transform: uppercase; margin-bottom: 20px; color: var(--color-gold);">Search RUDRA GOLD</h3>
+    <h3 style="font-family: var(--font-serif); font-size: 20px; text-transform: uppercase; margin-bottom: 20px; color: var(--color-gold);">
+      {%- if selected_brand == 'silver' -%}
+        Search THE GRAND MOTHER
+      {%- else -%}
+        Search RUDRA GOLD
+      {%- endif -%}
+    </h3>
     <div class="search-drawer-input-wrapper">
       <input type="text" class="search-drawer-input" id="searchDrawerInput" placeholder="Search rings, necklaces, bridal sets..." autocomplete="off">
       <span class="search-drawer-icon">{% render 'icon-search' %}</span>
@@ -163,16 +300,32 @@
 <div class="mobile-menu-drawer" id="mobileMenuDrawer" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
   <div class="mobile-menu-header">
     <a href="/" class="header-logo-group">
-      <span class="logo-title">{{ section.settings.brand_name }}</span>
-      <span class="logo-tagline">{{ section.settings.tagline }}</span>
+      <span class="logo-title">
+        {%- if selected_brand == 'silver' -%}
+          THE GRAND MOTHER
+        {%- else -%}
+          RUDRA GOLD
+        {%- endif -%}
+      </span>
+      <span class="logo-tagline">
+        {%- if selected_brand == 'silver' -%}
+          Sleek Elegance, Silver & Diamond
+        {%- else -%}
+          Timeless Purity, Crafted for Royalty
+        {%- endif -%}
+      </span>
     </a>
     <button class="mobile-menu-close-btn" id="mobileMenuClose" aria-label="Close menu">
       {% render 'icon-close' %}
     </button>
   </div>
+  <div style="padding: 12px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background-color: rgba(0,0,0,0.15);">
+    <button class="switcher-btn switch-brand-popup-trigger mobile-switcher" onclick="openBrandSwitcherModal()">Switch Brand</button>
+  </div>
   <div class="mobile-menu-body">
-    <ul class="mobile-nav-list">
-      {%- assign menu_handle = section.settings.menu | default: "main-menu" -%}
+    <!-- Gold Mobile Menu -->
+    <ul class="mobile-nav-list mobile-nav-gold">
+      {%- assign menu_handle = gold_menu_handle -%}
       {%- for link in linklists[menu_handle].links -%}
         {%- assign link_title_down = link.title | downcase -%}
         {%- if link.links != blank -%}
@@ -185,30 +338,94 @@
             </button>
             <ul class="mobile-submenu">
               {%- if link_title_down == 'collections' or link_title_down == 'collection' -%}
-                <li>
-                  <a href="/collections/bridal" class="mobile-submenu-link">
-                    <span class="title">Bridal Heritage</span>
-                    <span class="desc">Grand designs for royal weddings</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="/collections/temple" class="mobile-submenu-link">
-                    <span class="title">Temple Gold</span>
-                    <span class="desc">Traditional hand-carved heritage</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="/collections/daily-wear" class="mobile-submenu-link">
-                    <span class="title">Daily Wear</span>
-                    <span class="desc">Minimalist modern gold essentials</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="/collections/solitaires" class="mobile-submenu-link">
-                    <span class="title">Solitaires</span>
-                    <span class="desc">Rare diamonds of timeless purity</span>
-                  </a>
-                </li>
+                <!-- Gold Menu Items -->
+                <div class="brand-menu-gold" style="width: 100%;">
+                  <li>
+                    <a href="/collections/bridal" class="mobile-submenu-link">
+                      <span class="title">Bridal Heritage</span>
+                      <span class="desc">Grand designs for royal weddings</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/collections/temple" class="mobile-submenu-link">
+                      <span class="title">Temple Gold</span>
+                      <span class="desc">Traditional hand-carved heritage</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/collections/daily-wear" class="mobile-submenu-link">
+                      <span class="title">Daily Wear</span>
+                      <span class="desc">Minimalist modern gold essentials</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/collections/solitaires" class="mobile-submenu-link">
+                      <span class="title">Solitaires</span>
+                      <span class="desc">Rare diamonds of timeless purity</span>
+                    </a>
+                  </li>
+                </div>
+              {%- else -%}
+                {%- for childlink in link.links -%}
+                  <li>
+                    <a href="{{ childlink.url }}" class="mobile-submenu-link">
+                      <span class="title">{{ childlink.title }}</span>
+                    </a>
+                  </li>
+                {%- endfor -%}
+              {%- endif -%}
+            </ul>
+          </li>
+        {%- else -%}
+          <li class="mobile-nav-item">
+            <a href="{{ link.url }}" class="mobile-nav-link {% if link.url contains '#vip' or link_title_down contains 'vip' %}vip-link{% endif %}" {% if link.url contains '#vip' or link_title_down contains 'vip' %}data-modal-type="vip-visit"{% endif %}>{{ link.title }}</a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+
+    <!-- Silver Mobile Menu -->
+    <ul class="mobile-nav-list mobile-nav-silver">
+      {%- assign menu_handle = silver_menu_handle -%}
+      {%- for link in linklists[menu_handle].links -%}
+        {%- assign link_title_down = link.title | downcase -%}
+        {%- if link.links != blank -%}
+          <li class="mobile-nav-item has-submenu">
+            <button class="mobile-submenu-toggle" aria-expanded="false">
+              {{ link.title }}
+              <svg class="submenu-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <ul class="mobile-submenu">
+              {%- if link_title_down == 'collections' or link_title_down == 'collection' -%}
+                <!-- Silver Menu Items -->
+                <div class="brand-menu-silver" style="width: 100%;">
+                  <li>
+                    <a href="/collections/sterling-silver" class="mobile-submenu-link">
+                      <span class="title">Contemporary Sterling</span>
+                      <span class="desc">Elegant daily 925 silver pieces</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/collections/oxidized-silver" class="mobile-submenu-link">
+                      <span class="title">Oxidized Heritage</span>
+                      <span class="desc">Artisanal hand-crafted vintage styles</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/collections/silver-crystal" class="mobile-submenu-link">
+                      <span class="title">Silver Zirconia</span>
+                      <span class="desc">Sparkling diamond-cut crystal accents</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/collections/gifts-silver" class="mobile-submenu-link">
+                      <span class="title">Luxury Gifting</span>
+                      <span class="desc">Curated silver gifts for loved ones</span>
+                    </a>
+                  </li>
+                </div>
               {%- else -%}
                 {%- for childlink in link.links -%}
                   <li>
@@ -230,6 +447,44 @@
   </div>
   <div class="mobile-menu-footer">
     <p class="premium-badge">{{ section.settings.tagline }}</p>
+  </div>
+</div>
+
+<!-- Brand Switcher Popup Modal -->
+<div class="brand-switcher-modal-backdrop" id="brandSwitcherModalBackdrop" onclick="closeBrandSwitcherModal(event)">
+  <div class="brand-switcher-modal" onclick="event.stopPropagation()">
+    <button class="brand-switcher-modal-close" onclick="closeBrandSwitcherModal(event)" aria-label="Close Brand Switcher">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <h3 class="Cormorant">Choose Your Brand</h3>
+    
+    <div class="selection-cards-grid">
+      <!-- Card 1: Rudra Gold -->
+      <div class="selection-card card-gold-theme" onclick="switchBrandFromPopup('gold')">
+        <div class="selection-card-border"></div>
+        <div class="selection-card-content">
+          <span class="brand-badge gold-badge" style="margin-bottom: 12px;">✨</span>
+          <h4 class="brand-title Cormorant" style="font-size: 20px;">Rudra Gold</h4>
+          <p class="brand-desc" style="font-size: 11px; margin-bottom: 16px;">Luxury Gold Jewellery</p>
+          <button class="selection-btn gold-btn" style="padding: 10px 20px; font-size: 10px;">Select Gold</button>
+        </div>
+      </div>
+
+      <!-- Card 2: The Grand Mother -->
+      <div class="selection-card card-silver-theme" onclick="switchBrandFromPopup('silver')">
+        <div class="selection-card-border"></div>
+        <div class="selection-card-content">
+          <span class="brand-badge silver-badge" style="margin-bottom: 12px;">💎</span>
+          <h4 class="brand-title Cormorant" style="font-size: 20px;">The Grand Mother</h4>
+          <p class="brand-desc" style="font-size: 11px; margin-bottom: 16px;">925 Sterling Silver Jewellery</p>
+          <button class="selection-btn silver-btn" style="padding: 10px 20px; font-size: 10px;">Select Silver</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -681,6 +936,22 @@
   gap: 15px;
 }
 
+.mobile-nav-silver {
+  display: none !important;
+}
+
+.mobile-nav-gold {
+  display: flex !important;
+}
+
+html.theme-silver .mobile-nav-silver {
+  display: flex !important;
+}
+
+html.theme-silver .mobile-nav-gold {
+  display: none !important;
+}
+
 .mobile-nav-item {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding-bottom: 12px;
@@ -795,7 +1066,103 @@
 
 <!-- Mobile Navigation Menu Drawer JS Toggle Code in theme.js -->
 <script>
+  window.openBrandSwitcherModal = function() {
+    const backdrop = document.getElementById('brandSwitcherModalBackdrop');
+    if (backdrop) backdrop.classList.add('active');
+  };
+
+  window.closeBrandSwitcherModal = function(e) {
+    if (e) e.stopPropagation();
+    const backdrop = document.getElementById('brandSwitcherModalBackdrop');
+    if (backdrop) backdrop.classList.remove('active');
+  };
+
+  window.switchBrandFromPopup = function(brand) {
+    window.closeBrandSwitcherModal();
+    window.switchBrand(brand);
+  };
+
+  // Global brand switcher helper function
+  window.switchBrand = function(brand) {
+    try {
+      localStorage.setItem('active_brand', brand);
+      sessionStorage.setItem('active_brand', brand);
+    } catch(e) {}
+    
+    if (brand === 'silver') {
+      document.documentElement.classList.add('theme-silver');
+      document.documentElement.classList.remove('theme-gold');
+      
+      const path = window.location.pathname.toLowerCase();
+      if (path === '/' || path.includes('gold') || path.includes('silver') || path.includes('grand-mother')) {
+        window.location.replace('/?brand=silver');
+      } else {
+        const url = new URL(window.location.href);
+        url.searchParams.set('brand', 'silver');
+        window.location.replace(url.toString());
+      }
+    } else {
+      document.documentElement.classList.add('theme-gold');
+      document.documentElement.classList.remove('theme-silver');
+      
+      const path = window.location.pathname.toLowerCase();
+      if (path === '/' || path.includes('gold') || path.includes('silver') || path.includes('grand-mother')) {
+        window.location.replace('/?brand=gold');
+      } else {
+        const url = new URL(window.location.href);
+        url.searchParams.set('brand', 'gold');
+        window.location.replace(url.toString());
+      }
+    }
+  };
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Apply visual switcher states & texts dynamically
+  const activeBrand = sessionStorage.getItem('active_brand') || (document.documentElement.classList.contains('theme-silver') ? 'silver' : 'gold');
+  
+  document.querySelectorAll('.brand-switcher .switcher-btn').forEach(btn => {
+    if (btn.getAttribute('data-brand') === activeBrand) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const logoTitles = document.querySelectorAll('.logo-title');
+  const logoTaglines = document.querySelectorAll('.logo-tagline');
+  
+  if (activeBrand === 'silver') {
+    logoTitles.forEach(el => el.textContent = 'THE GRAND MOTHER');
+    logoTaglines.forEach(el => {
+      el.textContent = 'Sleek Elegance, Silver & Diamond';
+      el.style.color = '#9E9E9E';
+    });
+    
+    // Update search overlay title
+    const searchTitle = document.querySelector('.search-drawer-container h3');
+    if (searchTitle) {
+      searchTitle.textContent = 'Search THE GRAND MOTHER';
+    }
+
+    // Update collection page titles
+    const collTitle = document.querySelector('.collection-page-title');
+    if (collTitle) {
+      collTitle.textContent = 'The Grand Mother Silver Curation';
+    }
+  } else {
+    logoTitles.forEach(el => el.textContent = 'RUDRA GOLD');
+    logoTaglines.forEach(el => {
+      el.textContent = 'Timeless Purity, Crafted for Royalty';
+      el.style.color = '';
+    });
+
+    // Update collection page titles
+    const collTitle = document.querySelector('.collection-page-title');
+    if (collTitle) {
+      collTitle.textContent = 'Heritage Gold Jewellery';
+    }
+  }
+
   // Mobile search trigger
   const mobileSearch = document.getElementById('mobileSearchTrigger');
   const searchDrawer = document.getElementById('searchDrawerOverlay');
@@ -821,10 +1188,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultsOutput = document.getElementById('searchResultsOutput');
   
   const mockProducts = [
-    { title: "Rudra Royal Signature Necklace", price: "₹2,45,000", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=150&q=80" },
-    { title: "Bridal Heritage Diamond Choker", price: "₹4,12,000", img: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=150&q=80" },
-    { title: "Mayur Heritage Temple Ring", price: "₹65,000", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80" },
-    { title: "Golden Glow Filigree Bangles", price: "₹1,85,000", img: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=150&q=80" }
+    { title: "Rudra Royal Signature Necklace", price: "₹2,45,000", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=150&q=80", brand: "gold" },
+    { title: "Bridal Heritage Diamond Choker", price: "₹4,12,000", img: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=150&q=80", brand: "gold" },
+    { title: "Mayur Heritage Temple Ring", price: "₹65,000", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=150&q=80", brand: "gold" },
+    { title: "Golden Glow Filigree Bangles", price: "₹1,85,000", img: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=150&q=80", brand: "gold" },
+    { title: "Silver Sterling Classic Band", price: "₹8,500", img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=150&q=80", brand: "silver" },
+    { title: "The Grand Mother Oxidized Ring", price: "₹6,800", img: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=150&q=80", brand: "silver" },
+    { title: "Vintage Filigree Kada Bracelet", price: "₹18,500", img: "https://images.unsplash.com/photo-1549439602-43ebca2327af?auto=format&fit=crop&w=150&q=80", brand: "silver" }
   ];
 
   if (searchInput && resultsOutput) {
@@ -843,7 +1213,11 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsOutput.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; margin-top: 20px;">Searching curation...</p>';
         
         try {
-          const res = await fetch(`/search/suggest.json?q=${encodeURIComponent(val)}&resources[type]=product`);
+          const isSilver = document.documentElement.classList.contains('theme-silver');
+          const searchTag = isSilver ? 'tag:silver' : 'tag:gold';
+          const query = `${val} AND (${searchTag})`;
+          
+          const res = await fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product`);
           if (!res.ok) throw new Error("Predictive search failed");
           const data = await res.json();
           
@@ -888,7 +1262,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.warn("Predictive search API failed, falling back to mock search:", err);
           const valLower = val.toLowerCase();
-          const filtered = mockProducts.filter(p => p.title.toLowerCase().includes(valLower));
+          const activeBrand = document.documentElement.classList.contains('theme-silver') ? 'silver' : 'gold';
+          const filtered = mockProducts.filter(p => p.title.toLowerCase().includes(valLower) && p.brand === activeBrand);
           resultsOutput.innerHTML = '';
           
           if (filtered.length === 0) {

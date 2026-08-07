@@ -1,229 +1,394 @@
 {% schema %}
 {
-  "name": "Luxury Hero Banner",
+  "name": "Split Brand Hero",
   "settings": [
     {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Hero Subtitle",
-      "default": "ESTD 1918 • ROYAL HERITAGE"
-    },
-    {
-      "type": "text",
-      "id": "title_line1",
-      "label": "Title Line 1",
-      "default": "Timeless Purity,"
-    },
-    {
-      "type": "text",
-      "id": "title_line2",
-      "label": "Title Line 2",
-      "default": "Crafted for Royalty"
-    },
-    {
-      "type": "textarea",
-      "id": "description",
-      "label": "Hero Description",
-      "default": "Indulge in our exquisite collection of hand-carved temple jewellery and certified solitaires, designed for luxury connoisseurs."
+      "type": "header",
+      "content": "Rudra Gold Settings"
     },
     {
       "type": "image_picker",
-      "id": "background_image",
-      "label": "Background Image"
+      "id": "gold_image",
+      "label": "Gold Background Image"
     },
     {
       "type": "text",
-      "id": "primary_btn_text",
-      "label": "Primary Button Text",
-      "default": "Explore Collections"
+      "id": "gold_subtitle",
+      "label": "Gold Subtitle",
+      "default": "RUDRA GOLD • ROYAL HERITAGE"
+    },
+    {
+      "type": "text",
+      "id": "gold_title",
+      "label": "Gold Title",
+      "default": "Timeless Golden Purity"
+    },
+    {
+      "type": "textarea",
+      "id": "gold_desc",
+      "label": "Gold Description",
+      "default": "Exquisite hand-carved heritage temple jewellery and certified bridal gold masterworks."
+    },
+    {
+      "type": "text",
+      "id": "gold_btn_text",
+      "label": "Gold Button Text",
+      "default": "Shop Gold Curation"
     },
     {
       "type": "url",
-      "id": "primary_btn_link",
-      "label": "Primary Button Link",
-      "default": "/collections"
+      "id": "gold_link",
+      "label": "Gold Button Link"
+    },
+    {
+      "type": "header",
+      "content": "The Grand Mother Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "silver_image",
+      "label": "Silver Background Image"
     },
     {
       "type": "text",
-      "id": "secondary_btn_text",
-      "label": "Secondary Button Text",
-      "default": "Book Store Curation"
+      "id": "silver_subtitle",
+      "label": "Silver Subtitle",
+      "default": "THE GRAND MOTHER • STERLING SILVER"
+    },
+    {
+      "type": "text",
+      "id": "silver_title",
+      "label": "Silver Title",
+      "default": "Sleek Silver Elegance"
+    },
+    {
+      "type": "textarea",
+      "id": "silver_desc",
+      "label": "Silver Description",
+      "default": "Premium 925 sterling silver and anti-tarnish diamond essentials for modern daily luxury."
+    },
+    {
+      "type": "text",
+      "id": "silver_btn_text",
+      "label": "Silver Button Text",
+      "default": "Shop Silver Curation"
+    },
+    {
+      "type": "url",
+      "id": "silver_link",
+      "label": "Silver Button Link"
     }
   ]
 }
 {% endschema %}
+<section class="split-hero">
+  <!-- Interactive Sparkle Canvas -->
+  <canvas class="split-hero-canvas" id="splitSparkleCanvas"></canvas>
 
-<section class="hero-banner">
-  <!-- Parallax Background Image -->
-  <div class="hero-parallax-bg-wrapper">
-    {% if section.settings.background_image != blank %}
-      <img src="{{ section.settings.background_image | image_url: width: 1920 }}" alt="Rudra Gold Luxury Collection" class="hero-parallax-bg">
-    {% else %}
-      <!-- Premium dark aesthetic luxury fallback background -->
-      <div class="hero-parallax-bg default-bg"></div>
-    {% endif %}
+  <!-- The Grand Mother Full-width Hero -->
+  <div class="hero-full pane-silver brand-silver-only" id="paneSilver">
+    <div class="pane-bg-wrapper">
+      {% if section.settings.silver_image != blank %}
+        <img src="{{ section.settings.silver_image | image_url: width: 2000 }}" alt="The Grand Mother Silver Collection" class="pane-bg">
+      {% else %}
+        <div class="pane-bg default-silver-bg"></div>
+      {% endif %}
+      <div class="pane-overlay silver-overlay"></div>
+    </div>
+
+    <div class="container hero-content-container">
+      <div class="pane-content">
+        <span class="pane-subtitle">{{ section.settings.silver_subtitle }}</span>
+        <h2 class="pane-title Cormorant">{{ section.settings.silver_title }}</h2>
+        <p class="pane-description">{{ section.settings.silver_desc }}</p>
+        <div class="pane-actions">
+          <a href="{{ section.settings.silver_link | default: '/collections/silver' }}" class="btn-primary silver-cta-btn">
+            {{ section.settings.silver_btn_text }}
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Subtle golden overlay gradient -->
-  <div class="hero-overlay"></div>
-
-  <!-- Interactive gold sparkles canvas -->
-  <canvas class="hero-sparkles-canvas" id="sparkleCanvas"></canvas>
-
-  <!-- Hero Content -->
-  <div class="container hero-container-inner">
-    <div class="hero-content">
-      <span class="hero-subtitle">{{ section.settings.subtitle }}</span>
-      
-      <h2 class="hero-title">
-        <span class="hero-title-line">{{ section.settings.title_line1 }}</span>
-        <span class="hero-title-line gold-gradient-text">{{ section.settings.title_line2 }}</span>
-      </h2>
-
-      <p class="hero-description">{{ section.settings.description }}</p>
-
-      <div class="hero-actions">
-        <a href="{{ section.settings.primary_btn_link }}" class="btn-primary">
-          {{ section.settings.primary_btn_text }}
-        </a>
-        <button class="btn-secondary text-white-btn" data-modal-type="vip-visit">
-          {{ section.settings.secondary_btn_text }}
-        </button>
+  <!-- Rudra Gold Full-width Hero -->
+  <div class="hero-full pane-gold brand-gold-only" id="paneGold">
+    <div class="pane-bg-wrapper">
+      {% if section.settings.gold_image != blank %}
+        <img src="{{ section.settings.gold_image | image_url: width: 2000 }}" alt="Rudra Gold Luxury Collection" class="pane-bg">
+      {% else %}
+        <div class="pane-bg default-gold-bg"></div>
+      {% endif %}
+      <div class="pane-overlay gold-overlay"></div>
+    </div>
+    
+    <div class="container hero-content-container">
+      <div class="pane-content">
+        <span class="pane-subtitle">{{ section.settings.gold_subtitle }}</span>
+        <h2 class="pane-title Cormorant">{{ section.settings.gold_title }}</h2>
+        <p class="pane-description">{{ section.settings.gold_desc }}</p>
+        <div class="pane-actions">
+          <a href="{{ section.settings.gold_link | default: '/collections/gold' }}" class="btn-primary gold-cta-btn">
+            {{ section.settings.gold_btn_text }}
+          </a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-.hero-banner {
-  height: 100vh;
-  min-height: 700px;
-  position: relative;
-  overflow: hidden;
+.split-hero {
   display: flex;
-  align-items: center;
-  z-index: 1;
+  height: 100vh;
+  min-height: 650px;
+  overflow: hidden;
+  position: relative;
   background-color: var(--color-dark);
+  z-index: 1;
 }
 
-.hero-parallax-bg-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 120%; /* Extra height to accommodate GSAP scroll parallax */
-  z-index: -3;
-}
-
-.hero-parallax-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: translateY(0);
-}
-
-.hero-parallax-bg.default-bg {
-  background-image: linear-gradient(rgba(11, 11, 11, 0.4), rgba(11, 11, 11, 0.75)), url('https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=1920&q=80');
-  background-size: cover;
-  background-position: center;
-}
-
-.hero-overlay {
+.split-hero-canvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    180deg,
-    rgba(11, 11, 11, 0.5) 0%,
-    rgba(11, 11, 11, 0.1) 40%,
-    rgba(11, 11, 11, 0.75) 100%
-  );
-  z-index: -2;
+  z-index: 2;
   pointer-events: none;
 }
 
-.hero-sparkles-canvas {
+.hero-full {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 60px;
+  box-sizing: border-box;
+}
+
+.hero-content-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.pane-bg-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.pane-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pane-bg.default-gold-bg {
+  background: linear-gradient(rgba(11, 11, 11, 0.45), rgba(11, 11, 11, 0.75)), url('https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+}
+
+.pane-bg.default-silver-bg {
+  background: linear-gradient(rgba(11, 11, 11, 0.45), rgba(11, 11, 11, 0.75)), url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+}
+
+.pane-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
-  pointer-events: none;
 }
 
-.hero-container-inner {
-  position: relative;
-  z-index: 2;
-  width: 100%;
+.gold-overlay {
+  background: linear-gradient(to right, rgba(11, 11, 11, 0.65), rgba(11, 11, 11, 0.25));
 }
 
-.hero-content {
-  max-width: 680px;
+.silver-overlay {
+  background: linear-gradient(to right, rgba(11, 11, 11, 0.65), rgba(11, 11, 11, 0.25));
+}
+
+.pane-content {
+  max-width: 580px;
   color: var(--color-light);
-  display: flex;
-  flex-direction: column;
+  text-align: left;
+  z-index: 5;
 }
 
-.hero-subtitle {
+.pane-subtitle {
+  font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.3em;
-  color: var(--color-gold);
-  margin-bottom: 24px;
-  text-transform: uppercase;
-}
-
-.hero-title {
-  font-size: 58px;
-  line-height: 1.15;
-  margin-bottom: 24px;
-  font-weight: 500;
-}
-
-.hero-title-line {
+  letter-spacing: 0.25em;
   display: block;
+  margin-bottom: 16px;
 }
 
-.hero-description {
+.pane-gold .pane-subtitle {
+  color: #C8A13D;
+}
+
+.pane-silver .pane-subtitle {
+  color: #C0C0C0;
+}
+
+.pane-title {
+  font-size: 54px;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.pane-description {
   font-size: 15px;
   font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 36px;
   color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 40px;
-  line-height: 1.65;
-  letter-spacing: 0.02em;
 }
 
-.hero-actions {
+.pane-actions {
   display: flex;
-  gap: 20px;
-  align-items: center;
+  justify-content: flex-start;
 }
 
-.text-white-btn {
-  color: var(--color-light) !important;
-  border-color: var(--color-light) !important;
+.gold-cta-btn {
+  border-color: #C8A13D !important;
 }
-
-.text-white-btn:hover {
-  background-color: var(--color-light) !important;
+.gold-cta-btn:hover {
+  background-color: #C8A13D !important;
   color: var(--color-dark) !important;
 }
 
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 42px;
+.silver-cta-btn {
+  border-color: #C0C0C0 !important;
+}
+.silver-cta-btn:hover {
+  background-color: #C0C0C0 !important;
+  color: var(--color-dark) !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991px) {
+  .hero-full {
+    padding: 30px;
   }
-  .hero-description {
-    font-size: 13px;
-    margin-bottom: 30px;
+  .pane-title {
+    font-size: clamp(24px, 7vw, 34px);
+    margin-bottom: 16px;
   }
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
+  .pane-description {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 575px) {
+  .hero-full {
+    padding: 24px 16px;
   }
 }
 </style>
+
+<script>
+function switchBrandLocal(brand) {
+  if (window.switchBrand) {
+    window.switchBrand(brand);
+  }
+}
+
+// Particle/Sparkles Canvas script for luxury feel
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('splitSparkleCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let width = canvas.width = canvas.offsetWidth;
+  let height = canvas.height = canvas.offsetHeight;
+  
+  window.addEventListener('resize', () => {
+    width = canvas.width = canvas.offsetWidth;
+    height = canvas.height = canvas.offsetHeight;
+  });
+
+  const particles = [];
+  const maxParticles = 60;
+  let hoverBrand = 'none';
+
+  // Listen to pane hover states to determine sparkle color
+  const paneGold = document.getElementById('paneGold');
+  const paneSilver = document.getElementById('paneSilver');
+  
+  if (paneGold && paneSilver) {
+    paneGold.addEventListener('mouseenter', () => hoverBrand = 'gold');
+    paneGold.addEventListener('mouseleave', () => hoverBrand = 'none');
+    paneSilver.addEventListener('mouseenter', () => hoverBrand = 'silver');
+    paneSilver.addEventListener('mouseleave', () => hoverBrand = 'none');
+  }
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.size = Math.random() * 2.5 + 0.5;
+      this.speedX = Math.random() * 0.4 - 0.2;
+      this.speedY = Math.random() * -0.6 - 0.2;
+      this.alpha = Math.random() * 0.5 + 0.1;
+      this.fadeSpeed = Math.random() * 0.005 + 0.002;
+      this.color = '#C8A13D'; // Default gold
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.alpha -= this.fadeSpeed;
+
+      // Color based on active hover or pane location
+      if (this.x < width / 2) {
+        this.color = hoverBrand === 'silver' ? '#C0C0C0' : '#C8A13D';
+      } else {
+        this.color = hoverBrand === 'gold' ? '#C8A13D' : '#C0C0C0';
+      }
+
+      if (this.alpha <= 0 || this.y < 0) {
+        this.x = Math.random() * width;
+        this.y = height + 10;
+        this.alpha = Math.random() * 0.6 + 0.2;
+        this.size = Math.random() * 2.5 + 0.5;
+      }
+    }
+
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  for (let i = 0; i < maxParticles; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+});
+</script>

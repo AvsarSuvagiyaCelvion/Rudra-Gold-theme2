@@ -12,15 +12,45 @@
 }
 {% endschema %}
 
+{%- assign selected_brand = 'gold' -%}
+{%- if request.query_string contains 'brand=silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.query_string contains 'brand=gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.path contains 'gold' or request.path contains 'rudra-gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif product != blank -%}
+  {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+  {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  {%- assign collection_handle_down = collection.handle | downcase -%}
+  {%- if collection_handle_down contains 'silver' or collection_handle_down contains 'grand-mother' or collection_handle_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- endif -%}
+
 <footer class="site-footer">
   <div class="container footer-top-padding">
     <div class="footer-grid">
       
       <!-- Brand Profile column -->
       <div class="footer-col brand-col">
-        <h2 class="footer-logo">RUDRA GOLD</h2>
-        <p class="footer-tagline">"Timeless Purity, Crafted for Royalty"</p>
-        <p class="footer-about">Crafting legacy bridal jewellery and conflict-free solitaire diamonds. A century-long trust built on metal melt purity and hallmark transparency.</p>
+        <!-- Gold Version -->
+        <div class="brand-gold-only">
+          <h2 class="footer-logo">RUDRA GOLD</h2>
+          <p class="footer-tagline">"Timeless Purity, Crafted for Royalty"</p>
+          <p class="footer-about">Crafting legacy bridal jewellery and conflict-free solitaire diamonds. A century-long trust built on metal melt purity and hallmark transparency.</p>
+        </div>
+        <!-- Silver Version -->
+        <div class="brand-silver-only">
+          <h2 class="footer-logo" style="color: #C0C0C0;">THE GRAND MOTHER</h2>
+          <p class="footer-tagline">"Sleek Elegance, Silver & Diamond"</p>
+          <p class="footer-about">Premium 925 sterling silver and anti-tarnish diamond essentials for modern daily luxury. Curated collections certified for purity and longevity.</p>
+        </div>
         
         <!-- Address & Contact Info -->
         <div class="footer-contact-info" style="margin-bottom: 20px; font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6;">
@@ -28,7 +58,24 @@
             <strong>Office:</strong> 340, First Floor, Varsha Society, Matavadi, Varachha, Surat - 395006
           </p>
           <p>
-            <strong>Phone/WhatsApp:</strong> <a href="https://wa.me/917405544338" style="color: var(--color-gold);">+91 74055 44338</a>
+            <strong>Phone/WhatsApp:</strong> 
+            {%- if selected_brand == 'silver' -%}
+              {%- assign num = settings.whatsapp_silver_number | default: '918849486223' -%}
+              {%- assign msg = settings.whatsapp_silver_message | default: 'Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery.' | url_encode -%}
+              {%- assign display_phone = '+91 88494 86223' -%}
+              {%- if settings.whatsapp_silver_number != blank -%}
+                {%- assign display_phone = settings.whatsapp_silver_number -%}
+              {%- endif -%}
+              <a href="https://wa.me/{{ num }}?text={{ msg }}" data-contact-phone-link style="color: #C0C0C0;">{{ display_phone }}</a>
+            {%- else -%}
+              {%- assign num = settings.whatsapp_gold_number | default: '917405544338' -%}
+              {%- assign msg = settings.whatsapp_gold_message | default: 'Hello Rudra Gold, I would like to inquire about your gold jewellery.' | url_encode -%}
+              {%- assign display_phone = '+91 74055 44338' -%}
+              {%- if settings.whatsapp_gold_number != blank -%}
+                {%- assign display_phone = settings.whatsapp_gold_number -%}
+              {%- endif -%}
+              <a href="https://wa.me/{{ num }}?text={{ msg }}" data-contact-phone-link style="color: var(--color-gold);">{{ display_phone }}</a>
+            {%- endif -%}
           </p>
         </div>
         
@@ -45,12 +92,21 @@
       <!-- Quick Links column -->
       <div class="footer-col">
         <h3>Our Collections</h3>
-        <ul>
+        <!-- Gold Version -->
+        <ul class="brand-gold-only">
           <li><a href="/collections/bridal">Bridal Heritage</a></li>
           <li><a href="/collections/temple">Temple Gold Collection</a></li>
           <li><a href="/collections/daily-wear">Daily Wear Essentials</a></li>
           <li><a href="/collections/solitaires">Solitaire Diamonds</a></li>
           <li><a href="/collections/bangles">Bangles & Kadas</a></li>
+        </ul>
+        <!-- Silver Version -->
+        <ul class="brand-silver-only">
+          <li><a href="/collections/sterling-silver">Contemporary Sterling</a></li>
+          <li><a href="/collections/oxidized-silver">Oxidized Heritage</a></li>
+          <li><a href="/collections/silver-crystal">Silver Zirconia</a></li>
+          <li><a href="/collections/gifts-silver">Luxury Gifting</a></li>
+          <li><a href="/collections/silver-rings">Silver Rings</a></li>
         </ul>
       </div>
 
@@ -109,7 +165,8 @@
 
       <!-- Copyright -->
       <div class="footer-copyright">
-        {{ section.settings.copyright_text }}
+        <span class="brand-gold-only">{{ section.settings.copyright_text }}</span>
+        <span class="brand-silver-only">© 2026 THE GRAND MOTHER. All Rights Reserved.</span>
       </div>
 
      

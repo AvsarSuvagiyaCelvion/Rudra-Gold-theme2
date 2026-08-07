@@ -12,6 +12,43 @@
 }
 {% endschema %}
 
+{%- assign selected_brand = 'gold' -%}
+{%- if request.query_string contains 'brand=silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.query_string contains 'brand=gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.path contains 'gold' or request.path contains 'rudra-gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif product != blank -%}
+  {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+  {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  {%- assign collection_handle_down = collection.handle | downcase -%}
+  {%- if collection_handle_down contains 'silver' or collection_handle_down contains 'grand-mother' or collection_handle_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign display_phone = section.settings.phone -%}
+{%- assign display_whatsapp = section.settings.phone | remove: ' ' | remove: '+' -%}
+
+{%- if selected_brand == 'silver' -%}
+  {%- assign display_phone = '+91 88494 86223' -%}
+  {%- if settings.whatsapp_silver_number != blank -%}
+    {%- assign display_phone = settings.whatsapp_silver_number -%}
+  {%- endif -%}
+  {%- assign display_whatsapp = settings.whatsapp_silver_number | default: '918849486223' -%}
+{%- else -%}
+  {%- if settings.whatsapp_gold_number != blank -%}
+    {%- assign display_phone = settings.whatsapp_gold_number -%}
+    {%- assign display_whatsapp = settings.whatsapp_gold_number -%}
+  {%- endif -%}
+{%- endif -%}
+
 <section class="contact-page section-padding">
   <div class="container">
 
@@ -46,8 +83,11 @@
             </svg>
           </div>
           <div>
-            <h4>Phone & WhatsApp</h4>
-            <p><a href="https://wa.me/{{ section.settings.phone | remove: ' ' | remove: '+' }}">{{ section.settings.phone }}</a></p>
+            {%- assign msg = settings.whatsapp_gold_message | default: 'Hello Rudra Gold, I would like to inquire about your gold jewellery.' | url_encode -%}
+            {%- if selected_brand == 'silver' -%}
+              {%- assign msg = settings.whatsapp_silver_message | default: 'Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery.' | url_encode -%}
+            {%- endif -%}
+            <p><a href="https://wa.me/{{ display_whatsapp }}?text={{ msg }}" data-contact-phone-link>{{ display_phone }}</a></p>
           </div>
         </div>
 

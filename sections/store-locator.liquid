@@ -5,6 +5,27 @@
 }
 {% endschema %}
 
+{%- assign selected_brand = 'gold' -%}
+{%- if request.query_string contains 'brand=silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.query_string contains 'brand=gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- elsif request.path contains 'gold' or request.path contains 'rudra-gold' -%}
+  {%- assign selected_brand = 'gold' -%}
+{%- elsif product != blank -%}
+  {%- assign product_tags_down = product.tags | join: ',' | downcase -%}
+  {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  {%- assign collection_handle_down = collection.handle | downcase -%}
+  {%- if collection_handle_down contains 'silver' or collection_handle_down contains 'grand-mother' or collection_handle_down contains 'tgm' -%}
+    {%- assign selected_brand = 'silver' -%}
+  {%- endif -%}
+{%- endif -%}
+
 <section class="store-locator-page section-padding">
   <div class="container">
 
@@ -37,7 +58,23 @@
             </div>
             <div class="store-detail-row">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <a href="https://wa.me/917405544338">+91 74055 44338</a>
+              {%- if selected_brand == 'silver' -%}
+                {%- assign num = settings.whatsapp_silver_number | default: '918849486223' -%}
+                {%- assign msg = settings.whatsapp_silver_message | default: 'Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery.' | url_encode -%}
+                {%- assign display_phone = '+91 88494 86223' -%}
+                {%- if settings.whatsapp_silver_number != blank -%}
+                  {%- assign display_phone = settings.whatsapp_silver_number -%}
+                {%- endif -%}
+                <a href="https://wa.me/{{ num }}?text={{ msg }}" data-contact-phone-link>{{ display_phone }}</a>
+              {%- else -%}
+                {%- assign num = settings.whatsapp_gold_number | default: '917405544338' -%}
+                {%- assign msg = settings.whatsapp_gold_message | default: 'Hello Rudra Gold, I would like to inquire about your gold jewellery.' | url_encode -%}
+                {%- assign display_phone = '+91 74055 44338' -%}
+                {%- if settings.whatsapp_gold_number != blank -%}
+                  {%- assign display_phone = settings.whatsapp_gold_number -%}
+                {%- endif -%}
+                <a href="https://wa.me/{{ num }}?text={{ msg }}" data-contact-phone-link>{{ display_phone }}</a>
+              {%- endif -%}
             </div>
           </div>
           <a href="https://maps.google.com/?q=Varachha+Surat+Gujarat" target="_blank" rel="noopener" class="store-directions-btn">
