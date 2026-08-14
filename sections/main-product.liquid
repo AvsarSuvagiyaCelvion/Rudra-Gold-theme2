@@ -240,7 +240,7 @@
   <div class="container">
     
     <!-- Trust Badges Grid -->
-    <div class="trust-badges-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; margin-bottom: 60px;">
+    <div class="trust-badges-grid">
       <div class="trust-badge-item glass-card" style="padding: 24px;">
         <span style="font-size: 28px; display: block; margin-bottom: 12px;">🛡️</span>
         <h4 style="font-family: var(--font-serif); font-size: 16px; margin-bottom: 8px; color: var(--color-gold);">100% Insured Delivery</h4>
@@ -746,8 +746,43 @@
   }
 }
 
-@media (max-width: 480px) {
+.trust-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  text-align: center;
+  margin-bottom: 60px;
+}
 
+@media (max-width: 991px) {
+  .trust-badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 575px) {
+  .trust-badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .trust-badge-item {
+    padding: 16px 10px !important;
+  }
+  .trust-badge-item span {
+    font-size: 22px !important;
+    margin-bottom: 8px !important;
+  }
+  .trust-badge-item h4 {
+    font-size: 13px !important;
+    margin-bottom: 4px !important;
+  }
+  .trust-badge-item p {
+    font-size: 10px !important;
+    line-height: 1.35 !important;
+  }
   .pdp-booking-buttons {
     grid-template-columns: 1fr;
     gap: 10px;
