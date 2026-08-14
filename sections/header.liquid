@@ -264,125 +264,127 @@
   </div>
   <div class="mobile-menu-body">
     <!-- Gold Mobile Menu -->
-    <ul class="mobile-nav-list mobile-nav-gold">
-      {%- assign menu_handle = gold_menu_handle -%}
-      {%- for link in linklists[menu_handle].links -%}
-        {%- assign link_title_down = link.title | downcase -%}
-        {%- if link.links != blank -%}
-          <li class="mobile-nav-item has-submenu">
-            <button class="mobile-submenu-toggle" aria-expanded="false">
-              {{ link.title }}
-              <svg class="submenu-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
-            </button>
-            <ul class="mobile-submenu">
-              {%- if link_title_down == 'collections' or link_title_down == 'collection' -%}
-                <!-- Gold Menu Items -->
-                <div class="brand-menu-gold" style="width: 100%;">
-                  <li>
-                    <a href="/collections/bridal" class="mobile-submenu-link">
-                      <span class="title">Bridal Heritage</span>
-                      <span class="desc">Grand designs for royal weddings</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/collections/temple" class="mobile-submenu-link">
-                      <span class="title">Temple Gold</span>
-                      <span class="desc">Traditional hand-carved heritage</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/collections/daily-wear" class="mobile-submenu-link">
-                      <span class="title">Daily Wear</span>
-                      <span class="desc">Minimalist modern gold essentials</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/collections/solitaires" class="mobile-submenu-link">
-                      <span class="title">Solitaires</span>
-                      <span class="desc">Rare diamonds of timeless purity</span>
-                    </a>
-                  </li>
-                </div>
-              {%- else -%}
-                {%- for childlink in link.links -%}
-                  <li>
-                    <a href="{{ childlink.url }}" class="mobile-submenu-link">
-                      <span class="title">{{ childlink.title }}</span>
-                    </a>
-                  </li>
-                {%- endfor -%}
-              {%- endif -%}
-            </ul>
+    <ul class="mobile-nav-list mobile-nav-gold brand-gold-only">
+      <li class="mobile-nav-item">
+        <a href="/collections/all?brand=gold" class="mobile-nav-link">Catalog</a>
+      </li>
+      
+      <li class="mobile-nav-item has-submenu">
+        <button class="mobile-submenu-toggle" aria-expanded="false">
+          Jewellery
+          <svg class="submenu-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <ul class="mobile-submenu">
+          <li>
+            <a href="/collections/all?cat=rings&brand=gold" class="mobile-submenu-link">
+              <span class="title">Gold Rings</span>
+              <span class="desc">Bespoke bridal & daily gold bands</span>
+            </a>
           </li>
-        {%- else -%}
-          <li class="mobile-nav-item">
-            <a href="{{ link.url }}" class="mobile-nav-link {% if link.url contains '#vip' or link_title_down contains 'vip' %}vip-link{% endif %}" {% if link.url contains '#vip' or link_title_down contains 'vip' %}data-modal-type="vip-visit"{% endif %}>{{ link.title }}</a>
+          <li>
+            <a href="/collections/all?cat=chains&brand=gold" class="mobile-submenu-link">
+              <span class="title">Gold Chains & Necklaces</span>
+              <span class="desc">Hand-carved heritage temple harams</span>
+            </a>
           </li>
-        {%- endif -%}
-      {%- endfor -%}
+          <li>
+            <a href="/collections/all?cat=mangalsutras&brand=gold" class="mobile-submenu-link">
+              <span class="title">Gold Mangalsutras</span>
+              <span class="desc">Royal wedding bridal curations</span>
+            </a>
+          </li>
+          <li>
+            <a href="/collections/all?cat=bangles&brand=gold" class="mobile-submenu-link">
+              <span class="title">Gold Bracelets & Bangles</span>
+              <span class="desc">Traditional antique kada sets</span>
+            </a>
+          </li>
+          <li>
+            <a href="/collections/all?cat=pendants&brand=gold" class="mobile-submenu-link">
+              <span class="title">Gold Pendants</span>
+              <span class="desc">Certified solitaire diamond drops</span>
+            </a>
+          </li>
+          <li>
+            <a href="/collections/all?cat=earrings&brand=gold" class="mobile-submenu-link">
+              <span class="title">Gold Earrings</span>
+              <span class="desc">Heritage jhumkas & stud drop earrings</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="mobile-nav-item">
+        <a href="/pages/about-us" class="mobile-nav-link">About Us</a>
+      </li>
+
+      <li class="mobile-nav-item">
+        <a href="/pages/contact" class="mobile-nav-link">Contact</a>
+      </li>
     </ul>
 
     <!-- Silver Mobile Menu -->
-    <ul class="mobile-nav-list mobile-nav-silver">
-      {%- assign menu_handle = silver_menu_handle -%}
-      {%- for link in linklists[menu_handle].links -%}
-        {%- assign link_title_down = link.title | downcase -%}
-        {%- if link.links != blank -%}
-          <li class="mobile-nav-item has-submenu">
-            <button class="mobile-submenu-toggle" aria-expanded="false">
-              {{ link.title }}
-              <svg class="submenu-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
-            </button>
-            <ul class="mobile-submenu">
-              {%- if link_title_down == 'collections' or link_title_down == 'collection' -%}
-                <!-- Silver Menu Items -->
-                <div class="brand-menu-silver" style="width: 100%;">
-                  <li>
-                    <a href="/collections/sterling-silver" class="mobile-submenu-link">
-                      <span class="title">Contemporary Sterling</span>
-                      <span class="desc">Elegant daily 925 silver pieces</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/collections/oxidized-silver" class="mobile-submenu-link">
-                      <span class="title">Oxidized Heritage</span>
-                      <span class="desc">Artisanal hand-crafted vintage styles</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/collections/silver-crystal" class="mobile-submenu-link">
-                      <span class="title">Silver Zirconia</span>
-                      <span class="desc">Sparkling diamond-cut crystal accents</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/collections/gifts-silver" class="mobile-submenu-link">
-                      <span class="title">Luxury Gifting</span>
-                      <span class="desc">Curated silver gifts for loved ones</span>
-                    </a>
-                  </li>
-                </div>
-              {%- else -%}
-                {%- for childlink in link.links -%}
-                  <li>
-                    <a href="{{ childlink.url }}" class="mobile-submenu-link">
-                      <span class="title">{{ childlink.title }}</span>
-                    </a>
-                  </li>
-                {%- endfor -%}
-              {%- endif -%}
-            </ul>
+    <ul class="mobile-nav-list mobile-nav-silver brand-silver-only">
+      <li class="mobile-nav-item">
+        <a href="/collections/all?brand=silver" class="mobile-nav-link">Catalog</a>
+      </li>
+
+      <li class="mobile-nav-item has-submenu">
+        <button class="mobile-submenu-toggle" aria-expanded="false">
+          Jewellery
+          <svg class="submenu-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <ul class="mobile-submenu">
+          <li>
+            <a href="/collections/all?cat=rings&brand=silver" class="mobile-submenu-link">
+              <span class="title">Silver Rings</span>
+              <span class="desc">925 sterling zirconia solitaire bands</span>
+            </a>
           </li>
-        {%- else -%}
-          <li class="mobile-nav-item">
-            <a href="{{ link.url }}" class="mobile-nav-link {% if link.url contains '#vip' or link_title_down contains 'vip' %}vip-link{% endif %}" {% if link.url contains '#vip' or link_title_down contains 'vip' %}data-modal-type="vip-visit"{% endif %}>{{ link.title }}</a>
+          <li>
+            <a href="/collections/all?cat=chains&brand=silver" class="mobile-submenu-link">
+              <span class="title">Silver Chains & Necklaces</span>
+              <span class="desc">Anti-tarnish modern silver chokers</span>
+            </a>
           </li>
-        {%- endif -%}
-      {%- endfor -%}
+          <li>
+            <a href="/collections/all?cat=mangalsutras&brand=silver" class="mobile-submenu-link">
+              <span class="title">Silver Mangalsutras</span>
+              <span class="desc">Minimalist sterling silver designs</span>
+            </a>
+          </li>
+          <li>
+            <a href="/collections/all?cat=bangles&brand=silver" class="mobile-submenu-link">
+              <span class="title">Silver Bracelets & Anklets</span>
+              <span class="desc">Contemporary tennis & charm bracelets</span>
+            </a>
+          </li>
+          <li>
+            <a href="/collections/all?cat=pendants&brand=silver" class="mobile-submenu-link">
+              <span class="title">Silver Pendants</span>
+              <span class="desc">Crystal lab gem pendant drops</span>
+            </a>
+          </li>
+          <li>
+            <a href="/collections/all?cat=earrings&brand=silver" class="mobile-submenu-link">
+              <span class="title">Silver Earrings</span>
+              <span class="desc">Minimalist daily studs & hoops</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="mobile-nav-item">
+        <a href="/pages/about-us" class="mobile-nav-link">About Us</a>
+      </li>
+
+      <li class="mobile-nav-item">
+        <a href="/pages/contact" class="mobile-nav-link">Contact</a>
+      </li>
     </ul>
   </div>
   <div class="mobile-menu-footer">
