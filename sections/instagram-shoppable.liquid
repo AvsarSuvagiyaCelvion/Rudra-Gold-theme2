@@ -1,18 +1,89 @@
 {% schema %}
 {
-  "name": "Shoppable Instagram",
+  "name": "Instagram Follow Section",
   "settings": [
     {
       "type": "text",
       "id": "subtitle",
-      "label": "Section Subtitle",
+      "label": "Gold Subtitle",
       "default": "LIFESTYLE INSPIRATION"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Section Title",
-      "default": "Shop The Royal Look"
+      "label": "Gold Title",
+      "default": "Follow Our Instagram Journey"
+    },
+    {
+      "type": "text",
+      "id": "gold_handle",
+      "label": "Gold Instagram Handle",
+      "default": "@rudragold_official"
+    },
+    {
+      "type": "url",
+      "id": "gold_url",
+      "label": "Gold Instagram Profile URL"
+    },
+    {
+      "type": "text",
+      "id": "silver_subtitle",
+      "label": "Silver Subtitle",
+      "default": "THE GRAND MOTHER • STERLING SILVER"
+    },
+    {
+      "type": "text",
+      "id": "silver_title",
+      "label": "Silver Title",
+      "default": "Follow TGM on Instagram"
+    },
+    {
+      "type": "text",
+      "id": "silver_handle",
+      "label": "Silver Instagram Handle",
+      "default": "@thegrandmother_official"
+    },
+    {
+      "type": "url",
+      "id": "silver_url",
+      "label": "Silver Instagram Profile URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram_post",
+      "name": "Instagram Post",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Post Photo (Upload in Admin)"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Post Caption",
+          "default": "Heritage Gold Collection"
+        },
+        {
+          "type": "url",
+          "id": "post_url",
+          "label": "Post Instagram Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Follow Section",
+      "blocks": [
+        { "type": "instagram_post", "settings": { "caption": "Royal Temple Carvings" } },
+        { "type": "instagram_post", "settings": { "caption": "Certified Bridal Heritage" } },
+        { "type": "instagram_post", "settings": { "caption": "Handcrafted Solitaires" } },
+        { "type": "instagram_post", "settings": { "caption": "Antique Gold Bangles" } },
+        { "type": "instagram_post", "settings": { "caption": "Master Karigar Artistry" } },
+        { "type": "instagram_post", "settings": { "caption": "Bespoke Boutique Preview" } }
+      ]
     }
   ]
 }
@@ -21,86 +92,352 @@
 <section class="instagram-shoppable section-padding">
   <div class="container">
     
-    <div class="section-header">
-      <span class="section-subtitle">{{ section.settings.subtitle }}</span>
-      <h2 class="section-title">{{ section.settings.title }}</h2>
+    <!-- GOLD BRAND INSTAGRAM FOLLOW -->
+    <div class="brand-gold-only">
+      <div class="section-header text-center">
+        <span class="section-subtitle">{{ section.settings.subtitle }} • {{ section.settings.gold_handle }}</span>
+        <h2 class="section-title">{{ section.settings.title }}</h2>
+        <p class="insta-description">
+          Join our royal community on Instagram for daily handcrafted heritage inspirations, bespoke karigar stories, and exclusive boutique previews.
+        </p>
+
+        <a href="{{ section.settings.gold_url | default: 'https://instagram.com' }}" target="_blank" class="insta-follow-btn gold-insta-btn">
+          <svg class="insta-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          Follow {{ section.settings.gold_handle }}
+        </a>
+      </div>
+
+      <div class="insta-grid">
+        {%- assign gold_blocks = section.blocks | where: "type", "instagram_post" -%}
+        {%- if gold_blocks.size > 0 -%}
+          {%- for block in gold_blocks -%}
+            {%- assign photo_url = "" -%}
+            {%- if block.settings.image != blank -%}
+              {%- assign photo_url = block.settings.image | image_url: width: 600 -%}
+            {%- endif -%}
+            {%- if photo_url == blank -%}
+              {%- assign mod_idx = forloop.index0 | modulo: 6 -%}
+              {%- if mod_idx == 0 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 1 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 2 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 3 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 4 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=400&q=80" -%}
+              {%- else -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" -%}
+              {%- endif -%}
+            {%- endif -%}
+
+            <a href="{{ block.settings.post_url | default: section.settings.gold_url | default: 'https://instagram.com' }}" target="_blank" class="insta-item" {{ block.shopify_attributes }}>
+              <img src="{{ photo_url }}" alt="{{ block.settings.caption }}" loading="lazy">
+              <div class="insta-overlay">
+                <div class="insta-hover-box">
+                  <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                  <span class="insta-hover-text">{{ block.settings.caption }}</span>
+                </div>
+              </div>
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Default Fallback Grid -->
+          <a href="https://instagram.com" target="_blank" class="insta-item">
+            <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" alt="Bridal Heritage" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Royal Temple Carvings</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="https://instagram.com" target="_blank" class="insta-item">
+            <img src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=400&q=80" alt="Gold Necklaces" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Certified Bridal Heritage</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="https://instagram.com" target="_blank" class="insta-item">
+            <img src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=400&q=80" alt="Solitaires" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Handcrafted Solitaires</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="https://instagram.com" target="_blank" class="insta-item">
+            <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=400&q=80" alt="Bangles" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Antique Gold Bangles</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="https://instagram.com" target="_blank" class="insta-item">
+            <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=400&q=80" alt="Karigar Art" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Master Karigar Artistry</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="https://instagram.com" target="_blank" class="insta-item">
+            <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" alt="Boutique Preview" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Bespoke Boutique Preview</span>
+              </div>
+            </div>
+          </a>
+        {%- endif -%}
+      </div>
     </div>
 
-    <!-- Instagram Gallery Grid -->
-    <div class="insta-grid">
-      
-      <!-- Photo 1 -->
-      <div class="insta-item">
-        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" alt="Rudra Gold Bridal Curation" loading="lazy">
-        <div class="insta-overlay">
-          <span class="insta-shop-dot" onclick="triggerQuickView('Mayur Heritage Temple Ring', 68000, 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80')">
-            <span class="pulse"></span>
-            Shop Ring
-          </span>
-        </div>
+    <!-- SILVER BRAND INSTAGRAM FOLLOW -->
+    <div class="brand-silver-only">
+      <div class="section-header text-center">
+        <span class="section-subtitle" style="color: #C0C0C0;">{{ section.settings.silver_subtitle }} • {{ section.settings.silver_handle }}</span>
+        <h2 class="section-title">{{ section.settings.silver_title }}</h2>
+        <p class="insta-description">
+          Follow The Grand Mother on Instagram for daily 925 sterling silver styling, anti-tarnish diamond trends, and modern minimalist lookbooks.
+        </p>
+
+        <a href="{{ section.settings.silver_url | default: 'https://instagram.com' }}" target="_blank" class="insta-follow-btn silver-insta-btn">
+          <svg class="insta-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          Follow {{ section.settings.silver_handle }}
+        </a>
       </div>
 
-      <!-- Photo 2 -->
-      <div class="insta-item">
-        <img src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=400&q=80" alt="Necklace Styling" loading="lazy">
-        <div class="insta-overlay">
-          <span class="insta-shop-dot" onclick="triggerQuickView('Rudra Royal Signature Necklace', 245000, 'https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80')">
-            <span class="pulse"></span>
-            Shop Necklace
-          </span>
-        </div>
-      </div>
+      <div class="insta-grid">
+        {%- assign silver_blocks = section.blocks | where: "type", "instagram_post" -%}
+        {%- if silver_blocks.size > 0 -%}
+          {%- for block in silver_blocks -%}
+            {%- assign photo_url = "" -%}
+            {%- if block.settings.image != blank -%}
+              {%- assign photo_url = block.settings.image | image_url: width: 600 -%}
+            {%- endif -%}
+            {%- if photo_url == blank -%}
+              {%- assign mod_idx = forloop.index0 | modulo: 6 -%}
+              {%- if mod_idx == 0 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 1 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 2 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 3 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1549439602-43ebca2327af?auto=format&fit=crop&w=400&q=80" -%}
+              {%- elsif mod_idx == 4 -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=400&q=80" -%}
+              {%- else -%}
+                {%- assign photo_url = "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" -%}
+              {%- endif -%}
+            {%- endif -%}
 
-      <!-- Photo 3 -->
-      <div class="insta-item">
-        <img src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=400&q=80" alt="Earrings Curation" loading="lazy">
-        <div class="insta-overlay">
-          <span class="insta-shop-dot" onclick="triggerQuickView('Vajra Sparkling Solitaire Drops', 290000, 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80')">
-            <span class="pulse"></span>
-            Shop Solitaires
-          </span>
-        </div>
-      </div>
+            <a href="{{ block.settings.post_url | default: section.settings.silver_url | default: 'https://instagram.com' }}" target="_blank" class="insta-item" style="border-color: rgba(192, 192, 192, 0.25);" {{ block.shopify_attributes }}>
+              <img src="{{ photo_url }}" alt="{{ block.settings.caption }}" loading="lazy">
+              <div class="insta-overlay">
+                <div class="insta-hover-box">
+                  <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #C0C0C0;">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                  <span class="insta-hover-text">{{ block.settings.caption }}</span>
+                </div>
+              </div>
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Default Silver Fallback Grid -->
+          <a href="https://instagram.com" target="_blank" class="insta-item" style="border-color: rgba(192, 192, 192, 0.25);">
+            <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" alt="Contemporary Sterling" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #C0C0C0;">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">925 Sterling Rings</span>
+              </div>
+            </div>
+          </a>
 
-      <!-- Photo 4 -->
-      <div class="insta-item">
-        <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=400&q=80" alt="Bangle Stack styling" loading="lazy">
-        <div class="insta-overlay">
-          <span class="insta-shop-dot" onclick="triggerQuickView('Glow Silhouette Bangles Set', 165000, 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80')">
-            <span class="pulse"></span>
-            Shop Bangles
-          </span>
-        </div>
-      </div>
+          <a href="https://instagram.com" target="_blank" class="insta-item" style="border-color: rgba(192, 192, 192, 0.25);">
+            <img src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=400&q=80" alt="Oxidized Silver" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #C0C0C0;">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Oxidized Chokers</span>
+              </div>
+            </div>
+          </a>
 
-      <!-- Photo 5 -->
-      <div class="insta-item">
-        <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=400&q=80" alt="Diamond Bracelet" loading="lazy">
-        <div class="insta-overlay">
-          <span class="insta-shop-dot" onclick="triggerQuickView('Classic Solitaire Tennis Bracelet', 450000, 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80')">
-            <span class="pulse"></span>
-            Shop Bracelet
-          </span>
-        </div>
-      </div>
+          <a href="https://instagram.com" target="_blank" class="insta-item" style="border-color: rgba(192, 192, 192, 0.25);">
+            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80" alt="Silver Zirconia" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #C0C0C0;">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Silver Zirconia Tennis</span>
+              </div>
+            </div>
+          </a>
 
-      <!-- Photo 6 -->
-      <div class="insta-item">
-        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" alt="Ring closeups" loading="lazy">
-        <div class="insta-overlay">
-          <span class="insta-shop-dot" onclick="triggerQuickView('Royal Peacock Gold Band', 49500, 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80')">
-            <span class="pulse"></span>
-            Shop Band
-          </span>
-        </div>
-      </div>
+          <a href="https://instagram.com" target="_blank" class="insta-item" style="border-color: rgba(192, 192, 192, 0.25);">
+            <img src="https://images.unsplash.com/photo-1549439602-43ebca2327af?auto=format&fit=crop&w=400&q=80" alt="Silver Gifts" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #C0C0C0;">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Modern Silver Gifting</span>
+              </div>
+            </div>
+          </a>
 
+          <a href="https://instagram.com" target="_blank" class="insta-item" style="border-color: rgba(192, 192, 192, 0.25);">
+            <img src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=400&q=80" alt="Minimalist Silver" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #C0C0C0;">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Minimalist Essentials</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="https://instagram.com" target="_blank" class="insta-item" style="border-color: rgba(192, 192, 192, 0.25);">
+            <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" alt="Silver Solitaire" loading="lazy">
+            <div class="insta-overlay">
+              <div class="insta-hover-box">
+                <svg class="insta-hover-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #C0C0C0;">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="insta-hover-text">Solitaire Silver Bands</span>
+              </div>
+            </div>
+          </a>
+        {%- endif -%}
+      </div>
     </div>
 
   </div>
 </section>
 
 <style>
+.section-header.text-center {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.insta-description {
+  max-width: 600px;
+  margin: 10px auto 20px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.insta-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gold-insta-btn {
+  background: linear-gradient(135deg, #C8A13D 0%, #E6C575 50%, #B38828 100%);
+  color: #000000;
+}
+
+.gold-insta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(200, 161, 61, 0.4);
+}
+
+.silver-insta-btn {
+  background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 50%, #A0A0A0 100%);
+  color: #000000;
+}
+
+.silver-insta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.4);
+}
+
 .insta-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -110,9 +447,12 @@
 .insta-item {
   position: relative;
   overflow: hidden;
-  border-radius: 2px;
-  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(200, 161, 61, 0.25);
   aspect-ratio: 1 / 1;
+  display: block;
+  text-decoration: none;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .insta-item img {
@@ -128,91 +468,56 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(11, 11, 11, 0.5);
+  background: rgba(11, 11, 11, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   transition: var(--transition-fast);
   z-index: 2;
+  padding: 16px;
+  text-align: center;
+}
+
+.insta-hover-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.insta-hover-icon {
+  color: var(--color-gold);
+  transition: transform 0.3s ease;
+}
+
+.insta-hover-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 .insta-item:hover img {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .insta-item:hover .insta-overlay {
   opacity: 1;
 }
 
-.insta-shop-dot {
-  background-color: var(--color-dark);
-  color: var(--color-gold);
-  border: 1px solid var(--color-gold);
-  padding: 8px 16px;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: var(--transition-fast);
+.insta-item:hover .insta-hover-icon {
+  transform: scale(1.2);
 }
 
-.insta-shop-dot:hover {
-  background-color: var(--color-gold);
-  color: var(--color-dark);
-}
-
-.insta-shop-dot .pulse {
-  width: 6px;
-  height: 6px;
-  background-color: var(--color-gold);
-  border-radius: 50%;
-  display: inline-block;
-  animation: pulseDot 1.5s infinite;
-}
-
-.insta-shop-dot:hover .pulse {
-  background-color: var(--color-dark);
-}
-
-@keyframes pulseDot {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
-  }
-  70% {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
-  }
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 991px) {
   .insta-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 768px) {
-  .insta-overlay {
-    opacity: 1 !important;
-    background: rgba(11, 11, 11, 0.25) !important;
-  }
-  .insta-shop-dot {
-    padding: 6px 12px !important;
-    font-size: 9px !important;
-  }
-}
-
-@media (max-width: 575px) {
+@media (max-width: 576px) {
   .insta-grid {
     grid-template-columns: repeat(2, 1fr);
   }
