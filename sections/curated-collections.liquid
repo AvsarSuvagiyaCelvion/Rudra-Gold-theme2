@@ -18,7 +18,7 @@
       "type": "collection_list",
       "id": "gold_collections",
       "label": "Gold Collections (Select in Admin)",
-      "limit": 6
+      "limit": 8
     },
     {
       "type": "text",
@@ -36,7 +36,7 @@
       "type": "collection_list",
       "id": "silver_collections",
       "label": "Silver Collections (Select in Admin)",
-      "limit": 6
+      "limit": 8
     }
   ],
   "blocks": [
@@ -104,7 +104,7 @@
         <h2 class="section-title">{{ section.settings.title }}</h2>
       </div>
 
-      <div class="collections-grid">
+      <div class="collections-grid single-row-carousel">
         {%- assign gold_blocks = section.blocks | where: "type", "collection_card" -%}
         {%- assign gold_rendered = 0 -%}
 
@@ -115,14 +115,20 @@
             {%- if coll_img == blank -%}
               {%- assign coll_img = "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" -%}
             {%- endif -%}
-            <a href="{{ coll.url }}" class="collection-item {% if forloop.first %}large-item{% endif %}">
+            <a href="{{ coll.url }}" class="collection-item">
               <div class="collection-img-wrapper">
                 <img src="{{ coll_img }}" alt="{{ coll.title }}" loading="lazy">
               </div>
               <div class="collection-overlay-content">
                 <span class="collection-tag">Heritage Curation</span>
                 <h3>{{ coll.title }}</h3>
-                <span class="collection-cta">Explore Collection</span>
+                <span class="collection-cta">
+                  Explore Collection
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
               </div>
             </a>
           {%- endfor -%}
@@ -154,14 +160,20 @@
                 {%- assign item_img = "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" -%}
               {%- endif -%}
 
-              <a href="{{ item_url }}" class="collection-item {% if forloop.first %}large-item{% endif %}" {{ block.shopify_attributes }}>
+              <a href="{{ item_url }}" class="collection-item" {{ block.shopify_attributes }}>
                 <div class="collection-img-wrapper">
                   <img src="{{ item_img }}" alt="{{ item_title }}" loading="lazy">
                 </div>
                 <div class="collection-overlay-content">
                   <span class="collection-tag">{{ block.settings.custom_tag | default: "Handcrafted" }}</span>
                   <h3>{{ item_title }}</h3>
-                  <span class="collection-cta">Discover Royalty</span>
+                  <span class="collection-cta">
+                    Discover Royalty
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </span>
                 </div>
               </a>
             {%- endif -%}
@@ -169,15 +181,21 @@
         {%- endif -%}
 
         {%- if gold_rendered == 0 -%}
-          <!-- Default Fallback Cards -->
-          <a href="/collections/all?cat=bridal&brand=gold" class="collection-item large-item">
+          <!-- Default Single-Row Fallback Cards -->
+          <a href="/collections/all?cat=bridal&brand=gold" class="collection-item">
             <div class="collection-img-wrapper">
               <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" alt="Bridal Heritage" loading="lazy">
             </div>
             <div class="collection-overlay-content">
               <span class="collection-tag">Exquisite Craft</span>
               <h3>Bridal Heritage</h3>
-              <span class="collection-cta">Discover Royalty</span>
+              <span class="collection-cta">
+                Discover Royalty
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </div>
           </a>
 
@@ -188,7 +206,13 @@
             <div class="collection-overlay-content">
               <span class="collection-tag">Traditional</span>
               <h3>Temple Gold</h3>
-              <span class="collection-cta">View Pieces</span>
+              <span class="collection-cta">
+                View Pieces
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </div>
           </a>
 
@@ -199,7 +223,13 @@
             <div class="collection-overlay-content">
               <span class="collection-tag">Brilliance</span>
               <h3>Solitaire Diamonds</h3>
-              <span class="collection-cta">Explore Rare</span>
+              <span class="collection-cta">
+                Explore Rare
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </div>
           </a>
 
@@ -210,7 +240,13 @@
             <div class="collection-overlay-content">
               <span class="collection-tag">Modern Elegant</span>
               <h3>Daily Wear</h3>
-              <span class="collection-cta">Shop Minimalist</span>
+              <span class="collection-cta">
+                Shop Minimalist
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </div>
           </a>
         {%- endif -%}
@@ -224,7 +260,7 @@
         <h2 class="section-title">{{ section.settings.silver_title }}</h2>
       </div>
 
-      <div class="collections-grid">
+      <div class="collections-grid single-row-carousel">
         {%- assign silver_blocks = section.blocks | where: "type", "collection_card" -%}
         {%- assign silver_rendered = 0 -%}
 
@@ -235,14 +271,20 @@
             {%- if coll_img == blank -%}
               {%- assign coll_img = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" -%}
             {%- endif -%}
-            <a href="{{ coll.url }}" class="collection-item {% if forloop.first %}large-item{% endif %}" style="border-color: rgba(192, 192, 192, 0.25);">
+            <a href="{{ coll.url }}" class="collection-item" style="border-color: rgba(192, 192, 192, 0.25);">
               <div class="collection-img-wrapper">
                 <img src="{{ coll_img }}" alt="{{ coll.title }}" loading="lazy">
               </div>
               <div class="collection-overlay-content">
                 <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">925 Sterling</span>
                 <h3 style="color: #fff;">{{ coll.title }}</h3>
-                <span class="collection-cta" style="color: #fff;">Discover Silver</span>
+                <span class="collection-cta" style="color: #fff;">
+                  Discover Silver
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
               </div>
             </a>
           {%- endfor -%}
@@ -274,14 +316,20 @@
                 {%- assign item_img = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" -%}
               {%- endif -%}
 
-              <a href="{{ item_url }}" class="collection-item {% if forloop.first %}large-item{% endif %}" style="border-color: rgba(192, 192, 192, 0.25);" {{ block.shopify_attributes }}>
+              <a href="{{ item_url }}" class="collection-item" style="border-color: rgba(192, 192, 192, 0.25);" {{ block.shopify_attributes }}>
                 <div class="collection-img-wrapper">
                   <img src="{{ item_img }}" alt="{{ item_title }}" loading="lazy">
                 </div>
                 <div class="collection-overlay-content">
                   <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">{{ block.settings.custom_tag | default: "925 Sterling" }}</span>
                   <h3 style="color: #fff;">{{ item_title }}</h3>
-                  <span class="collection-cta" style="color: #fff;">Discover Silver</span>
+                  <span class="collection-cta" style="color: #fff;">
+                    Discover Silver
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </span>
                 </div>
               </a>
             {%- endif -%}
@@ -290,14 +338,20 @@
 
         {%- if silver_rendered == 0 -%}
           <!-- Default Silver Fallback Cards -->
-          <a href="/collections/all?cat=rhodium&brand=silver" class="collection-item large-item" style="border-color: rgba(192, 192, 192, 0.25);">
+          <a href="/collections/all?cat=rhodium&brand=silver" class="collection-item" style="border-color: rgba(192, 192, 192, 0.25);">
             <div class="collection-img-wrapper">
               <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" alt="Contemporary Sterling" loading="lazy">
             </div>
             <div class="collection-overlay-content">
               <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">925 Sterling</span>
               <h3 style="color: #fff;">Contemporary Sterling</h3>
-              <span class="collection-cta" style="color: #fff;">Discover Silver</span>
+              <span class="collection-cta" style="color: #fff;">
+                Discover Silver
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </div>
           </a>
 
@@ -308,7 +362,13 @@
             <div class="collection-overlay-content">
               <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">Artisanal</span>
               <h3 style="color: #fff;">Oxidized Heritage</h3>
-              <span class="collection-cta" style="color: #fff;">View Pieces</span>
+              <span class="collection-cta" style="color: #fff;">
+                View Pieces
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </div>
           </a>
 
@@ -319,7 +379,13 @@
             <div class="collection-overlay-content">
               <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">Shine</span>
               <h3 style="color: #fff;">Silver Zirconia</h3>
-              <span class="collection-cta" style="color: #fff;">Explore Crystals</span>
+              <span class="collection-cta" style="color: #fff;">
+                Explore Crystals
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </div>
           </a>
         {%- endif -%}
@@ -330,115 +396,165 @@
 </section>
 
 <style>
-.collections-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+.collections-grid.single-row-carousel {
+  display: flex;
+  flex-direction: row;
   gap: 24px;
   width: 100%;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Luxury Gold Scrollbar */
+.collections-grid.single-row-carousel::-webkit-scrollbar {
+  height: 4px;
+}
+.collections-grid.single-row-carousel::-webkit-scrollbar-track {
+  background: rgba(200, 161, 61, 0.1);
+  border-radius: 4px;
+}
+.collections-grid.single-row-carousel::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 4px;
+}
+
+html.theme-silver .collections-grid.single-row-carousel::-webkit-scrollbar-thumb {
+  background: #C0C0C0;
 }
 
 .collection-item {
+  flex: 1 0 270px;
   position: relative;
-  display: block;
-  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 14px;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
-  border: 1px solid var(--color-gray-border);
+  height: 390px;
+  border: 1px solid rgba(200, 161, 61, 0.25);
   text-decoration: none;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background-color: #0b0b0b;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .collection-item:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(200, 161, 61, 0.3);
+  border-color: var(--color-gold);
 }
 
-.collection-item.large-item {
-  grid-column: span 2;
-  grid-row: span 1;
-  aspect-ratio: 16 / 9;
+html.theme-silver .collection-item:hover {
+  box-shadow: 0 20px 40px rgba(192, 192, 192, 0.3);
+  border-color: #C0C0C0;
 }
 
 .collection-img-wrapper {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+  overflow: hidden;
 }
 
 .collection-img-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+  filter: brightness(0.85) contrast(1.05);
 }
 
 .collection-item:hover .collection-img-wrapper img {
-  transform: scale(1.08);
+  transform: scale(1.14) rotate(0.8deg);
+  filter: brightness(1) contrast(1.1);
 }
 
 .collection-overlay-content {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.8) 100%);
+  position: relative;
+  z-index: 3;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.92) 100%);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 24px;
-  z-index: 2;
-  color: #ffffff;
+  align-items: flex-start;
+  transition: transform 0.4s ease;
 }
 
 .collection-tag {
   font-size: 10px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: rgba(200, 161, 61, 0.25);
-  border: 1px solid rgba(200, 161, 61, 0.5);
+  background: rgba(200, 161, 61, 0.2);
+  border: 1px solid rgba(200, 161, 61, 0.6);
   color: #fff;
-  padding: 3px 8px;
-  border-radius: 2px;
-  width: fit-content;
-  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
   font-weight: 600;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.collection-item:hover .collection-tag {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #000;
+}
+
+html.theme-silver .collection-item:hover .collection-tag {
+  background: #C0C0C0;
+  border-color: #C0C0C0;
+  color: #000;
 }
 
 .collection-overlay-content h3 {
   font-family: var(--font-serif);
   font-size: 22px;
   color: #ffffff;
-  margin-bottom: 6px;
-  font-weight: 500;
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.collection-item:hover .collection-overlay-content h3 {
+  color: #FFF3C4;
+  transform: translateX(4px);
 }
 
 .collection-cta {
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-gold);
-  font-weight: 600;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-@media (max-width: 991px) {
-  .collections-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .collection-item.large-item {
-    grid-column: span 2;
-  }
+.collection-cta svg {
+  transition: transform 0.3s ease;
 }
 
-@media (max-width: 576px) {
-  .collections-grid {
-    grid-template-columns: 1fr;
-  }
-  .collection-item.large-item {
-    grid-column: span 1;
-    aspect-ratio: 4 / 3;
+.collection-item:hover .collection-cta {
+  color: #ffffff;
+}
+
+.collection-item:hover .collection-cta svg {
+  transform: translateX(6px);
+}
+
+@media (max-width: 768px) {
+  .collection-item {
+    flex: 1 0 220px;
+    height: 320px;
   }
 }
 </style>

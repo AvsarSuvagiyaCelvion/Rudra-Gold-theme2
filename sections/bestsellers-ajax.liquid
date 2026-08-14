@@ -1,18 +1,45 @@
 {% schema %}
 {
-  "name": "Bestsellers AJAX Grid",
+  "name": "Bestsellers Grid",
   "settings": [
     {
       "type": "text",
       "id": "subtitle",
-      "label": "Section Subtitle",
+      "label": "Gold Subtitle",
       "default": "CURATED EXQUISITE CREATIONS"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Section Title",
+      "label": "Gold Section Title",
       "default": "Rudra Bestsellers"
+    },
+    {
+      "type": "collection",
+      "id": "gold_collection",
+      "label": "Gold Bestsellers Collection (Select in Admin)"
+    },
+    {
+      "type": "text",
+      "id": "silver_subtitle",
+      "label": "Silver Subtitle",
+      "default": "THE GRAND MOTHER • STERLING SILVER"
+    },
+    {
+      "type": "text",
+      "id": "silver_title",
+      "label": "Silver Section Title",
+      "default": "Silver Bestsellers"
+    },
+    {
+      "type": "collection",
+      "id": "silver_collection",
+      "label": "Silver Bestsellers Collection (Select in Admin)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bestsellers Grid"
     }
   ]
 }
@@ -23,134 +50,57 @@
   <section class="bestsellers-ajax section-padding">
     <div class="container">
       
-      <div class="section-header">
+      <div class="section-header text-center">
         <span class="section-subtitle">{{ section.settings.subtitle }}</span>
         <h2 class="section-title">{{ section.settings.title }}</h2>
       </div>
 
-      {%- assign gold_rings_collection = collections['gold-rings'] -%}
-      {%- assign gold_chains_collection = collections['gold-chains'] -%}
-      {%- assign mangalsutras_collection = collections['mangalsutras'] -%}
+      {%- assign gold_coll = section.settings.gold_collection | default: collections['bestsellers'] | default: collections['all'] -%}
 
-      <!-- Category Tabs Navigation -->
-      <div class="tabs-nav-wrapper">
-        <div class="tabs-nav">
-          <button class="tab-btn active" data-tab-target="gold-rings">Gold Rings</button>
-          <button class="tab-btn" data-tab-target="gold-chains">Gold Chains</button>
-          <button class="tab-btn" data-tab-target="gold-mangalsutras">Mangalsutras</button>
-        </div>
+      <div class="product-grid bestsellers-product-grid">
+        {%- if gold_coll != blank and gold_coll.products.size > 0 -%}
+          {%- for product in gold_coll.products limit: 4 -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Premium Gold Fallbacks -->
+          {% render 'product-card',
+            title: "Mayur Heritage Temple Ring",
+            price: 68000,
+            image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+            purity: "22K Gold"
+          %}
+          {% render 'product-card',
+            title: "Rudra Royal Signature Necklace",
+            price: 245000,
+            image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
+            purity: "22K Gold"
+          %}
+          {% render 'product-card',
+            title: "Glow Silhouette Bangles Set",
+            price: 165000,
+            image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
+            purity: "22K Gold"
+          %}
+          {% render 'product-card',
+            title: "Imperial Diamond Solitaire Ring",
+            price: 185000,
+            image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
+            purity: "18K Gold"
+          %}
+        {%- endif -%}
       </div>
 
-      <!-- Tabs Content Grids -->
-      <div class="tabs-content">
-        <!-- Tab 1: Gold Rings -->
-        <div class="tab-pane active" id="tab-gold-rings">
-          <div class="product-grid">
-            {%- if gold_rings_collection.products.size > 0 -%}
-              {%- for product in gold_rings_collection.products limit: 4 -%}
-                {% render 'product-card', product: product %}
-              {%- endfor -%}
-            {%- else -%}
-              {% render 'product-card',
-                title: "Mayur Heritage Temple Ring",
-                price: 68000,
-                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              %}
-              {% render 'product-card',
-                title: "Royal Peacock Gold Band",
-                price: 49500,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
-                purity: "18K Gold"
-              %}
-              {% render 'product-card',
-                title: "Imperial Diamond Solitaire Ring",
-                price: 185000,
-                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-                purity: "18K Gold"
-              %}
-              {% render 'product-card',
-                title: "Ganga Jamuna Antique Ring",
-                price: 72000,
-                image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              %}
-            {%- endif -%}
-          </div>
-        </div>
-
-        <!-- Tab 2: Gold Chains -->
-        <div class="tab-pane" id="tab-gold-chains">
-          <div class="product-grid">
-            {%- if gold_chains_collection.products.size > 0 -%}
-              {%- for product in gold_chains_collection.products limit: 4 -%}
-                {% render 'product-card', product: product %}
-              {%- endfor -%}
-            {%- else -%}
-              {% render 'product-card',
-                title: "Rudra Royal Signature Necklace",
-                price: 245000,
-                image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              %}
-              {% render 'product-card',
-                title: "Nizami Pearl Heritage Choker",
-                price: 380000,
-                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              %}
-              {% render 'product-card',
-                title: "Chandra Prabha Temple Necklace",
-                price: 195000,
-                image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              %}
-              {% render 'product-card',
-                title: "Vajra Sparkling Solitaire Drops",
-                price: 290000,
-                image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80",
-                purity: "18K Gold"
-              %}
-            {%- endif -%}
-          </div>
-        </div>
-
-        <!-- Tab 3: Mangalsutras -->
-        <div class="tab-pane" id="tab-gold-mangalsutras">
-          <div class="product-grid">
-            {%- if mangalsutras_collection.products.size > 0 -%}
-              {%- for product in mangalsutras_collection.products limit: 4 -%}
-                {% render 'product-card', product: product %}
-              {%- endfor -%}
-            {%- else -%}
-              {% render 'product-card',
-                title: "Glow Silhouette Bangles Set",
-                price: 165000,
-                image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              %}
-              {% render 'product-card',
-                title: "Classic Solitaire Tennis Bracelet",
-                price: 450000,
-                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-                purity: "18K Gold"
-              %}
-              {% render 'product-card',
-                title: "Mayura Filigree Kada",
-                price: 215000,
-                image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              %}
-              {% render 'product-card',
-                title: "Aura Solitaire Drop Necklace",
-                price: 320000,
-                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-                purity: "18K Gold"
-              %}
-            {%- endif -%}
-          </div>
-        </div>
+      <div class="bestsellers-cta-wrapper">
+        <a href="/collections/all?sort_by=best-selling&brand=gold" class="btn-secondary bestsellers-cta-btn">
+          Explore All Bestsellers
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
+
     </div>
   </section>
 </div>
@@ -160,265 +110,122 @@
   <section class="bestsellers-ajax section-padding">
     <div class="container">
       
-      <div class="section-header">
-        <span class="section-subtitle">{{ section.settings.subtitle }}</span>
-        <h2 class="section-title">The Grand Mother Bestsellers</h2>
+      <div class="section-header text-center">
+        <span class="section-subtitle" style="color: #C0C0C0;">{{ section.settings.silver_subtitle }}</span>
+        <h2 class="section-title">{{ section.settings.silver_title }}</h2>
       </div>
 
-      {%- assign silver_rings_collection = collections['silver-rings'] -%}
-      {%- assign silver_chains_collection = collections['silver-chains'] | default: collections['silver-necklaces'] -%}
-      {%- assign silver_bracelets_collection = collections['silver-bracelets'] | default: collections['silver-bracelate'] -%}
+      {%- assign silver_coll = section.settings.silver_collection | default: collections['silver-bestsellers'] | default: collections['all'] -%}
 
-      <!-- Category Tabs Navigation -->
-      <div class="tabs-nav-wrapper">
-        <div class="tabs-nav">
-          <button class="tab-btn active" data-tab-target="silver-rings">Silver Rings</button>
-          <button class="tab-btn" data-tab-target="silver-chains">Silver Chains</button>
-          <button class="tab-btn" data-tab-target="silver-bracelets">Silver Bracelets</button>
-        </div>
+      <div class="product-grid bestsellers-product-grid">
+        {%- if silver_coll != blank and silver_coll.products.size > 0 -%}
+          {%- for product in silver_coll.products limit: 4 -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Premium Silver Fallbacks -->
+          {% render 'product-card',
+            title: "Classic Silver Solitaire Ring",
+            price: 8500,
+            image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+            purity: "925 Silver"
+          %}
+          {% render 'product-card',
+            title: "Contemporary Sterling Hoop Earrings",
+            price: 4200,
+            image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
+            purity: "925 Silver"
+          %}
+          {% render 'product-card',
+            title: "Vintage Oxidized Silver Choker",
+            price: 24000,
+            image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
+            purity: "925 Silver"
+          %}
+          {% render 'product-card',
+            title: "Silver Zirconia Tennis Bracelet",
+            price: 18000,
+            image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80",
+            purity: "925 Silver"
+          %}
+        {%- endif -%}
       </div>
 
-      <!-- Tabs Content Grids -->
-      <div class="tabs-content">
-        <!-- Tab 1: Silver Rings -->
-        <div class="tab-pane active" id="tab-silver-rings">
-          <div class="product-grid">
-            {%- if silver_rings_collection.products.size > 0 -%}
-              {%- for product in silver_rings_collection.products limit: 4 -%}
-                {% render 'product-card', product: product %}
-              {%- endfor -%}
-            {%- else -%}
-              {% render 'product-card',
-                title: "Classic Silver Solitaire Ring",
-                price: 8500,
-                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Minimalist Silver Stackable Band",
-                price: 3200,
-                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Sterling Silver Floral Ring",
-                price: 4900,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Oxidized Silver Band",
-                price: 3800,
-                image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-            {%- endif -%}
-          </div>
-        </div>
-
-        <!-- Tab 2: Silver Chains -->
-        <div class="tab-pane" id="tab-silver-chains">
-          <div class="product-grid">
-            {%- if silver_chains_collection.products.size > 0 -%}
-              {%- for product in silver_chains_collection.products limit: 4 -%}
-                {% render 'product-card', product: product %}
-              {%- endfor -%}
-            {%- else -%}
-              {% render 'product-card',
-                title: "Contemporary Sterling Hoop Earrings",
-                price: 4200,
-                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Oxidized Silver Drop Jhumkas",
-                price: 6800,
-                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Silver Zirconia Crystal Studs",
-                price: 3500,
-                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Artisanal Silver Earrings",
-                price: 5200,
-                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-            {%- endif -%}
-          </div>
-        </div>
-
-        <!-- Tab 3: Silver Bracelets -->
-        <div class="tab-pane" id="tab-silver-bracelets">
-          <div class="product-grid">
-            {%- if silver_bracelets_collection.products.size > 0 -%}
-              {%- for product in silver_bracelets_collection.products limit: 4 -%}
-                {% render 'product-card', product: product %}
-              {%- endfor -%}
-            {%- else -%}
-              {% render 'product-card',
-                title: "Vintage Oxidized Silver Choker",
-                price: 24000,
-                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Silver Zirconia Tennis Bracelet",
-                price: 18000,
-                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Artisanal Silver Filigree Bangle",
-                price: 15500,
-                image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-              {% render 'product-card',
-                title: "Silver Crystal Pendant Choker",
-                price: 12500,
-                image: "https://images.unsplash.com/photo-1549439602-43ebca2327af?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Silver"
-              %}
-            {%- endif -%}
-          </div>
-        </div>
+      <div class="bestsellers-cta-wrapper">
+        <a href="/collections/all?sort_by=best-selling&brand=silver" class="btn-secondary bestsellers-cta-btn silver-cta-btn">
+          Explore Silver Bestsellers
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
+
     </div>
   </section>
 </div>
 
 <style>
-
-
-.tabs-nav-wrapper {
-  display: flex;
-  justify-content: center;
+.section-header.text-center {
+  text-align: center;
   margin-bottom: 40px;
-  border-bottom: 1px solid var(--color-gray-border);
 }
 
-.tabs-nav {
-  display: flex;
-  gap: 40px;
-}
-
-.tab-btn {
-  font-size: 13px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-text-muted);
-  padding: 15px 0;
-  position: relative;
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-
-.tab-btn::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: var(--color-gold);
-  transition: var(--transition-fast);
-}
-
-.tab-btn.active {
-  color: var(--color-dark);
-}
-
-.tab-btn.active::after {
-  width: 100%;
-}
-
-.tab-pane {
-  display: none;
-}
-
-.tab-pane.active {
-  display: block;
-  animation: fadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-.product-grid {
+.bestsellers-product-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
+  gap: 28px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.bestsellers-cta-wrapper {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.bestsellers-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.4s ease;
+}
+
+.bestsellers-cta-btn:hover {
+  background: var(--color-gold);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(200, 161, 61, 0.3);
+}
+
+.silver-cta-btn {
+  border-color: #C0C0C0;
+  color: #C0C0C0;
+}
+
+.silver-cta-btn:hover {
+  background: #C0C0C0;
+  color: #000000;
+  box-shadow: 0 8px 20px rgba(192, 192, 192, 0.3);
 }
 
 @media (max-width: 991px) {
-  .product-grid {
+  .bestsellers-product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-  }
-  .tabs-nav {
-    gap: 20px;
-  }
-  .tab-btn {
-    font-size: 11px;
   }
 }
 
 @media (max-width: 480px) {
-  .product-grid {
+  .bestsellers-product-grid {
     grid-template-columns: 1fr;
   }
 }
-
-@media (max-width: 575px) {
-  .tabs-nav {
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding-bottom: 5px;
-  }
-}
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const tabContainers = document.querySelectorAll('.brand-gold-only-block, .brand-silver-only-block');
-  tabContainers.forEach(container => {
-    const tabs = container.querySelectorAll('.tab-btn');
-    const panes = container.querySelectorAll('.tab-pane');
-    tabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = btn.dataset.tabTarget;
-        
-        // Remove active from navigation buttons inside this container only
-        tabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        // Hide all tabs content inside this container only
-        panes.forEach(pane => {
-          pane.classList.remove('active');
-        });
-
-        // Show targeted pane
-        const activePane = document.getElementById(`tab-${target}`);
-        if (activePane) {
-          activePane.classList.add('active');
-        }
-      });
-    });
-  });
-});
-</script>
