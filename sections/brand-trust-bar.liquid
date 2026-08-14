@@ -168,14 +168,36 @@
 @media (max-width: 991px) {
   .trust-bar-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    gap: 20px;
   }
 }
 
 @media (max-width: 575px) {
+  .brand-trust-bar {
+    padding: 24px 0;
+  }
   .trust-bar-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 12px;
+  }
+  .trust-item {
+    gap: 10px;
+  }
+  .trust-icon-wrapper {
+    width: 36px;
+    height: 36px;
+  }
+  .trust-icon-wrapper svg {
+    width: 18px;
+    height: 18px;
+  }
+  .trust-info h3 {
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .trust-info p {
+    font-size: 10px;
+    line-height: 1.3;
   }
 }
 </style>
