@@ -489,6 +489,9 @@ async function fetchCart() {
 }
 
 async function addAjaxCartItem(title, price, img, purity = '22K Gold', variantId = '') {
+  // Trigger bottom-right toast notification
+  showToastNotification('cart', title, img);
+
   // If we have a valid variant ID and are in a real Shopify context
   if (variantId && !isNaN(variantId) && variantId !== '') {
     try {
@@ -499,7 +502,6 @@ async function addAjaxCartItem(title, price, img, purity = '22K Gold', variantId
       });
       if (res.ok) {
         await fetchCart();
-        openCartDrawer();
         return;
       }
     } catch (err) {
@@ -524,7 +526,6 @@ async function addAjaxCartItem(title, price, img, purity = '22K Gold', variantId
 
   saveMockCartToLocalStorage();
   updateCartDrawerUI();
-  openCartDrawer();
 }
 
 async function adjustCartQuantity(index, action) {
@@ -925,14 +926,95 @@ function initWishlist() {
       if (existingIndex > -1) {
         items.splice(existingIndex, 1);
         btn.classList.remove('active');
+        showToastNotification('wishlist-remove', title, img);
       } else {
         items.push({ title, price, rawPrice, img });
         btn.classList.add('active');
+        showToastNotification('wishlist-add', title, img);
       }
 
       saveWishlist(items);
     });
   });
+}
+
+/* 11.5 GLOBAL BOTTOM-RIGHT TOAST NOTIFICATION SYSTEM */
+let globalToastTimer = null;
+
+function showToastNotification(type = 'cart', title = '', img = '', customMsg = '') {
+  let container = document.getElementById('toastNotificationContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastNotificationContainer';
+    container.className = 'toast-notification-container';
+    document.body.appendChild(container);
+  }
+
+  if (globalToastTimer) {
+    clearTimeout(globalToastTimer);
+    globalToastTimer = null;
+  }
+
+  const isCart = type === 'cart';
+  const isWishlistAdd = type === 'wishlist-add';
+
+  let iconSvg = '';
+  let badgeLabel = '';
+  let defaultMsg = '';
+
+  if (isCart) {
+    badgeLabel = 'Added to Curation Bag';
+    defaultMsg = `Added to your shopping bag successfully.`;
+    iconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+  } else if (isWishlistAdd) {
+    badgeLabel = 'Added to Wishlist';
+    defaultMsg = `Saved to your private wishlist.`;
+    iconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="#C8A13D" stroke="#C8A13D" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
+  } else {
+    badgeLabel = 'Removed from Wishlist';
+    defaultMsg = `Item removed from your wishlist.`;
+    iconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+  }
+
+  const imgHtml = img ? `<img src="${img}" alt="${title}" class="toast-img">` : '';
+
+  container.innerHTML = `
+    <div class="toast-card toast-${type}">
+      ${imgHtml}
+      <div class="toast-content">
+        <div class="toast-header-row">
+          <span class="toast-badge">${iconSvg} ${badgeLabel}</span>
+          <button class="toast-close-btn" id="toastCloseBtn" aria-label="Close notification">&times;</button>
+        </div>
+        <div class="toast-title">${title}</div>
+        <div class="toast-message">${customMsg || defaultMsg}</div>
+      </div>
+    </div>
+  `;
+
+  requestAnimationFrame(() => {
+    container.classList.add('active');
+  });
+
+  const closeBtn = document.getElementById('toastCloseBtn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', dismissToast);
+  }
+
+  globalToastTimer = setTimeout(() => {
+    dismissToast();
+  }, 3000);
+}
+
+function dismissToast() {
+  const container = document.getElementById('toastNotificationContainer');
+  if (container) {
+    container.classList.remove('active');
+  }
+  if (globalToastTimer) {
+    clearTimeout(globalToastTimer);
+    globalToastTimer = null;
+  }
 }
 
 /* 12. VARIANT SELECTOR & PDP PRICE BREAKDOWN ACCORDIONS */
