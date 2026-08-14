@@ -79,6 +79,9 @@
     </script>
     <script>
       window.ShopifyThemeSettings = {
+        goldRate22k: "{{ settings.gold_rate_22k | default: '13000' | escape }}",
+        goldRate18k: "{{ settings.gold_rate_18k | default: '12000' | escape }}",
+        silverRate925: "{{ settings.silver_rate_925 | default: '160' | escape }}",
         goldWhatsappNumber: "{{ settings.whatsapp_gold_number | default: '917405544338' | escape }}",
         goldWhatsappMessage: "{{ settings.whatsapp_gold_message | default: 'Hello Rudra Gold, I would like to inquire about your gold jewellery.' | escape }}",
         silverWhatsappNumber: "{{ settings.whatsapp_silver_number | default: '918849486223' | escape }}",

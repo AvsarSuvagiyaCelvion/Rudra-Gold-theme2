@@ -93,5 +93,28 @@
         "default": "Hello The Grand Mother, I would like to inquire about your 925 sterling silver jewellery."
       }
     ]
+  },
+  {
+    "name": "Live Metal Rates (Gold & Silver)",
+    "settings": [
+      {
+        "type": "text",
+        "id": "gold_rate_22k",
+        "label": "22K Gold Rate per Gram (₹)",
+        "default": "13000"
+      },
+      {
+        "type": "text",
+        "id": "gold_rate_18k",
+        "label": "18K Gold Rate per Gram (₹)",
+        "default": "12000"
+      },
+      {
+        "type": "text",
+        "id": "silver_rate_925",
+        "label": "925 Silver Rate per Gram (₹)",
+        "default": "160"
+      }
+    ]
   }
 ]

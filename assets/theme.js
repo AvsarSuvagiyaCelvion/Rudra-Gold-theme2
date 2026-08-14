@@ -319,37 +319,53 @@ function initHeaderScroll() {
   });
 }
 
-/* 7. LIVE GOLD RATE TICKER */
-// Mock live rate starting values (in INR per gram)
-let currentGold22K = 6850;
-let currentGold18K = 5605;
+/* 7. LIVE GOLD & SILVER RATE TICKER */
+let currentGold22K = 13000;
+let currentGold18K = 12000;
+let currentSilver925 = 160;
 
 function initGoldRateTicker() {
-  const tickerItems = document.querySelectorAll('.gold-rate-ticker-value');
-  if (tickerItems.length === 0) return;
+  const settings = window.ShopifyThemeSettings || {};
+  if (settings.goldRate22k) {
+    const parsed = parseInt(String(settings.goldRate22k).replace(/[^0-9]/g, ''));
+    if (!isNaN(parsed) && parsed > 0) currentGold22K = parsed;
+  }
+  if (settings.goldRate18k) {
+    const parsed = parseInt(String(settings.goldRate18k).replace(/[^0-9]/g, ''));
+    if (!isNaN(parsed) && parsed > 0) currentGold18K = parsed;
+  }
+  if (settings.silverRate925) {
+    const parsed = parseInt(String(settings.silverRate925).replace(/[^0-9]/g, ''));
+    if (!isNaN(parsed) && parsed > 0) currentSilver925 = parsed;
+  }
 
-  // Read base rates from DOM attributes (configured in Shopify Admin announcement bar section settings)
+  // Read base rates from DOM attributes if present
   const el22k = document.getElementById('globalGold22k');
   const el18k = document.getElementById('globalGold18k');
+  const elSilver = document.getElementById('globalSilver925');
+
   if (el22k && el22k.dataset.baseRate) {
     const parsed22k = parseInt(el22k.dataset.baseRate.replace(/[^0-9]/g, ''));
-    if (!isNaN(parsed22k)) {
-      currentGold22K = parsed22k;
-    }
+    if (!isNaN(parsed22k) && parsed22k > 0) currentGold22K = parsed22k;
   }
   if (el18k && el18k.dataset.baseRate) {
     const parsed18k = parseInt(el18k.dataset.baseRate.replace(/[^0-9]/g, ''));
-    if (!isNaN(parsed18k)) {
-      currentGold18K = parsed18k;
-    }
+    if (!isNaN(parsed18k) && parsed18k > 0) currentGold18K = parsed18k;
+  }
+  if (elSilver && elSilver.dataset.baseRate) {
+    const parsedSilver = parseInt(elSilver.dataset.baseRate.replace(/[^0-9]/g, ''));
+    if (!isNaN(parsedSilver) && parsedSilver > 0) currentSilver925 = parsedSilver;
   }
 
   // Format and show the admin defined rates immediately on load
+  const tickerItems = document.querySelectorAll('.gold-rate-ticker-value');
   tickerItems.forEach(el => {
     if (el.dataset.purity === '22k') {
       el.textContent = `₹${currentGold22K.toLocaleString('en-IN')}/g (22K)`;
     } else if (el.dataset.purity === '18k') {
       el.textContent = `₹${currentGold18K.toLocaleString('en-IN')}/g (18K)`;
+    } else if (el.dataset.purity === 'silver' || el.dataset.purity === '925') {
+      el.textContent = `₹${currentSilver925.toLocaleString('en-IN')}/g (925 Silver)`;
     }
   });
 
@@ -365,9 +381,20 @@ function recalculateCardPrices() {
     const weight = parseFloat(el.getAttribute('data-weight')) || 0;
     if (weight <= 0) return;
 
-    const goldRate = purity.includes('18k') ? currentGold18K : currentGold22K;
-    const metalPrice = Math.round(weight * goldRate);
-    const makingCharges = Math.round(metalPrice * 0.12);
+    const isSilver = purity.includes('silver') || purity.includes('925') || document.documentElement.classList.contains('theme-silver');
+
+    let metalRate = currentGold22K;
+    let makingPct = 0.12; // 12% making charges for Gold
+
+    if (isSilver) {
+      metalRate = currentSilver925;
+      makingPct = 0.15; // 15% making charges for 925 Sterling Silver
+    } else if (purity.includes('18k')) {
+      metalRate = currentGold18K;
+    }
+
+    const metalPrice = Math.round(weight * metalRate);
+    const makingCharges = Math.round(metalPrice * makingPct);
     const subtotal = metalPrice + makingCharges;
     const gst = Math.round(subtotal * 0.03);
     const finalPrice = subtotal + gst;
@@ -380,7 +407,7 @@ function recalculateCardPrices() {
     if (card) {
       const title = el.getAttribute('data-title') || '';
       const img = el.getAttribute('data-img') || '';
-      const purityLabel = el.getAttribute('data-purity') || '';
+      const purityLabel = el.getAttribute('data-purity') || (isSilver ? '925 Silver' : '22K Gold');
       const variantId = el.getAttribute('data-variant-id') || '';
 
       // Update Quick Add button
@@ -1071,11 +1098,25 @@ function calculateVariantPricing() {
   let purityText = '';
 
   if (isSilver) {
-    // Silver Pricing is static based on Shopify variant price
+    purityText = '925 Sterling Silver';
+    const silverRate = currentSilver925;
     const basePrice = selectedOption ? parseFloat(selectedOption.getAttribute('data-price')) : 0;
-    // Fallback if price is not set or mock
-    finalPrice = basePrice > 0 ? basePrice : 8500;
-    purityText = '925 Silver';
+    
+    if (weight > 0) {
+      const metalPrice = Math.round(weight * silverRate);
+      const makingCharges = Math.round(metalPrice * 0.15); // 15% making charges
+      const subtotal = metalPrice + makingCharges;
+      const gst = Math.round(subtotal * 0.03); // 3% GST
+      finalPrice = subtotal + gst;
+
+      if (breakupGoldRate) breakupGoldRate.textContent = `₹${silverRate.toLocaleString('en-IN')}/g (Silver)`;
+      if (breakupMetalPrice) breakupMetalPrice.textContent = `₹${metalPrice.toLocaleString('en-IN')}`;
+      if (breakupMaking) breakupMaking.textContent = `₹${makingCharges.toLocaleString('en-IN')}`;
+      if (breakupGst) breakupGst.textContent = `₹${gst.toLocaleString('en-IN')}`;
+      if (breakupTotal) breakupTotal.textContent = `₹${finalPrice.toLocaleString('en-IN')}`;
+    } else {
+      finalPrice = basePrice > 0 ? basePrice : 8500;
+    }
   } else {
     // Gold Pricing is dynamic based on live gold rate per gram
     purityText = purity.toUpperCase() + ' Gold';

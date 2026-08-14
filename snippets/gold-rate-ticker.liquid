@@ -1,10 +1,13 @@
-{%- assign rate_22k = gold_rate_22k | default: "6,850" -%}
-{%- assign rate_18k = gold_rate_18k | default: "5,605" -%}
+{%- assign rate_22k = gold_rate_22k | default: settings.gold_rate_22k | default: "13,000" -%}
+{%- assign rate_18k = gold_rate_18k | default: settings.gold_rate_18k | default: "12,000" -%}
+{%- assign rate_silver = settings.silver_rate_925 | default: "160" -%}
 <div class="gold-rate-ticker-widget" data-modal-type="hallmark">
   <span class="gold-rate-ticker-dot"></span>
-  <span class="gold-rate-ticker-label">Live Gold Rate:</span>
-  <span class="gold-rate-ticker-value" data-purity="22k" id="globalGold22k" data-base-rate="{{ rate_22k }}">₹{{ rate_22k }}/g (22K)</span>
-  <span class="gold-rate-ticker-value" data-purity="18k" id="globalGold18k" data-base-rate="{{ rate_18k }}">₹{{ rate_18k }}/g (18K)</span>
+  <span class="gold-rate-ticker-label brand-gold-only">Live Gold Rate:</span>
+  <span class="gold-rate-ticker-label brand-silver-only">Live 925 Silver Rate:</span>
+  <span class="gold-rate-ticker-value brand-gold-only" data-purity="22k" id="globalGold22k" data-base-rate="{{ rate_22k }}">₹{{ rate_22k }}/g (22K)</span>
+  <span class="gold-rate-ticker-value brand-gold-only" data-purity="18k" id="globalGold18k" data-base-rate="{{ rate_18k }}">₹{{ rate_18k }}/g (18K)</span>
+  <span class="gold-rate-ticker-value brand-silver-only" data-purity="silver" id="globalSilver925" data-base-rate="{{ rate_silver }}">₹{{ rate_silver }}/g (925 Silver)</span>
   <span class="gold-rate-ticker-transparency">(Verify Purity)</span>
 </div>
 

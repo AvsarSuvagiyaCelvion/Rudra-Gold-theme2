@@ -51,9 +51,14 @@
   
   <!-- Silver Announcement Bar -->
   <div class="container announcement-bar-container brand-silver-only">
-    <div class="announcement-message slide-item active" style="text-align: center; flex: 1;">
+    <div class="announcement-message slide-item active" style="flex: 1;">
       {{ section.settings.announcement_text_silver }}
     </div>
+    {% if section.settings.show_gold_rate %}
+      <div class="announcement-gold-ticker slide-item">
+        {% render 'gold-rate-ticker' %}
+      </div>
+    {% endif %}
   </div>
 </div>
 
