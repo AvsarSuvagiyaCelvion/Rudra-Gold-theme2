@@ -165,33 +165,36 @@
 
         {%- if section.settings.gold_collections != blank -%}
           {%- for coll in section.settings.gold_collections -%}
-            {%- assign gold_rendered = gold_rendered | plus: 1 -%}
-            {%- assign coll_img = coll.featured_image | image_url: width: 800 -%}
-            {%- if coll_img == blank -%}
-              {%- assign coll_img = "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" -%}
-            {%- endif -%}
-            <a href="{{ coll.url }}" class="collection-item">
-              <div class="collection-img-wrapper">
-                <img src="{{ coll_img }}" alt="{{ coll.title }}" loading="lazy">
-              </div>
-              <div class="collection-overlay-content">
-                <span class="collection-tag">Heritage Curation</span>
-                <h3>{{ coll.title }}</h3>
-                <span class="collection-cta">
-                  Explore Collection
-                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-              </div>
-            </a>
+            {%- assign coll_title_down = coll.title | downcase -%}
+            {%- assign coll_handle_down = coll.handle | downcase -%}
+            {%- unless coll_title_down contains 'silver' or coll_handle_down contains 'silver' -%}
+              {%- assign gold_rendered = gold_rendered | plus: 1 -%}
+              {%- assign coll_img = coll.featured_image | image_url: width: 800 -%}
+              {%- if coll_img == blank -%}
+                {%- assign coll_img = "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" -%}
+              {%- endif -%}
+              <a href="{{ coll.url }}" class="collection-item">
+                <div class="collection-img-wrapper">
+                  <img src="{{ coll_img }}" alt="{{ coll.title }}" loading="lazy">
+                </div>
+                <div class="collection-overlay-content">
+                  <span class="collection-tag">Heritage Curation</span>
+                  <h3>{{ coll.title }}</h3>
+                  <span class="collection-cta">
+                    Explore Collection
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            {%- endunless -%}
           {%- endfor -%}
         {%- endif -%}
 
         {%- for block in section.blocks -%}
           {%- if block.type == 'gold_collection_card' or block.settings.brand == 'gold' -%}
-            {%- assign gold_rendered = gold_rendered | plus: 1 -%}
             {%- assign coll_obj = block.settings.collection -%}
             {%- assign item_title = block.settings.custom_title -%}
             {%- if item_title == blank and coll_obj != blank -%}
@@ -201,37 +204,43 @@
               {%- assign item_title = "Gold Collection" -%}
             {%- endif -%}
 
-            {%- assign item_url = "/collections/all?brand=gold" -%}
-            {%- if coll_obj != blank -%}
-              {%- assign item_url = coll_obj.url -%}
-            {%- endif -%}
+            {%- assign item_title_down = item_title | downcase -%}
+            {%- assign item_handle_down = coll_obj.handle | downcase -%}
 
-            {%- assign item_img = "" -%}
-            {%- if block.settings.custom_image != blank -%}
-              {%- assign item_img = block.settings.custom_image | image_url: width: 800 -%}
-            {%- elsif coll_obj != blank and coll_obj.featured_image != blank -%}
-              {%- assign item_img = coll_obj.featured_image | image_url: width: 800 -%}
-            {%- endif -%}
-            {%- if item_img == blank -%}
-              {%- assign item_img = "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" -%}
-            {%- endif -%}
+            {%- unless item_title_down contains 'silver' or item_handle_down contains 'silver' -%}
+              {%- assign gold_rendered = gold_rendered | plus: 1 -%}
+              {%- assign item_url = "/collections/all?brand=gold" -%}
+              {%- if coll_obj != blank -%}
+                {%- assign item_url = coll_obj.url -%}
+              {%- endif -%}
 
-            <a href="{{ item_url }}" class="collection-item" {{ block.shopify_attributes }}>
-              <div class="collection-img-wrapper">
-                <img src="{{ item_img }}" alt="{{ item_title }}" loading="lazy">
-              </div>
-              <div class="collection-overlay-content">
-                <span class="collection-tag">{{ block.settings.custom_tag | default: "Handcrafted" }}</span>
-                <h3>{{ item_title }}</h3>
-                <span class="collection-cta">
-                  Discover Royalty
-                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-              </div>
-            </a>
+              {%- assign item_img = "" -%}
+              {%- if block.settings.custom_image != blank -%}
+                {%- assign item_img = block.settings.custom_image | image_url: width: 800 -%}
+              {%- elsif coll_obj != blank and coll_obj.featured_image != blank -%}
+                {%- assign item_img = coll_obj.featured_image | image_url: width: 800 -%}
+              {%- endif -%}
+              {%- if item_img == blank -%}
+                {%- assign item_img = "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" -%}
+              {%- endif -%}
+
+              <a href="{{ item_url }}" class="collection-item" {{ block.shopify_attributes }}>
+                <div class="collection-img-wrapper">
+                  <img src="{{ item_img }}" alt="{{ item_title }}" loading="lazy">
+                </div>
+                <div class="collection-overlay-content">
+                  <span class="collection-tag">{{ block.settings.custom_tag | default: "Handcrafted" }}</span>
+                  <h3>{{ item_title }}</h3>
+                  <span class="collection-cta">
+                    Discover Royalty
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            {%- endunless -%}
           {%- endif -%}
         {%- endfor -%}
 
@@ -320,33 +329,36 @@
 
         {%- if section.settings.silver_collections != blank -%}
           {%- for coll in section.settings.silver_collections -%}
-            {%- assign silver_rendered = silver_rendered | plus: 1 -%}
-            {%- assign coll_img = coll.featured_image | image_url: width: 800 -%}
-            {%- if coll_img == blank -%}
-              {%- assign coll_img = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" -%}
-            {%- endif -%}
-            <a href="{{ coll.url }}" class="collection-item" style="border-color: rgba(192, 192, 192, 0.25);">
-              <div class="collection-img-wrapper">
-                <img src="{{ coll_img }}" alt="{{ coll.title }}" loading="lazy">
-              </div>
-              <div class="collection-overlay-content">
-                <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">925 Sterling</span>
-                <h3 style="color: #fff;">{{ coll.title }}</h3>
-                <span class="collection-cta" style="color: #fff;">
-                  Discover Silver
-                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-              </div>
-            </a>
+            {%- assign coll_title_down = coll.title | downcase -%}
+            {%- assign coll_handle_down = coll.handle | downcase -%}
+            {%- unless coll_title_down contains 'gold' or coll_handle_down contains 'gold' -%}
+              {%- assign silver_rendered = silver_rendered | plus: 1 -%}
+              {%- assign coll_img = coll.featured_image | image_url: width: 800 -%}
+              {%- if coll_img == blank -%}
+                {%- assign coll_img = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" -%}
+              {%- endif -%}
+              <a href="{{ coll.url }}" class="collection-item" style="border-color: rgba(192, 192, 192, 0.25);">
+                <div class="collection-img-wrapper">
+                  <img src="{{ coll_img }}" alt="{{ coll.title }}" loading="lazy">
+                </div>
+                <div class="collection-overlay-content">
+                  <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">925 Sterling</span>
+                  <h3 style="color: #fff;">{{ coll.title }}</h3>
+                  <span class="collection-cta" style="color: #fff;">
+                    Discover Silver
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            {%- endunless -%}
           {%- endfor -%}
         {%- endif -%}
 
         {%- for block in section.blocks -%}
           {%- if block.type == 'silver_collection_card' or block.settings.brand == 'silver' -%}
-            {%- assign silver_rendered = silver_rendered | plus: 1 -%}
             {%- assign coll_obj = block.settings.collection -%}
             {%- assign item_title = block.settings.custom_title -%}
             {%- if item_title == blank and coll_obj != blank -%}
@@ -356,37 +368,43 @@
               {%- assign item_title = "Silver Collection" -%}
             {%- endif -%}
 
-            {%- assign item_url = "/collections/all?brand=silver" -%}
-            {%- if coll_obj != blank -%}
-              {%- assign item_url = coll_obj.url -%}
-            {%- endif -%}
+            {%- assign item_title_down = item_title | downcase -%}
+            {%- assign item_handle_down = coll_obj.handle | downcase -%}
 
-            {%- assign item_img = "" -%}
-            {%- if block.settings.custom_image != blank -%}
-              {%- assign item_img = block.settings.custom_image | image_url: width: 800 -%}
-            {%- elsif coll_obj != blank and coll_obj.featured_image != blank -%}
-              {%- assign item_img = coll_obj.featured_image | image_url: width: 800 -%}
-            {%- endif -%}
-            {%- if item_img == blank -%}
-              {%- assign item_img = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" -%}
-            {%- endif -%}
+            {%- unless item_title_down contains 'gold' or item_handle_down contains 'gold' -%}
+              {%- assign silver_rendered = silver_rendered | plus: 1 -%}
+              {%- assign item_url = "/collections/all?brand=silver" -%}
+              {%- if coll_obj != blank -%}
+                {%- assign item_url = coll_obj.url -%}
+              {%- endif -%}
 
-            <a href="{{ item_url }}" class="collection-item" style="border-color: rgba(192, 192, 192, 0.25);" {{ block.shopify_attributes }}>
-              <div class="collection-img-wrapper">
-                <img src="{{ item_img }}" alt="{{ item_title }}" loading="lazy">
-              </div>
-              <div class="collection-overlay-content">
-                <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">{{ block.settings.custom_tag | default: "925 Sterling" }}</span>
-                <h3 style="color: #fff;">{{ item_title }}</h3>
-                <span class="collection-cta" style="color: #fff;">
-                  Discover Silver
-                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-              </div>
-            </a>
+              {%- assign item_img = "" -%}
+              {%- if block.settings.custom_image != blank -%}
+                {%- assign item_img = block.settings.custom_image | image_url: width: 800 -%}
+              {%- elsif coll_obj != blank and coll_obj.featured_image != blank -%}
+                {%- assign item_img = coll_obj.featured_image | image_url: width: 800 -%}
+              {%- endif -%}
+              {%- if item_img == blank -%}
+                {%- assign item_img = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" -%}
+              {%- endif -%}
+
+              <a href="{{ item_url }}" class="collection-item" style="border-color: rgba(192, 192, 192, 0.25);" {{ block.shopify_attributes }}>
+                <div class="collection-img-wrapper">
+                  <img src="{{ item_img }}" alt="{{ item_title }}" loading="lazy">
+                </div>
+                <div class="collection-overlay-content">
+                  <span class="collection-tag" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff;">{{ block.settings.custom_tag | default: "925 Sterling" }}</span>
+                  <h3 style="color: #fff;">{{ item_title }}</h3>
+                  <span class="collection-cta" style="color: #fff;">
+                    Discover Silver
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            {%- endunless -%}
           {%- endif -%}
         {%- endfor -%}
 

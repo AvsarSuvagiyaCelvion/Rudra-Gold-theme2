@@ -32,39 +32,35 @@
       "type": "curated-collections",
       "blocks": {
         "collection_card_YXPxx7": {
-          "type": "collection_card",
+          "type": "gold_collection_card",
           "settings": {
-            "brand": "gold",
-            "collection": "gold-pendant",
-            "custom_title": "",
-            "custom_tag": "Handcrafted"
+            "collection": "rings",
+            "custom_title": "Bridal Heritage",
+            "custom_tag": "Exquisite Craft"
           }
         },
         "collection_card_rJixWQ": {
-          "type": "collection_card",
+          "type": "gold_collection_card",
           "settings": {
-            "brand": "gold",
-            "collection": "gold-bracelets",
-            "custom_title": "",
-            "custom_tag": "Handcrafted"
+            "collection": "chains",
+            "custom_title": "Temple Gold",
+            "custom_tag": "Traditional"
           }
         },
         "collection_card_EeLByt": {
-          "type": "collection_card",
+          "type": "gold_collection_card",
           "settings": {
-            "brand": "gold",
-            "collection": "rings",
-            "custom_title": "",
-            "custom_tag": "Handcrafted"
+            "collection": "solitaires",
+            "custom_title": "Solitaire Diamonds",
+            "custom_tag": "Brilliance"
           }
         },
         "collection_card_epE9WE": {
-          "type": "collection_card",
+          "type": "gold_collection_card",
           "settings": {
-            "brand": "gold",
-            "collection": "chains",
-            "custom_title": "",
-            "custom_tag": "Handcrafted"
+            "collection": "daily-wear",
+            "custom_title": "Daily Wear",
+            "custom_tag": "Modern Elegant"
           }
         }
       },
