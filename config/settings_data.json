@@ -9,6 +9,9 @@
  */
 {
   "current": {
+    "gold_rate_22k": "14500",
+    "gold_rate_18k": "14000",
+    "silver_rate_925": "235",
     "presets": {},
     "sections": {
       "announcement-bar": {
@@ -17,14 +20,17 @@
           "announcement_text": "✨ Exclusive Bridal Curation: Complimentary Home Trials Available Across Selected Flagships",
           "show_gold_rate": true,
           "gold_rate_22k": "13000",
-          "gold_rate_18k": "12000"
+          "gold_rate_18k": "12000",
+          "announcement_text_silver": "✨ The Grand Mother: Certified 925 Sterling Silver Masterpieces with Anti-Tarnish Lifetime Guarantee"
         }
       },
       "header": {
         "type": "header",
         "settings": {
           "brand_name": "RUDRA GOLD",
-          "tagline": "Timeless Purity, Crafted for Royalty"
+          "tagline": "Timeless Purity, Crafted for Royalty",
+          "gold_menu": "main-menu",
+          "silver_menu": "main-menu"
         }
       },
       "footer": {
