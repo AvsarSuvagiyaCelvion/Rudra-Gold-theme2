@@ -328,3 +328,117 @@
 
   </div>
 </section>
+
+<style>
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.collection-item {
+  position: relative;
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--color-gray-border);
+  text-decoration: none;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.collection-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.collection-item.large-item {
+  grid-column: span 2;
+  grid-row: span 1;
+  aspect-ratio: 16 / 9;
+}
+
+.collection-img-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.collection-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.collection-item:hover .collection-img-wrapper img {
+  transform: scale(1.08);
+}
+
+.collection-overlay-content {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.8) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  z-index: 2;
+  color: #ffffff;
+}
+
+.collection-tag {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(200, 161, 61, 0.25);
+  border: 1px solid rgba(200, 161, 61, 0.5);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 2px;
+  width: fit-content;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.collection-overlay-content h3 {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: #ffffff;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.collection-cta {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 991px) {
+  .collections-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .collection-item.large-item {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 576px) {
+  .collections-grid {
+    grid-template-columns: 1fr;
+  }
+  .collection-item.large-item {
+    grid-column: span 1;
+    aspect-ratio: 4 / 3;
+  }
+}
+</style>
