@@ -24,6 +24,10 @@
         "silver_link": ""
       }
     },
+    "brand_trust_bar": {
+      "type": "brand-trust-bar",
+      "settings": {}
+    },
     "curated_collections": {
       "type": "curated-collections",
       "blocks": {
@@ -107,10 +111,6 @@
         "silver_link": ""
       }
     },
-    "brand_trust_bar": {
-      "type": "brand-trust-bar",
-      "settings": {}
-    },
     "craftsmanship_video": {
       "type": "craftsmanship-video",
       "settings": {
@@ -167,10 +167,10 @@
   },
   "order": [
     "hero_banner",
+    "brand_trust_bar",
     "curated_collections",
     "bestsellers_ajax",
     "spotlight_showcase",
-    "brand_trust_bar",
     "craftsmanship_video",
     "why_rudra_gold",
     "bridal_campaign",
