@@ -89,6 +89,7 @@
         "subtitle": "CURATED EXQUISITE CREATIONS",
         "title": "Rudra Bestsellers",
         "gold_collection": "gold-best-seller",
+        "products_to_show": 4,
         "silver_subtitle": "THE GRAND MOTHER • STERLING SILVER",
         "silver_title": "Silver Bestsellers",
         "silver_collection": "silver-best-seller"
@@ -122,7 +123,13 @@
       "type": "instagram-shoppable",
       "settings": {
         "subtitle": "LIFESTYLE INSPIRATION",
-        "title": "Follow Our Journey"
+        "title": "Follow Our Journey",
+        "gold_handle": "@rudragold_official",
+        "gold_url": "https://www.instagram.com/_rudra_gold_",
+        "silver_subtitle": "THE GRAND MOTHER • STERLING SILVER",
+        "silver_title": "Follow TGM on Instagram",
+        "silver_handle": "@thegrandmother_official",
+        "silver_url": "https://www.instagram.com/the_grandmother_silver_"
       }
     }
   },
