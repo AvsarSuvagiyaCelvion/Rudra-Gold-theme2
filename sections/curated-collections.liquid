@@ -552,9 +552,19 @@ html.theme-silver .collection-item:hover .collection-tag {
 }
 
 @media (max-width: 768px) {
+  .collections-grid.single-row-carousel {
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    scroll-padding-left: 16px;
+  }
   .collection-item {
-    flex: 1 0 220px;
-    height: 320px;
+    flex: 0 0 82%;
+    max-width: 320px;
+    height: 350px;
+    scroll-snap-align: start;
+    scroll-margin-left: 16px;
   }
 }
 </style>

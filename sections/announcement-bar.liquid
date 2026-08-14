@@ -130,14 +130,19 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const slides = document.querySelectorAll('.announcement-bar-container .slide-item');
-  if (slides.length <= 1) return;
-
   const isMobile = () => window.innerWidth <= 768;
   let currentIndex = 0;
 
+  function getActiveSlides() {
+    const isSilver = document.documentElement.classList.contains('theme-silver');
+    const container = document.querySelector(isSilver ? '.brand-silver-only.announcement-bar-container' : '.brand-gold-only.announcement-bar-container');
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('.slide-item'));
+  }
+
   function showNextSlide() {
-    if (!isMobile()) {
+    const slides = getActiveSlides();
+    if (!isMobile() || slides.length <= 1) {
       slides.forEach(slide => {
         slide.classList.remove('active');
         slide.style.opacity = '';
@@ -146,35 +151,26 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    slides[currentIndex].classList.remove('active');
+    slides.forEach(s => s.classList.remove('active'));
     currentIndex = (currentIndex + 1) % slides.length;
     slides[currentIndex].classList.add('active');
   }
 
-  // Auto-slide transition every 4.5 seconds
-  setInterval(showNextSlide, 4500);
+  // Auto-slide transition every 3.5 seconds
+  setInterval(showNextSlide, 3500);
 
-  // Initial layout activation
-  if (isMobile()) {
-    slides.forEach((slide, idx) => {
-      if (idx === 0) slide.classList.add('active');
-      else slide.classList.remove('active');
-    });
-  }
-
-  window.addEventListener('resize', () => {
-    if (!isMobile()) {
-      slides.forEach(slide => {
-        slide.classList.remove('active');
-        slide.style.opacity = '';
-        slide.style.transform = '';
-      });
-    } else {
+  function syncInitial() {
+    const slides = getActiveSlides();
+    if (isMobile() && slides.length > 0) {
+      if (currentIndex >= slides.length) currentIndex = 0;
       slides.forEach((slide, idx) => {
         if (idx === currentIndex) slide.classList.add('active');
         else slide.classList.remove('active');
       });
     }
-  });
+  }
+
+  syncInitial();
+  window.addEventListener('resize', syncInitial);
 });
 </script>
