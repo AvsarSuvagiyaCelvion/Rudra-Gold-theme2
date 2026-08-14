@@ -20,6 +20,15 @@
       "label": "Gold Bestsellers Collection (Select in Admin)"
     },
     {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 16,
+      "step": 4,
+      "default": 4,
+      "label": "Number of Products to Display on Homepage"
+    },
+    {
       "type": "text",
       "id": "silver_subtitle",
       "label": "Silver Subtitle",
@@ -56,10 +65,11 @@
       </div>
 
       {%- assign gold_coll = section.settings.gold_collection | default: collections['bestsellers'] | default: collections['all'] -%}
+      {%- assign product_limit = section.settings.products_to_show | default: 4 -%}
 
       <div class="product-grid bestsellers-product-grid">
         {%- if gold_coll != blank and gold_coll.products.size > 0 -%}
-          {%- for product in gold_coll.products limit: 4 -%}
+          {%- for product in gold_coll.products limit: product_limit -%}
             {% render 'product-card', product: product %}
           {%- endfor -%}
         {%- else -%}
@@ -119,7 +129,7 @@
 
       <div class="product-grid bestsellers-product-grid">
         {%- if silver_coll != blank and silver_coll.products.size > 0 -%}
-          {%- for product in silver_coll.products limit: 4 -%}
+          {%- for product in silver_coll.products limit: product_limit -%}
             {% render 'product-card', product: product %}
           {%- endfor -%}
         {%- else -%}

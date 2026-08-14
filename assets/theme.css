@@ -944,7 +944,7 @@ h6 {
 }
 
 .section-padding {
-  padding: 80px 0;
+  padding: 50px 0;
 }
 
 @media (max-width: 768px) {
@@ -2086,4 +2086,4 @@ html.theme-silver .nav-item.has-mega-menu .mega-menu {
   transform: translateY(0);
 }
 
-
+

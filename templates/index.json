@@ -155,14 +155,6 @@
         "subtitle": "LIFESTYLE INSPIRATION",
         "title": "Follow Our Journey"
       }
-    },
-    "newsletter_luxury": {
-      "type": "newsletter-luxury",
-      "settings": {
-        "subtitle": "THE ROYAL CLUB",
-        "title": "Be the First to Know",
-        "description": "Discover new collections, exclusive launches, and special private boutique invitations."
-      }
     }
   },
   "order": [
@@ -175,7 +167,6 @@
     "why_rudra_gold",
     "bridal_campaign",
     "testimonials_glass",
-    "instagram_shoppable",
-    "newsletter_luxury"
+    "instagram_shoppable"
   ]
 }
