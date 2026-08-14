@@ -291,17 +291,18 @@
 @media (max-width: 768px) {
   .split-hero {
     height: auto;
-    min-height: 560px;
+    min-height: auto;
     position: relative;
     padding: 0;
   }
   .hero-full {
-    min-height: 560px;
+    height: auto;
+    min-height: auto;
     width: 100%;
     box-sizing: border-box;
-    padding: 135px 24px 70px 24px;
+    padding: 32px 20px 42px 20px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   .pane-bg-wrapper {
     position: absolute;
@@ -321,14 +322,24 @@
   .pane-content {
     margin-top: 0;
   }
+  .pane-subtitle {
+    font-size: 11px;
+    margin-bottom: 10px;
+    letter-spacing: 0.18em;
+  }
   .pane-title {
-    font-size: 32px;
-    margin-bottom: 14px;
+    font-size: 28px;
+    margin-bottom: 12px;
+    line-height: 1.25;
   }
   .pane-description {
-    font-size: 14px;
-    margin-bottom: 24px;
-    line-height: 1.65;
+    font-size: 13px;
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+  .gold-cta-btn, .silver-cta-btn {
+    padding: 12px 24px;
+    font-size: 11px;
   }
 }
 
