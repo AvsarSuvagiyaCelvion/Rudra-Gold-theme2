@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero_banner": {
@@ -6,16 +15,68 @@
         "gold_subtitle": "RUDRA GOLD • ROYAL HERITAGE",
         "gold_title": "Timeless Golden Purity",
         "gold_desc": "Exquisite hand-carved heritage temple jewellery and certified bridal gold masterworks.",
+        "gold_btn_text": "Shop Gold Curation",
+        "gold_link": "",
         "silver_subtitle": "THE GRAND MOTHER • STERLING SILVER",
         "silver_title": "Sleek Silver Elegance",
-        "silver_desc": "Premium 925 sterling silver and anti-tarnish diamond essentials for modern daily luxury."
+        "silver_desc": "Premium 925 sterling silver and anti-tarnish diamond essentials for modern daily luxury.",
+        "silver_btn_text": "Shop Silver Curation",
+        "silver_link": ""
       }
     },
     "curated_collections": {
       "type": "curated-collections",
+      "blocks": {
+        "collection_card_YXPxx7": {
+          "type": "collection_card",
+          "settings": {
+            "brand": "gold",
+            "collection": "gold-pendant",
+            "custom_title": "",
+            "custom_tag": "Handcrafted"
+          }
+        },
+        "collection_card_rJixWQ": {
+          "type": "collection_card",
+          "settings": {
+            "brand": "gold",
+            "collection": "gold-bracelets",
+            "custom_title": "",
+            "custom_tag": "Handcrafted"
+          }
+        },
+        "collection_card_EeLByt": {
+          "type": "collection_card",
+          "settings": {
+            "brand": "gold",
+            "collection": "rings",
+            "custom_title": "",
+            "custom_tag": "Handcrafted"
+          }
+        },
+        "collection_card_epE9WE": {
+          "type": "collection_card",
+          "settings": {
+            "brand": "gold",
+            "collection": "chains",
+            "custom_title": "",
+            "custom_tag": "Handcrafted"
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_YXPxx7",
+        "collection_card_rJixWQ",
+        "collection_card_EeLByt",
+        "collection_card_epE9WE"
+      ],
       "settings": {
         "subtitle": "ROYAL HERITAGE SELECTIONS",
-        "title": "Shop by Collection"
+        "title": "Shop by Collection",
+        "gold_collections": [],
+        "silver_subtitle": "THE GRAND MOTHER • STERLING SILVER",
+        "silver_title": "Silver Curation",
+        "silver_collections": []
       }
     },
     "bestsellers_ajax": {
@@ -27,7 +88,20 @@
     },
     "spotlight_showcase": {
       "type": "spotlight-showcase",
-      "settings": {}
+      "settings": {
+        "gold_subtitle": "EDITORIAL SPOTLIGHT • MASTERPIECE CREATION",
+        "gold_title": "The Empress Royal Temple Haar",
+        "gold_desc": "Sculpted over 180 meticulous artisan hours, featuring 22K hallmarked Nakshi temple carvings studded with unheated Burmese rubies and hand-selected South Sea pearls.",
+        "gold_purity": "22K BIS Hallmarked Gold • 68.4g",
+        "gold_price": "₹4,85,000",
+        "gold_link": "",
+        "silver_subtitle": "TGM EDITORIAL SPOTLIGHT • 925 STERLING",
+        "silver_title": "The Celestial Diamond Star Band",
+        "silver_desc": "Precision crafted in solid 925 sterling silver with rhodium anti-tarnish coating and brilliant cut lab diamonds.",
+        "silver_purity": "925 Solid Sterling Silver • 8.6g",
+        "silver_price": "₹12,400",
+        "silver_link": ""
+      }
     },
     "brand_trust_bar": {
       "type": "brand-trust-bar",
@@ -38,7 +112,8 @@
       "settings": {
         "subtitle": "THE ART OF EXCELLENCE",
         "title": "Crafted With Passion",
-        "description": "Every gold filament and diamond facet represents hours of rigorous carving by our family-hereditary master karigars. Preserving India's ancient metal-smithing traditions."
+        "description": "Every gold filament and diamond facet represents hours of rigorous carving by our family-hereditary master karigars. Preserving India's ancient metal-smithing traditions.",
+        "video_url": "https://assets.mixkit.co/videos/preview/mixkit-jewelry-craftsman-polishing-a-ring-41666-large.mp4"
       }
     },
     "why_rudra_gold": {
@@ -50,7 +125,18 @@
     },
     "bridal_campaign": {
       "type": "bridal-campaign",
-      "settings": {}
+      "settings": {
+        "gold_subtitle": "ROYAL HERITAGE BRIDAL EDIT",
+        "gold_title": "Your Forever Begins Here",
+        "gold_desc": "Discover bespoke bridal gold masterworks designed to make every wedding ritual unforgettable.",
+        "gold_btn_text": "Explore Bridal Collection",
+        "gold_link": "",
+        "silver_subtitle": "TGM CELEBRATION EDIT",
+        "silver_title": "Timeless Festive Grace",
+        "silver_desc": "Adorn your special occasions with contemporary 925 sterling silver statement pieces.",
+        "silver_btn_text": "Explore TGM Festive Edit",
+        "silver_link": ""
+      }
     },
     "testimonials_glass": {
       "type": "testimonials-glass",
