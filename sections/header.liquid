@@ -1031,30 +1031,16 @@ html.theme-silver .mobile-nav-gold {
       sessionStorage.setItem('active_brand', brand);
     } catch(e) {}
     
-    if (brand === 'silver') {
-      document.documentElement.classList.add('theme-silver');
-      document.documentElement.classList.remove('theme-gold');
-      
-      const path = window.location.pathname.toLowerCase();
-      if (path === '/' || path.includes('gold') || path.includes('silver') || path.includes('grand-mother')) {
-        window.location.replace('/?brand=silver');
-      } else {
-        const url = new URL(window.location.href);
-        url.searchParams.set('brand', 'silver');
-        window.location.replace(url.toString());
-      }
+    const path = window.location.pathname.toLowerCase();
+
+    // If on homepage, product page, or collection page, redirect to the brand homepage
+    if (path === '/' || path.includes('/products/') || path.includes('/collections/')) {
+      window.location.replace('/?brand=' + brand);
     } else {
-      document.documentElement.classList.add('theme-gold');
-      document.documentElement.classList.remove('theme-silver');
-      
-      const path = window.location.pathname.toLowerCase();
-      if (path === '/' || path.includes('gold') || path.includes('silver') || path.includes('grand-mother')) {
-        window.location.replace('/?brand=gold');
-      } else {
-        const url = new URL(window.location.href);
-        url.searchParams.set('brand', 'gold');
-        window.location.replace(url.toString());
-      }
+      // For general pages (about-us, contact, cart), keep page and set brand query parameter
+      const url = new URL(window.location.href);
+      url.searchParams.set('brand', brand);
+      window.location.replace(url.toString());
     }
   };
 
