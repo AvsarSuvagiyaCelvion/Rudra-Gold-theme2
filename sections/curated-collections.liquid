@@ -41,23 +41,13 @@
   ],
   "blocks": [
     {
-      "type": "collection_card",
-      "name": "Collection Card",
+      "type": "gold_collection_card",
+      "name": "Gold Collection Card",
       "settings": [
-        {
-          "type": "select",
-          "id": "brand",
-          "label": "Brand Mode",
-          "options": [
-            { "value": "gold", "label": "Gold Brand (Rudra)" },
-            { "value": "silver", "label": "Silver Brand (TGM)" }
-          ],
-          "default": "gold"
-        },
         {
           "type": "collection",
           "id": "collection",
-          "label": "Select Collection in Shopify Admin"
+          "label": "Select Gold Collection in Admin"
         },
         {
           "type": "text",
@@ -103,18 +93,57 @@
           "label": "Custom Image (Optional Override)"
         }
       ]
+    },
+    {
+      "type": "collection_card",
+      "name": "Collection Card (Legacy)",
+      "settings": [
+        {
+          "type": "select",
+          "id": "brand",
+          "label": "Brand Mode",
+          "options": [
+            { "value": "gold", "label": "Gold Brand (Rudra)" },
+            { "value": "silver", "label": "Silver Brand (TGM)" }
+          ],
+          "default": "gold"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection in Shopify Admin"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom Title (Optional Override)"
+        },
+        {
+          "type": "text",
+          "id": "custom_tag",
+          "label": "Custom Tag",
+          "default": "Handcrafted"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Image (Optional Override)"
+        }
+      ]
     }
   ],
   "presets": [
     {
       "name": "Curated Collections",
       "blocks": [
-        { "type": "collection_card", "settings": { "brand": "gold", "custom_title": "Bridal Heritage", "custom_tag": "Exquisite Craft" } },
-        { "type": "collection_card", "settings": { "brand": "gold", "custom_title": "Temple Gold", "custom_tag": "Traditional" } },
-        { "type": "collection_card", "settings": { "brand": "gold", "custom_title": "Solitaire Diamonds", "custom_tag": "Brilliance" } },
-        { "type": "collection_card", "settings": { "brand": "gold", "custom_title": "Daily Wear", "custom_tag": "Modern Elegant" } },
-        { "type": "collection_card", "settings": { "brand": "silver", "custom_title": "Contemporary Sterling", "custom_tag": "925 Sterling" } },
-        { "type": "collection_card", "settings": { "brand": "silver", "custom_title": "Oxidized Heritage", "custom_tag": "Artisanal" } }
+        { "type": "gold_collection_card", "settings": { "custom_title": "Bridal Heritage", "custom_tag": "Exquisite Craft" } },
+        { "type": "gold_collection_card", "settings": { "custom_title": "Temple Gold", "custom_tag": "Traditional" } },
+        { "type": "gold_collection_card", "settings": { "custom_title": "Solitaire Diamonds", "custom_tag": "Brilliance" } },
+        { "type": "gold_collection_card", "settings": { "custom_title": "Daily Wear", "custom_tag": "Modern Elegant" } },
+        { "type": "silver_collection_card", "settings": { "custom_title": "Silver Rings", "custom_tag": "925 Sterling" } },
+        { "type": "silver_collection_card", "settings": { "custom_title": "Silver Necklaces", "custom_tag": "Anti-Tarnish" } },
+        { "type": "silver_collection_card", "settings": { "custom_title": "Silver Bracelets", "custom_tag": "Contemporary" } },
+        { "type": "silver_collection_card", "settings": { "custom_title": "Silver Pendants", "custom_tag": "Crystal Gem" } }
       ]
     }
   ]
@@ -132,7 +161,6 @@
       </div>
 
       <div class="collections-grid single-row-carousel">
-        {%- assign gold_blocks = section.blocks | where: "type", "collection_card" -%}
         {%- assign gold_rendered = 0 -%}
 
         {%- if section.settings.gold_collections != blank and section.settings.gold_collections.size > 0 -%}
@@ -159,9 +187,9 @@
               </div>
             </a>
           {%- endfor -%}
-        {%- elsif gold_blocks.size > 0 -%}
-          {%- for block in gold_blocks -%}
-            {%- if block.settings.brand == 'gold' -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'gold_collection_card' or block.settings.brand == 'gold' -%}
               {%- assign gold_rendered = gold_rendered | plus: 1 -%}
               {%- assign coll_obj = block.settings.collection -%}
               {%- assign item_title = block.settings.custom_title -%}
@@ -316,9 +344,9 @@
           {%- endfor -%}
         {%- else -%}
           {%- for block in section.blocks -%}
-            {%- assign coll_obj = block.settings.collection -%}
-            {%- if block.settings.brand == 'silver' or block.type == 'silver_collection_card' -%}
+            {%- if block.type == 'silver_collection_card' or block.settings.brand == 'silver' -%}
               {%- assign silver_rendered = silver_rendered | plus: 1 -%}
+              {%- assign coll_obj = block.settings.collection -%}
               {%- assign item_title = block.settings.custom_title -%}
               {%- if item_title == blank and coll_obj != blank -%}
                 {%- assign item_title = coll_obj.title -%}
