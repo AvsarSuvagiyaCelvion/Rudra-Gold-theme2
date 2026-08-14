@@ -80,7 +80,12 @@
         "gold_collections": [],
         "silver_subtitle": "THE GRAND MOTHER • STERLING SILVER",
         "silver_title": "Silver Curation",
-        "silver_collections": []
+        "silver_collections": [
+          "silver-rings",
+          "silvers-chains",
+          "silver-pendants",
+          "silver-bracelets"
+        ]
       }
     },
     "bestsellers_ajax": {
