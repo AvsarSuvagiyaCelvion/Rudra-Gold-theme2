@@ -1,0 +1,334 @@
+{% schema %}
+{
+  "name": "Main About Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "gold_hero_title",
+      "label": "Gold Hero Title",
+      "default": "A Four-Decade Legacy of Royal Gold Heritage"
+    },
+    {
+      "type": "textarea",
+      "id": "gold_hero_desc",
+      "label": "Gold Hero Subtitle",
+      "default": "Crafting timeless 22K hallmarked gold and certified solitaires for India’s finest celebrations."
+    },
+    {
+      "type": "text",
+      "id": "silver_hero_title",
+      "label": "Silver Hero Title",
+      "default": "The Grand Mother • Modern Sterling Craft"
+    },
+    {
+      "type": "textarea",
+      "id": "silver_hero_desc",
+      "label": "Silver Hero Subtitle",
+      "default": "Redefining daily luxury with solid 925 sterling silver, triple rhodium anti-tarnish protection, and brilliant CZ diamonds."
+    }
+  ]
+}
+{% endschema %}
+
+{%- assign selected_brand = 'gold' -%}
+{%- assign current_url = canonical_url | downcase -%}
+{%- if current_url contains 'brand=silver' or request.path contains 'silver' -%}
+  {%- assign selected_brand = 'silver' -%}
+{%- endif -%}
+
+<section class="about-page-section">
+  <!-- Hero Banner -->
+  <div class="about-hero-banner {% if selected_brand == 'silver' %}silver-about-bg{% else %}gold-about-bg{% endif %}">
+    <div class="about-hero-overlay"></div>
+    <div class="container about-hero-content">
+      <!-- Gold Banner Content -->
+      <div class="brand-gold-only">
+        <span class="about-tag">ESTABLISHED 1984 • HERITAGE KARIGARI</span>
+        <h1 class="about-main-title Cormorant">{{ section.settings.gold_hero_title }}</h1>
+        <p class="about-main-desc">{{ section.settings.gold_hero_desc }}</p>
+      </div>
+
+      <!-- Silver Banner Content -->
+      <div class="brand-silver-only">
+        <span class="about-tag" style="color: #C0C0C0;">TGM SIGNATURE • 925 STERLING</span>
+        <h1 class="about-main-title Cormorant">{{ section.settings.silver_hero_title }}</h1>
+        <p class="about-main-desc">{{ section.settings.silver_hero_desc }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Story Section -->
+  <div class="container section-padding">
+    
+    <!-- Rudra Gold Story -->
+    <div class="brand-gold-only">
+      <div class="about-story-grid">
+        <div class="about-story-img-box">
+          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1000&q=80" alt="Rudra Gold Karigari" loading="lazy">
+          <div class="badge-experience">40+ Years of Craftsmanship</div>
+        </div>
+        <div class="about-story-content-box">
+          <span class="sub-heading">THE RUDRA GOLD PROMISE</span>
+          <h2 class="Cormorant story-title">Preserving Ancient Nakshi & Temple Artistry</h2>
+          <p>
+            Founded with a vision to preserve the regal elegance of Indian royal heritage, <strong>Rudra Gold</strong> translates centuries-old temple carving, Kundan setting, and South Sea pearl threading into heirlooms that pass through generations.
+          </p>
+          <p>
+            Every piece crafted in our ateliers undergoes 100% BIS Hallmarking (916 purity) and strict quality control. From grand bridal haars to solitaire diamond creations, our master Karigars dedicate hundreds of hours to perfection.
+          </p>
+          <div class="about-stats-grid">
+            <div class="stat-item">
+              <span class="stat-num">50,000+</span>
+              <span class="stat-label">Happy Families</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">100%</span>
+              <span class="stat-label">BIS Hallmarked</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">180+</span>
+              <span class="stat-label">Master Karigars</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Grand Mother Story -->
+    <div class="brand-silver-only">
+      <div class="about-story-grid">
+        <div class="about-story-img-box">
+          <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1000&q=80" alt="The Grand Mother Silver" loading="lazy">
+          <div class="badge-experience silver-badge">Solid 925 Sterling Guarantee</div>
+        </div>
+        <div class="about-story-content-box">
+          <span class="sub-heading" style="color: #C0C0C0;">THE GRAND MOTHER HERITAGE</span>
+          <h2 class="Cormorant story-title">Contemporary Grace in Pure 925 Silver</h2>
+          <p>
+            <strong>The Grand Mother (TGM)</strong> was born to make luxury jewellery an effortless part of your daily expression. We craft 925 solid sterling silver adornments treated with triple-layer rhodium coating for permanent tarnish resistance.
+          </p>
+          <p>
+            Whether it's a sleek diamond-cut band, artisanal oxidized vintage silver, or sparkling CZ crystal accents, TGM brings high-fashion sophistication to modern lifestyle.
+          </p>
+          <div class="about-stats-grid">
+            <div class="stat-item">
+              <span class="stat-num" style="color: #C0C0C0;">925</span>
+              <span class="stat-label">Sterling Purity</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" style="color: #C0C0C0;">Anti-Tarnish</span>
+              <span class="stat-label">Rhodium Shield</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" style="color: #C0C0C0;">100%</span>
+              <span class="stat-label">Hypoallergenic</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillars of Trust -->
+    <div class="about-trust-pillars">
+      <h3 class="Cormorant pillars-heading">Why Discerning Patrons Choose Us</h3>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h4>Guaranteed Hallmarking</h4>
+          <p>Every piece carries government-certified laser purity stamps and diamond authenticity certificates.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </div>
+          <h4>100% Insured Delivery</h4>
+          <p>Direct door-to-door fully insured transit with tamper-evident luxury velvet gift boxes.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+          </div>
+          <h4>Lifetime Exchange</h4>
+          <p>Complete peace of mind with 100% transparent buyback policies and lifetime karigar polishing services.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.about-hero-banner {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+}
+.gold-about-bg {
+  background: linear-gradient(rgba(10,10,10,0.7), rgba(10,10,10,0.85)), url('https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+}
+.silver-about-bg {
+  background: linear-gradient(rgba(10,10,10,0.75), rgba(10,10,10,0.88)), url('https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+}
+.about-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+}
+.about-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.about-tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 16px;
+}
+.about-main-title {
+  font-size: 46px;
+  color: #FFFFFF;
+  margin-bottom: 18px;
+  line-height: 1.15;
+}
+.about-main-desc {
+  font-size: 16px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.6;
+}
+.about-story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+  margin-bottom: 70px;
+}
+@media(max-width: 850px) {
+  .about-story-grid { grid-template-columns: 1fr; gap: 30px; }
+  .about-main-title { font-size: 32px; }
+}
+.about-story-img-box {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.about-story-img-box img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  display: block;
+}
+.badge-experience {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: var(--color-gold);
+  color: #000;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 10px 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.silver-badge {
+  background: #C0C0C0;
+  color: #000;
+}
+.sub-heading {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+.story-title {
+  font-size: 34px;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+.about-story-content-box p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+.about-stats-grid {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  border-top: 1px solid var(--color-gray-border);
+  padding-top: 25px;
+}
+.stat-num {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  color: var(--color-gold);
+  font-weight: 700;
+  display: block;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.about-trust-pillars {
+  text-align: center;
+  border-top: 1px solid var(--color-gray-border);
+  padding-top: 60px;
+}
+.pillars-heading {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+@media(max-width: 768px) {
+  .pillars-grid { grid-template-columns: 1fr; }
+}
+.pillar-card {
+  padding: 30px 20px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--color-gray-border);
+  border-radius: 4px;
+}
+.pillar-icon {
+  color: var(--color-gold);
+  margin-bottom: 18px;
+}
+.pillar-card h4 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.pillar-card p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+</style>

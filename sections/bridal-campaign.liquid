@@ -1,0 +1,102 @@
+{% schema %}
+{
+  "name": "Bridal Campaign Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "gold_subtitle",
+      "label": "Gold Subtitle",
+      "default": "ROYAL HERITAGE BRIDAL EDIT"
+    },
+    {
+      "type": "text",
+      "id": "gold_title",
+      "label": "Gold Title",
+      "default": "Your Forever Begins Here"
+    },
+    {
+      "type": "textarea",
+      "id": "gold_desc",
+      "label": "Gold Description",
+      "default": "Discover bespoke bridal gold masterworks designed to make every wedding ritual unforgettable."
+    },
+    {
+      "type": "text",
+      "id": "gold_btn_text",
+      "label": "Gold Button Text",
+      "default": "Explore Bridal Collection"
+    },
+    {
+      "type": "url",
+      "id": "gold_link",
+      "label": "Gold Button Link"
+    },
+    {
+      "type": "text",
+      "id": "silver_subtitle",
+      "label": "Silver Subtitle",
+      "default": "TGM CELEBRATION EDIT"
+    },
+    {
+      "type": "text",
+      "id": "silver_title",
+      "label": "Silver Title",
+      "default": "Timeless Festive Grace"
+    },
+    {
+      "type": "textarea",
+      "id": "silver_desc",
+      "label": "Silver Description",
+      "default": "Adorn your special occasions with contemporary 925 sterling silver statement pieces."
+    },
+    {
+      "type": "text",
+      "id": "silver_btn_text",
+      "label": "Silver Button Text",
+      "default": "Explore TGM Festive Edit"
+    },
+    {
+      "type": "url",
+      "id": "silver_link",
+      "label": "Silver Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bridal Campaign Banner"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="bridal-campaign-section">
+  <!-- Rudra Gold Bridal Banner -->
+  <div class="brand-gold-only">
+    <div class="bridal-banner-container gold-bridal-bg">
+      <div class="bridal-overlay"></div>
+      <div class="container bridal-content-wrap">
+        <span class="bridal-subtitle">{{ section.settings.gold_subtitle }}</span>
+        <h2 class="bridal-title Cormorant">{{ section.settings.gold_title }}</h2>
+        <p class="bridal-desc">{{ section.settings.gold_desc }}</p>
+        <a href="{{ section.settings.gold_link | default: '/collections/bridal' }}" class="btn-primary gold-bridal-btn">
+          {{ section.settings.gold_btn_text }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Grand Mother Festive Banner -->
+  <div class="brand-silver-only">
+    <div class="bridal-banner-container silver-bridal-bg">
+      <div class="bridal-overlay"></div>
+      <div class="container bridal-content-wrap">
+        <span class="bridal-subtitle" style="color: #C0C0C0;">{{ section.settings.silver_subtitle }}</span>
+        <h2 class="bridal-title Cormorant">{{ section.settings.silver_title }}</h2>
+        <p class="bridal-desc">{{ section.settings.silver_desc }}</p>
+        <a href="{{ section.settings.silver_link | default: '/collections/all?brand=silver' }}" class="btn-primary silver-bridal-btn">
+          {{ section.settings.silver_btn_text }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

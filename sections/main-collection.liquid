@@ -5,10 +5,11 @@
 }
 {% endschema %}
 
+{%- assign current_url = canonical_url | downcase -%}
 {%- assign selected_brand = 'gold' -%}
-{%- if request.query_string contains 'brand=silver' -%}
+{%- if current_url contains 'brand=silver' -%}
   {%- assign selected_brand = 'silver' -%}
-{%- elsif request.query_string contains 'brand=gold' -%}
+{%- elsif current_url contains 'brand=gold' -%}
   {%- assign selected_brand = 'gold' -%}
 {%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
   {%- assign selected_brand = 'silver' -%}
@@ -34,11 +35,44 @@
     <!-- Top Filter & Sort Bar -->
     <div class="collection-top-bar">
       <div class="top-bar-left">
+        {%- assign cat_label = "" -%}
+        {%- if current_url contains 'cat=rings' -%}
+          {%- assign cat_label = " Rings" -%}
+        {%- elsif current_url contains 'cat=chains' -%}
+          {%- assign cat_label = " Chains & Necklaces" -%}
+        {%- elsif current_url contains 'cat=bangles' -%}
+          {%- assign cat_label = " Bracelets & Bangles" -%}
+        {%- elsif current_url contains 'cat=mangalsutras' -%}
+          {%- assign cat_label = " Mangalsutras" -%}
+        {%- elsif current_url contains 'cat=pendants' -%}
+          {%- assign cat_label = " Pendants" -%}
+        {%- elsif current_url contains 'cat=earrings' -%}
+          {%- assign cat_label = " Earrings" -%}
+        {%- elsif current_url contains 'cat=bridal' -%}
+          {%- assign cat_label = " Bridal Heritage" -%}
+        {%- elsif current_url contains 'cat=temple' -%}
+          {%- assign cat_label = " Temple Gold" -%}
+        {%- elsif current_url contains 'cat=daily-wear' -%}
+          {%- assign cat_label = " Daily Wear" -%}
+        {%- elsif current_url contains 'cat=solitaires' -%}
+          {%- assign cat_label = " Solitaires" -%}
+        {%- elsif current_url contains 'cat=rhodium' -%}
+          {%- assign cat_label = " Rhodium Anti-Tarnish" -%}
+        {%- elsif current_url contains 'cat=gold-plated' -%}
+          {%- assign cat_label = " 18K Gold Plated Silver" -%}
+        {%- elsif current_url contains 'cat=oxidized' -%}
+          {%- assign cat_label = " Oxidized Silver" -%}
+        {%- elsif current_url contains 'cat=zirconia' -%}
+          {%- assign cat_label = " CZ Diamond Zirconia" -%}
+        {%- elsif current_url contains 'cat=new-arrivals' -%}
+          {%- assign cat_label = " New Arrivals" -%}
+        {%- endif -%}
+
         <h2 class="collection-page-title">
           {%- if selected_brand == 'silver' -%}
-            The Grand Mother Silver Curation
+            The Grand Mother Silver{{ cat_label }} Curation
           {%- else -%}
-            Heritage Gold Jewellery
+            Heritage Gold{{ cat_label }} Collection
           {%- endif -%}
         </h2>
         <span class="product-count">12 Exquisite Pieces Found</span>
@@ -234,6 +268,30 @@
       <div class="collection-content-grid-wrapper">
         {%- paginate collection.products by 12 -%}
         <div class="collection-grid cols-3" id="collectionProductGrid">
+          {%- assign req_query = canonical_url | downcase -%}
+          {%- assign active_cat = "" -%}
+          {%- if req_query contains 'cat=rings' -%}
+            {%- assign active_cat = "rings" -%}
+          {%- elsif req_query contains 'cat=chains' -%}
+            {%- assign active_cat = "chains" -%}
+          {%- elsif req_query contains 'cat=mangalsutras' -%}
+            {%- assign active_cat = "mangalsutras" -%}
+          {%- elsif req_query contains 'cat=bangles' -%}
+            {%- assign active_cat = "bangles" -%}
+          {%- elsif req_query contains 'cat=pendants' -%}
+            {%- assign active_cat = "pendants" -%}
+          {%- elsif req_query contains 'cat=earrings' -%}
+            {%- assign active_cat = "earrings" -%}
+          {%- elsif req_query contains 'cat=bridal' -%}
+            {%- assign active_cat = "bridal" -%}
+          {%- elsif req_query contains 'cat=temple' -%}
+            {%- assign active_cat = "temple" -%}
+          {%- elsif req_query contains 'cat=daily-wear' -%}
+            {%- assign active_cat = "daily-wear" -%}
+          {%- elsif req_query contains 'cat=solitaires' -%}
+            {%- assign active_cat = "solitaires" -%}
+          {%- endif -%}
+
           {%- assign rendered_any_product = false -%}
           {%- if collection.products.size > 0 -%}
             {%- for product in collection.products -%}
@@ -245,98 +303,100 @@
               {%- if product_tags_down contains 'silver' or product_tags_down contains 'grand mother' or product_tags_down contains 'tgm' or product_title_down contains 'silver' or product_type_down contains 'silver' -%}
                 {%- assign is_silver_product = true -%}
               {%- endif -%}
-              
-              {%- if selected_brand == 'silver' -%}
-                {%- if is_silver_product -%}
+
+              {%- assign is_brand_match = false -%}
+              {%- if selected_brand == 'silver' and is_silver_product -%}
+                {%- assign is_brand_match = true -%}
+              {%- elsif selected_brand == 'gold' and is_silver_product == false -%}
+                {%- assign is_brand_match = true -%}
+              {%- endif -%}
+
+              {%- if is_brand_match -%}
+                {%- assign is_cat_match = true -%}
+                {%- if active_cat != "" -%}
+                  {%- assign combined_text = product_title_down | append: ' ' | append: product_tags_down | append: ' ' | append: product_type_down -%}
+                  {%- case active_cat -%}
+                    {%- when 'rings' -%}
+                      {%- unless combined_text contains 'ring' or combined_text contains 'band' -%}
+                        {%- assign is_cat_match = false -%}
+                      {%- endunless -%}
+                    {%- when 'chains' -%}
+                      {%- unless combined_text contains 'chain' or combined_text contains 'necklace' or combined_text contains 'choker' -%}
+                        {%- assign is_cat_match = false -%}
+                      {%- endunless -%}
+                    {%- when 'mangalsutras' -%}
+                      {%- unless combined_text contains 'mangalsutra' or combined_text contains 'pendant' -%}
+                        {%- assign is_cat_match = false -%}
+                      {%- endunless -%}
+                    {%- when 'bangles' -%}
+                      {%- unless combined_text contains 'bangle' or combined_text contains 'bracelet' or combined_text contains 'anklet' or combined_text contains 'kada' -%}
+                        {%- assign is_cat_match = false -%}
+                      {%- endunless -%}
+                    {%- when 'pendants' -%}
+                      {%- unless combined_text contains 'pendant' -%}
+                        {%- assign is_cat_match = false -%}
+                      {%- endunless -%}
+                    {%- when 'earrings' -%}
+                      {%- unless combined_text contains 'earring' or combined_text contains 'jhumka' or combined_text contains 'stud' or combined_text contains 'hoop' or combined_text contains 'chandbali' -%}
+                        {%- assign is_cat_match = false -%}
+                      {%- endunless -%}
+                  {%- endcase -%}
+                {%- endif -%}
+
+                {%- if is_cat_match -%}
                   {%- assign rendered_any_product = true -%}
                   {%- render 'product-card', product: product -%}
                 {%- endif -%}
-              {%- else -%}
-                {%- unless is_silver_product -%}
-                  {%- assign rendered_any_product = true -%}
-                  {%- render 'product-card', product: product -%}
-                {%- endunless -%}
               {%- endif -%}
             {%- endfor -%}
           {%- endif -%}
           
           {%- if collection.products.size == 0 or rendered_any_product == false -%}
-            {%- comment -%} Fallback mock items if no matching catalog products are rendered {%- endcomment -%}
+            {%- comment -%} Fallback mock items dynamically filtered by category {%- endcomment -%}
             {%- if selected_brand == 'silver' -%}
-              {%- render 'product-card',
-                title: "Contemporary Sterling Hoop Earrings",
-                price: 4200,
-                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Sterling Silver"
-              -%}
-              {%- render 'product-card',
-                title: "Classic Silver Solitaire Ring",
-                price: 8500,
-                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Sterling Silver"
-              -%}
-              {%- render 'product-card',
-                title: "Vintage Oxidized Silver Choker",
-                price: 24000,
-                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Sterling Silver"
-              -%}
-              {%- render 'product-card',
-                title: "Minimalist Silver Stackable Band",
-                price: 3200,
-                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Sterling Silver"
-              -%}
-              {%- render 'product-card',
-                title: "Artisanal Silver Filigree Bangle",
-                price: 15500,
-                image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Sterling Silver"
-              -%}
-              {%- render 'product-card',
-                title: "Silver Zirconia Tennis Bracelet",
-                price: 18000,
-                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80",
-                purity: "925 Sterling Silver"
-              -%}
+              {%- if active_cat == 'rings' -%}
+                {%- render 'product-card', title: "Classic Silver Solitaire Ring", price: 8500, image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+                {%- render 'product-card', title: "Minimalist Silver Stackable Band", price: 3200, image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+                {%- render 'product-card', title: "TGM Celestial Diamond Star Band", price: 12400, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+              {%- elsif active_cat == 'chains' -%}
+                {%- render 'product-card', title: "Contemporary Sterling Silver Chain", price: 6800, image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+                {%- render 'product-card', title: "Vintage Oxidized Silver Choker", price: 24000, image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+              {%- elsif active_cat == 'bangles' -%}
+                {%- render 'product-card', title: "Artisanal Silver Filigree Bangle", price: 15500, image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+                {%- render 'product-card', title: "Silver Zirconia Tennis Bracelet", price: 18000, image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+              {%- elsif active_cat == 'earrings' -%}
+                {%- render 'product-card', title: "Contemporary Sterling Hoop Earrings", price: 4200, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+              {%- else -%}
+                {%- render 'product-card', title: "Classic Silver Solitaire Ring", price: 8500, image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+                {%- render 'product-card', title: "Contemporary Sterling Hoop Earrings", price: 4200, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+                {%- render 'product-card', title: "Silver Zirconia Tennis Bracelet", price: 18000, image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80", purity: "925 Sterling Silver" -%}
+              {%- endif -%}
             {%- else -%}
-              {%- render 'product-card',
-                title: "Mayur Heritage Temple Ring",
-                price: 68000,
-                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
-                hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              -%}
-              {%- render 'product-card',
-                title: "Royal Peacock Gold Band",
-                price: 49500,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
-                purity: "18K Gold"
-              -%}
-              {%- render 'product-card',
-                title: "Rudra Royal Signature Necklace",
-                price: 245000,
-                image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              -%}
-              {%- render 'product-card',
-                title: "Nizami Pearl Heritage Choker",
-                price: 380000,
-                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              -%}
-              {%- render 'product-card',
-                title: "Glow Silhouette Bangles Set",
-                price: 165000,
-                image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
-                purity: "22K Gold"
-              -%}
-              {%- render 'product-card',
-                title: "Classic Solitaire Tennis Bracelet",
-                price: 450000,
-                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80",
-                purity: "18K Gold"
-              -%}
+              {%- if active_cat == 'rings' -%}
+                {%- render 'product-card', title: "Mayur Heritage Temple Ring", price: 68000, image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80", hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+                {%- render 'product-card', title: "Royal Peacock Gold Band", price: 49500, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80", purity: "18K Gold" -%}
+                {%- render 'product-card', title: "Imperial Diamond Solitaire Ring", price: 185000, image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80", purity: "18K Gold" -%}
+                {%- render 'product-card', title: "Ganga Jamuna Antique Ring", price: 72000, image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+              {%- elsif active_cat == 'chains' -%}
+                {%- render 'product-card', title: "Rudra Royal Signature Necklace", price: 245000, image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+                {%- render 'product-card', title: "Nizami Pearl Heritage Choker", price: 380000, image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+              {%- elsif active_cat == 'mangalsutras' -%}
+                {%- render 'product-card', title: "Aadhya Royal Diamond Mangalsutra", price: 115000, image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=600&q=80", purity: "18K Gold" -%}
+                {%- render 'product-card', title: "Heritage Black Bead Gold Mangalsutra", price: 98000, image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+              {%- elsif active_cat == 'pendants' -%}
+                {%- render 'product-card', title: "Royal Lakshmi Gold Temple Pendant", price: 58000, image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+                {%- render 'product-card', title: "Solitaire Diamond Gold Pendant", price: 85000, image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80", purity: "18K Gold" -%}
+                {%- render 'product-card', title: "Vedic Gold Ganesha Pendant", price: 42000, image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+              {%- elsif active_cat == 'bangles' -%}
+                {%- render 'product-card', title: "Glow Silhouette Bangles Set", price: 165000, image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+                {%- render 'product-card', title: "Classic Solitaire Tennis Bracelet", price: 450000, image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80", purity: "18K Gold" -%}
+              {%- elsif active_cat == 'earrings' -%}
+                {%- render 'product-card', title: "Imperial Heritage Gold Jhumkas", price: 88000, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+              {%- else -%}
+                {%- render 'product-card', title: "Mayur Heritage Temple Ring", price: 68000, image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80", hover_image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+                {%- render 'product-card', title: "Rudra Royal Signature Necklace", price: 245000, image: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+                {%- render 'product-card', title: "Glow Silhouette Bangles Set", price: 165000, image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80", purity: "22K Gold" -%}
+              {%- endif -%}
             {%- endif -%}
           {%- endif -%}
         </div>
@@ -362,6 +422,76 @@
 
   </div>
 </section>
+
+<script>
+  (function initCategoryFilter() {
+    function applyFilter() {
+      const urlParams = new URLSearchParams(window.location.search);
+      let cat = urlParams.get('cat');
+      const pathname = window.location.pathname.toLowerCase();
+      const brand = urlParams.get('brand') || (localStorage.getItem('active_brand') || 'gold');
+
+      if (!cat) {
+        if (pathname.includes('ring')) cat = 'rings';
+        else if (pathname.includes('chain') || pathname.includes('necklace')) cat = 'chains';
+        else if (pathname.includes('mangalsutra')) cat = 'mangalsutras';
+        else if (pathname.includes('pendant')) cat = 'pendants';
+        else if (pathname.includes('bracelet') || pathname.includes('bangle') || pathname.includes('bracelate')) cat = 'bangles';
+        else if (pathname.includes('earring')) cat = 'earrings';
+      }
+
+      if (!cat) return;
+
+      const pageTitle = document.querySelector('.collection-page-title');
+      const catTitles = {
+        'rings': (brand === 'silver') ? 'The Grand Mother Silver Rings Curation' : 'Heritage Gold Rings Collection',
+        'chains': (brand === 'silver') ? 'The Grand Mother Silver Chains & Necklaces' : 'Heritage Gold Chains & Necklaces',
+        'mangalsutras': (brand === 'silver') ? 'The Grand Mother Silver Mangalsutras' : 'Heritage Gold Mangalsutras Collection',
+        'bangles': (brand === 'silver') ? 'The Grand Mother Silver Bracelets & Anklets' : 'Heritage Gold Bracelets & Bangles',
+        'pendants': (brand === 'silver') ? 'The Grand Mother Silver Pendants' : 'Heritage Gold Pendants Collection',
+        'earrings': (brand === 'silver') ? 'The Grand Mother Silver Earrings' : 'Heritage Gold Earrings Collection'
+      };
+
+      if (pageTitle && catTitles[cat]) {
+        pageTitle.textContent = catTitles[cat];
+      }
+
+      const gridCards = document.querySelectorAll('#collectionProductGrid .product-card-wrapper');
+      if (!gridCards || gridCards.length === 0) return;
+
+      let visibleCount = 0;
+      gridCards.forEach(card => {
+        const titleText = card.textContent.toLowerCase();
+        let matches = false;
+
+        if (cat === 'rings' && (titleText.includes('ring') || titleText.includes('band'))) matches = true;
+        else if (cat === 'chains' && (titleText.includes('chain') || titleText.includes('necklace') || titleText.includes('choker'))) matches = true;
+        else if (cat === 'mangalsutras' && (titleText.includes('mangalsutra') || titleText.includes('pendant'))) matches = true;
+        else if (cat === 'pendants' && titleText.includes('pendant')) matches = true;
+        else if (cat === 'bangles' && (titleText.includes('bangle') || titleText.includes('bracelet') || titleText.includes('anklet') || titleText.includes('kada'))) matches = true;
+        else if (cat === 'earrings' && (titleText.includes('earring') || titleText.includes('jhumka') || titleText.includes('stud') || titleText.includes('hoop'))) matches = true;
+
+        if (matches) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      const countSpan = document.querySelector('.product-count');
+      if (countSpan) {
+        countSpan.textContent = visibleCount + ' Exquisite Pieces Found';
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFilter);
+    } else {
+      applyFilter();
+    }
+  })();
+</script>
 
 <style>
 .collection-top-bar {

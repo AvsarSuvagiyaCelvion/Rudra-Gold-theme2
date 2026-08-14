@@ -102,7 +102,7 @@
         <h2 class="pane-title Cormorant">{{ section.settings.silver_title }}</h2>
         <p class="pane-description">{{ section.settings.silver_desc }}</p>
         <div class="pane-actions">
-          <a href="{{ section.settings.silver_link | default: '/collections/silver' }}" class="btn-primary silver-cta-btn">
+          <a href="{{ section.settings.silver_link | default: '/collections/all?brand=silver' }}" class="btn-primary silver-cta-btn">
             {{ section.settings.silver_btn_text }}
           </a>
         </div>
@@ -127,7 +127,7 @@
         <h2 class="pane-title Cormorant">{{ section.settings.gold_title }}</h2>
         <p class="pane-description">{{ section.settings.gold_desc }}</p>
         <div class="pane-actions">
-          <a href="{{ section.settings.gold_link | default: '/collections/gold' }}" class="btn-primary gold-cta-btn">
+          <a href="{{ section.settings.gold_link | default: '/collections/all?brand=gold' }}" class="btn-primary gold-cta-btn">
             {{ section.settings.gold_btn_text }}
           </a>
         </div>

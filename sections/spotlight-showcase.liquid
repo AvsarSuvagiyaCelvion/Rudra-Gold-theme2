@@ -1,0 +1,154 @@
+{% schema %}
+{
+  "name": "Spotlight Showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "gold_subtitle",
+      "label": "Gold Subtitle",
+      "default": "EDITORIAL SPOTLIGHT • MASTERPIECE CREATION"
+    },
+    {
+      "type": "text",
+      "id": "gold_title",
+      "label": "Gold Title",
+      "default": "The Empress Royal Temple Haar"
+    },
+    {
+      "type": "textarea",
+      "id": "gold_desc",
+      "label": "Gold Description",
+      "default": "Sculpted over 180 meticulous artisan hours, featuring 22K hallmarked Nakshi temple carvings studded with unheated Burmese rubies and hand-selected South Sea pearls."
+    },
+    {
+      "type": "text",
+      "id": "gold_purity",
+      "label": "Gold Metal Spec",
+      "default": "22K BIS Hallmarked Gold • 68.4g"
+    },
+    {
+      "type": "text",
+      "id": "gold_price",
+      "label": "Gold Price Display",
+      "default": "₹4,85,000"
+    },
+    {
+      "type": "url",
+      "id": "gold_link",
+      "label": "Gold CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "silver_subtitle",
+      "label": "Silver Subtitle",
+      "default": "TGM EDITORIAL SPOTLIGHT • 925 STERLING"
+    },
+    {
+      "type": "text",
+      "id": "silver_title",
+      "label": "Silver Title",
+      "default": "The Celestial Diamond Star Band"
+    },
+    {
+      "type": "textarea",
+      "id": "silver_desc",
+      "label": "Silver Description",
+      "default": "Precision crafted in solid 925 sterling silver with rhodium anti-tarnish coating and brilliant cut lab diamonds."
+    },
+    {
+      "type": "text",
+      "id": "silver_purity",
+      "label": "Silver Spec",
+      "default": "925 Solid Sterling Silver • 8.6g"
+    },
+    {
+      "type": "text",
+      "id": "silver_price",
+      "label": "Silver Price Display",
+      "default": "₹12,400"
+    },
+    {
+      "type": "url",
+      "id": "silver_link",
+      "label": "Silver CTA Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Spotlight Showcase"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="spotlight-showcase section-padding">
+  <div class="container">
+    
+    <!-- Rudra Gold Showcase -->
+    <div class="brand-gold-only">
+      <div class="spotlight-card gold-spotlight-card">
+        <div class="spotlight-img-box">
+          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1000&q=80" alt="The Empress Royal Temple Haar" loading="lazy">
+          <div class="spotlight-tag">Bespoke Curation</div>
+        </div>
+        <div class="spotlight-content-box">
+          <span class="spotlight-subtitle">{{ section.settings.gold_subtitle }}</span>
+          <h2 class="spotlight-title Cormorant">{{ section.settings.gold_title }}</h2>
+          <p class="spotlight-desc">{{ section.settings.gold_desc }}</p>
+          
+          <div class="spotlight-meta-grid">
+            <div class="meta-item">
+              <span class="meta-label">Specification</span>
+              <span class="meta-val">{{ section.settings.gold_purity }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Craftsmanship Time</span>
+              <span class="meta-val">180 Master Karigar Hours</span>
+            </div>
+          </div>
+
+          <div class="spotlight-price-row">
+            <div class="spotlight-price">{{ section.settings.gold_price }}</div>
+            <a href="{{ section.settings.gold_link | default: '/collections/all?brand=gold' }}" class="btn-primary gold-spotlight-btn">
+              Explore Creation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Grand Mother Silver Showcase -->
+    <div class="brand-silver-only">
+      <div class="spotlight-card silver-spotlight-card">
+        <div class="spotlight-img-box">
+          <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1000&q=80" alt="The Celestial Diamond Star Band" loading="lazy">
+          <div class="spotlight-tag silver-tag">TGM Signature</div>
+        </div>
+        <div class="spotlight-content-box">
+          <span class="spotlight-subtitle" style="color: #C0C0C0;">{{ section.settings.silver_subtitle }}</span>
+          <h2 class="spotlight-title Cormorant">{{ section.settings.silver_title }}</h2>
+          <p class="spotlight-desc">{{ section.settings.silver_desc }}</p>
+          
+          <div class="spotlight-meta-grid">
+            <div class="meta-item">
+              <span class="meta-label">Specification</span>
+              <span class="meta-val">{{ section.settings.silver_purity }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Finish & Protection</span>
+              <span class="meta-val">Triple Rhodium Anti-Tarnish</span>
+            </div>
+          </div>
+
+          <div class="spotlight-price-row">
+            <div class="spotlight-price">{{ section.settings.silver_price }}</div>
+            <a href="{{ section.settings.silver_link | default: '/collections/all?brand=silver' }}" class="btn-primary silver-spotlight-btn">
+              Explore TGM Silver
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

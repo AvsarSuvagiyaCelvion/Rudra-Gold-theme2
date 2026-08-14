@@ -3,15 +3,13 @@
     "hero_banner": {
       "type": "hero-banner",
       "settings": {
-        "subtitle": "ESTD 1918 • ROYAL HERITAGE",
-        "title_line1": "Timeless Purity,",
-        "title_line2": "Crafted for Royalty",
-        "description": "Indulge in our exquisite collection of hand-carved temple jewellery and certified solitaires, designed for luxury connoisseurs."
+        "gold_subtitle": "RUDRA GOLD • ROYAL HERITAGE",
+        "gold_title": "Timeless Golden Purity",
+        "gold_desc": "Exquisite hand-carved heritage temple jewellery and certified bridal gold masterworks.",
+        "silver_subtitle": "THE GRAND MOTHER • STERLING SILVER",
+        "silver_title": "Sleek Silver Elegance",
+        "silver_desc": "Premium 925 sterling silver and anti-tarnish diamond essentials for modern daily luxury."
       }
-    },
-    "brand_trust_bar": {
-      "type": "brand-trust-bar",
-      "settings": {}
     },
     "curated_collections": {
       "type": "curated-collections",
@@ -27,11 +25,19 @@
         "title": "Rudra Bestsellers"
       }
     },
+    "spotlight_showcase": {
+      "type": "spotlight-showcase",
+      "settings": {}
+    },
+    "brand_trust_bar": {
+      "type": "brand-trust-bar",
+      "settings": {}
+    },
     "craftsmanship_video": {
       "type": "craftsmanship-video",
       "settings": {
         "subtitle": "THE ART OF EXCELLENCE",
-        "title": "Handcrafted for Generations",
+        "title": "Crafted With Passion",
         "description": "Every gold filament and diamond facet represents hours of rigorous carving by our family-hereditary master karigars. Preserving India's ancient metal-smithing traditions."
       }
     },
@@ -41,6 +47,10 @@
         "subtitle": "THE BENCHMARK OF TRUST",
         "title": "The Rudra Gold Guarantee"
       }
+    },
+    "bridal_campaign": {
+      "type": "bridal-campaign",
+      "settings": {}
     },
     "testimonials_glass": {
       "type": "testimonials-glass",
@@ -53,28 +63,29 @@
       "type": "instagram-shoppable",
       "settings": {
         "subtitle": "LIFESTYLE INSPIRATION",
-        "title": "Shop The Royal Look"
+        "title": "Follow Our Journey"
       }
     },
     "newsletter_luxury": {
       "type": "newsletter-luxury",
       "settings": {
         "subtitle": "THE ROYAL CLUB",
-        "title": "Subscribe for VIP Curation",
-        "description": "Receive seasonal lookbooks, early alerts on bespoke bridal collections, and private boutique showcase invitations."
+        "title": "Be the First to Know",
+        "description": "Discover new collections, exclusive launches, and special private boutique invitations."
       }
     }
   },
   "order": [
     "hero_banner",
-    "brand_trust_bar",
     "curated_collections",
     "bestsellers_ajax",
+    "spotlight_showcase",
+    "brand_trust_bar",
     "craftsmanship_video",
     "why_rudra_gold",
+    "bridal_campaign",
     "testimonials_glass",
     "instagram_shoppable",
     "newsletter_luxury"
   ]
 }
-

@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initVariantPriceBreakdown();
   initCollectionFilters();
   initMobileMenu();
+  initPredictiveSearchDrawer();
   triggerHeroAnimations();
 });
 
@@ -1149,3 +1150,121 @@ function trapFocus(element) {
   element._trapKeyHandler = keyHandler;
   element.addEventListener('keydown', keyHandler);
 }
+
+// Global helper function to instantly close search drawer across both brands
+window.closePredictiveSearchDrawerWindow = function() {
+  const modal = document.getElementById('predictiveSearchModal');
+  const overlay = document.getElementById('predictiveSearchOverlay');
+  const headerOverlay = document.getElementById('searchDrawerOverlay');
+  
+  if (modal) modal.classList.remove('active');
+  if (overlay) overlay.classList.remove('active');
+  if (headerOverlay) headerOverlay.classList.remove('active');
+  
+  document.body.style.overflow = '';
+  if (window.lenisInst) window.lenisInst.start();
+};
+
+/* 15. PREDICTIVE SEARCH DRAWER CONTROLLER */
+function initPredictiveSearchDrawer() {
+  const searchModal = document.getElementById('predictiveSearchModal');
+  const searchOverlay = document.getElementById('predictiveSearchOverlay');
+  const searchClose = document.getElementById('predictiveSearchClose');
+  const searchInput = document.getElementById('predictiveSearchInput');
+  const searchTriggers = document.querySelectorAll('#headerSearchTrigger, #mobileSearchTrigger, [data-search-trigger]');
+
+  if (!searchModal) return;
+
+  const openSearch = () => {
+    searchModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (lenisInst) lenisInst.stop();
+    if (searchInput) {
+      setTimeout(() => searchInput.focus(), 150);
+    }
+  };
+
+  const closeSearch = () => {
+    window.closePredictiveSearchDrawerWindow();
+  };
+
+  searchTriggers.forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openSearch();
+    });
+  });
+
+  if (searchClose) searchClose.addEventListener('click', closeSearch);
+  if (searchOverlay) searchOverlay.addEventListener('click', closeSearch);
+
+  // Instant global click delegation for close buttons
+  document.addEventListener('click', (e) => {
+    const closeBtn = e.target.closest('#predictiveSearchClose, .search-drawer-close-btn, #searchDrawerClose, .search-drawer-close, #predictiveSearchOverlay');
+    if (closeBtn) {
+      e.preventDefault();
+      closeSearch();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeSearch();
+    }
+  });
+
+  // Mock live search filtering
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const val = e.target.value.trim().toLowerCase();
+      const quickSuggestions = document.getElementById('searchQuickSuggestions');
+      const resultsContainer = document.getElementById('searchResultsContainer');
+      const resultsGrid = document.getElementById('searchResultsGrid');
+      const clearBtn = document.getElementById('clearSearchBtn');
+
+      if (clearBtn) clearBtn.style.display = val ? 'block' : 'none';
+
+      if (val.length > 1) {
+        if (quickSuggestions) quickSuggestions.style.display = 'none';
+        if (resultsContainer) resultsContainer.style.display = 'block';
+
+        // Filter mock items based on query
+        const mockProducts = [
+          { title: "Royal Heritage Temple Haar", price: "₹2,45,000", purity: "22K Gold", img: "https://images.unsplash.com/photo-1599643438383-e18e821d3e80?auto=format&fit=crop&w=300&q=80", url: "/products/womens-necklace" },
+          { title: "Mayur Heritage Temple Ring", price: "₹68,000", purity: "22K Gold", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=300&q=80", url: "/products/womens-ring" },
+          { title: "Imperial Solitaire Diamond Band", price: "₹1,85,000", purity: "18K Diamond", img: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=300&q=80", url: "/products/womens-ring" },
+          { title: "TGM Celestial Diamond Star Band", price: "₹12,400", purity: "925 Silver", img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=300&q=80", url: "/products/silver-band" }
+        ];
+
+        const matches = mockProducts.filter(p => p.title.toLowerCase().includes(val) || p.purity.toLowerCase().includes(val));
+
+        if (resultsGrid) {
+          if (matches.length > 0) {
+            resultsGrid.innerHTML = matches.map(m => `
+              <a href="${m.url}" class="search-result-item" style="display: flex; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--color-gray-border);">
+                <img src="${m.img}" alt="${m.title}" style="width: 54px; height: 54px; object-fit: cover; border-radius: 4px;">
+                <div>
+                  <h4 style="font-size: 13px; font-weight: 600; color: var(--color-dark); margin: 0 0 4px;">${m.title}</h4>
+                  <span style="font-size: 11px; color: var(--color-gold); text-transform: uppercase; font-weight: 600; display: block;">${m.purity}</span>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--color-dark);">${m.price}</span>
+                </div>
+              </a>
+            `).join('');
+          } else {
+            resultsGrid.innerHTML = `<p style="font-size: 13px; color: var(--color-text-muted); padding: 16px 0;">No matching jewellery found for "${val}". Try searching for gold rings, silver, or bridal.</p>`;
+          }
+        }
+      } else {
+        if (quickSuggestions) quickSuggestions.style.display = 'block';
+        if (resultsContainer) resultsContainer.style.display = 'none';
+      }
+    });
+  }
+}
+
+// Call on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  initPredictiveSearchDrawer();
+});
+
