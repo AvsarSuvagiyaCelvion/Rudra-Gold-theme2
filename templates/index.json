@@ -83,7 +83,11 @@
       "type": "bestsellers-ajax",
       "settings": {
         "subtitle": "CURATED EXQUISITE CREATIONS",
-        "title": "Rudra Bestsellers"
+        "title": "Rudra Bestsellers",
+        "gold_collection": "gold-best-seller",
+        "silver_subtitle": "THE GRAND MOTHER • STERLING SILVER",
+        "silver_title": "Silver Bestsellers",
+        "silver_collection": "silver-best-seller"
       }
     },
     "spotlight_showcase": {
