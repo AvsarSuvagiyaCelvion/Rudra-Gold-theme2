@@ -76,6 +76,33 @@
           "label": "Custom Image (Optional Override)"
         }
       ]
+    },
+    {
+      "type": "silver_collection_card",
+      "name": "Silver Collection Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Silver Collection in Admin"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom Title (Optional Override)"
+        },
+        {
+          "type": "text",
+          "id": "custom_tag",
+          "label": "Custom Tag",
+          "default": "925 Sterling"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Image (Optional Override)"
+        }
+      ]
     }
   ],
   "presets": [
@@ -261,7 +288,6 @@
       </div>
 
       <div class="collections-grid single-row-carousel">
-        {%- assign silver_blocks = section.blocks | where: "type", "collection_card" -%}
         {%- assign silver_rendered = 0 -%}
 
         {%- if section.settings.silver_collections != blank and section.settings.silver_collections.size > 0 -%}
@@ -288,11 +314,11 @@
               </div>
             </a>
           {%- endfor -%}
-        {%- elsif silver_blocks.size > 0 -%}
-          {%- for block in silver_blocks -%}
-            {%- if block.settings.brand == 'silver' -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- assign coll_obj = block.settings.collection -%}
+            {%- if block.settings.brand == 'silver' or block.type == 'silver_collection_card' -%}
               {%- assign silver_rendered = silver_rendered | plus: 1 -%}
-              {%- assign coll_obj = block.settings.collection -%}
               {%- assign item_title = block.settings.custom_title -%}
               {%- if item_title == blank and coll_obj != blank -%}
                 {%- assign item_title = coll_obj.title -%}
