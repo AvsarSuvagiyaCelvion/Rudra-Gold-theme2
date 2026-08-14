@@ -941,12 +941,14 @@ html.theme-silver .filter-checkbox-row:hover {
   }
   .collection-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
   }
 }
 
 @media (max-width: 480px) {
   .collection-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 }
 
