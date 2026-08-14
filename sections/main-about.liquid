@@ -347,21 +347,27 @@
     margin-bottom: 12px;
   }
   .about-stats-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 20px;
-    padding-top: 16px;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 24px;
+    padding: 16px 12px;
+    background: rgba(200, 161, 61, 0.05);
+    border: 1px solid rgba(200, 161, 61, 0.2);
+    border-radius: 8px;
+    text-align: center;
   }
   .stat-num {
-    font-size: 22px;
+    font-size: 20px;
   }
   .stat-label {
-    font-size: 10px;
+    font-size: 9px;
   }
   .about-trust-pillars {
-    padding-top: 36px;
+    padding-top: 40px;
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
   }
   .pillars-heading {
     font-size: 24px;
@@ -370,9 +376,11 @@
   .pillars-grid {
     grid-template-columns: 1fr;
     gap: 16px;
+    padding: 0 4px;
   }
   .pillar-card {
-    padding: 20px 16px;
+    padding: 22px 18px;
+    box-sizing: border-box;
   }
 }
 </style>
