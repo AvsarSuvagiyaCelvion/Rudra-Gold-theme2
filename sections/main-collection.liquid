@@ -121,59 +121,34 @@
             </svg>
           </button>
         </div>
-        <h3 class="filter-sidebar-title">Refine By</h3>
-
-        <!-- Metal Filter -->
-        <div class="filter-group">
-          <h4>Metal Type</h4>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="gold" {% if selected_brand == 'gold' %}checked{% endif %}>
-            <span>Gold Jewellery</span>
-          </label>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="silver" {% if selected_brand == 'silver' %}checked{% endif %}>
-            <span>Sterling Silver</span>
-          </label>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="platinum">
-            <span>Platinum</span>
-          </label>
-        </div>
-
-        <!-- Purity Filter -->
-        <div class="filter-group">
-          <h4>Metal Purity</h4>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="22k" checked>
-            <span>22K Gold (916)</span>
-          </label>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="18k">
-            <span>18K Gold (750)</span>
-          </label>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="925">
-            <span>925 Sterling Silver</span>
-          </label>
+        <div class="sidebar-header-desktop">
+          <h3 class="filter-sidebar-title">Refine By</h3>
+          <button type="button" class="clear-filters-btn" id="clearFiltersBtn" title="Clear all active filters">
+            Clear All
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </div>
 
         <!-- Price Range Filter -->
         <div class="filter-group">
           <h4>Price Range</h4>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="under-15k">
+            <input type="checkbox" class="filter-checkbox price-filter" value="under-15k">
             <span>Under ₹15,000</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="15k-50k">
+            <input type="checkbox" class="filter-checkbox price-filter" value="15k-50k">
             <span>₹15,000 - ₹50,000</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="50k-150k">
+            <input type="checkbox" class="filter-checkbox price-filter" value="50k-150k">
             <span>₹50,000 - ₹1,50,000</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="150k-up" checked>
+            <input type="checkbox" class="filter-checkbox price-filter" value="150k-up">
             <span>Over ₹1,50,000</span>
           </label>
         </div>
@@ -182,37 +157,28 @@
         <div class="filter-group">
           <h4>Category</h4>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="rings">
+            <input type="checkbox" class="filter-checkbox cat-filter" value="rings">
             <span>Rings & Bands</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="necklaces">
-            <span>Necklaces & Chokers</span>
+            <input type="checkbox" class="filter-checkbox cat-filter" value="chains">
+            <span>Chains & Necklaces</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="bangles">
-            <span>Bangles & Kada</span>
+            <input type="checkbox" class="filter-checkbox cat-filter" value="mangalsutras">
+            <span>Mangalsutras</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="earrings">
+            <input type="checkbox" class="filter-checkbox cat-filter" value="bangles">
+            <span>Bracelets & Bangles</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox cat-filter" value="pendants">
+            <span>Pendants</span>
+          </label>
+          <label class="filter-checkbox-row">
+            <input type="checkbox" class="filter-checkbox cat-filter" value="earrings">
             <span>Earrings & Studs</span>
-          </label>
-        </div>
-
-        <!-- Occasion Filter -->
-        <div class="filter-group">
-          <h4>Occasion</h4>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="bridal">
-            <span>Bridal / Wedding</span>
-          </label>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="daily">
-            <span>Daily Essentials</span>
-          </label>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="gifting">
-            <span>Celebration Gifts</span>
           </label>
         </div>
 
@@ -220,15 +186,15 @@
         <div class="filter-group">
           <h4>Gender</h4>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="women" checked>
+            <input type="checkbox" class="filter-checkbox gender-filter" value="women">
             <span>Women</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="men">
+            <input type="checkbox" class="filter-checkbox gender-filter" value="men">
             <span>Men</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="unisex">
+            <input type="checkbox" class="filter-checkbox gender-filter" value="unisex">
             <span>Unisex</span>
           </label>
         </div>
@@ -237,29 +203,16 @@
         <div class="filter-group">
           <h4>Metal Weight</h4>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="under-5g">
+            <input type="checkbox" class="filter-checkbox weight-filter" value="under-5g">
             <span>Under 5 grams</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="5g-15g">
+            <input type="checkbox" class="filter-checkbox weight-filter" value="5g-15g">
             <span>5 - 15 grams</span>
           </label>
           <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="15g-up">
+            <input type="checkbox" class="filter-checkbox weight-filter" value="15g-up">
             <span>Over 15 grams</span>
-          </label>
-        </div>
-
-        <!-- Availability Filter -->
-        <div class="filter-group">
-          <h4>Availability</h4>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="instock" checked>
-            <span>Ready to Ship</span>
-          </label>
-          <label class="filter-checkbox-row">
-            <input type="checkbox" class="filter-checkbox" value="preorder">
-            <span>Made to Order</span>
           </label>
         </div>
       </aside>
@@ -424,8 +377,26 @@
 </section>
 
 <script>
-  (function initCategoryFilter() {
-    function applyFilter() {
+  (function initCollectionPageController() {
+    function parsePrice(card) {
+      const priceBtn = card.querySelector('.wishlist-btn');
+      if (priceBtn && priceBtn.dataset.rawPrice) {
+        return parseInt(priceBtn.dataset.rawPrice, 10) || 0;
+      }
+      const priceEl = card.querySelector('.product-card-price, [data-card-price-el], .price');
+      if (!priceEl) return 0;
+      const text = priceEl.textContent.replace(/[^0-9]/g, '');
+      return parseInt(text, 10) || 0;
+    }
+
+    function parseWeight(card) {
+      const weightEl = card.querySelector('.product-card-weight');
+      if (!weightEl) return 0;
+      const text = weightEl.textContent.replace(/[^0-9.]/g, '');
+      return parseFloat(text) || 0;
+    }
+
+    function applyFiltersAndSorting() {
       const urlParams = new URLSearchParams(window.location.search);
       let cat = urlParams.get('cat');
       const pathname = window.location.pathname.toLowerCase();
@@ -440,8 +411,7 @@
         else if (pathname.includes('earring')) cat = 'earrings';
       }
 
-      if (!cat) return;
-
+      // Title Update
       const pageTitle = document.querySelector('.collection-page-title');
       const catTitles = {
         'rings': (brand === 'silver') ? 'The Grand Mother Silver Rings Curation' : 'Heritage Gold Rings Collection',
@@ -452,26 +422,79 @@
         'earrings': (brand === 'silver') ? 'The Grand Mother Silver Earrings' : 'Heritage Gold Earrings Collection'
       };
 
-      if (pageTitle && catTitles[cat]) {
+      if (pageTitle && cat && catTitles[cat]) {
         pageTitle.textContent = catTitles[cat];
       }
 
-      const gridCards = document.querySelectorAll('#collectionProductGrid .product-card-wrapper');
+      const gridContainer = document.getElementById('collectionProductGrid');
+      if (!gridContainer) return;
+      const gridCards = Array.from(gridContainer.querySelectorAll('.product-card, .product-card-wrapper'));
       if (!gridCards || gridCards.length === 0) return;
 
+      // Active sidebar checkbox filters
+      const checkedCats = Array.from(document.querySelectorAll('.cat-filter:checked')).map(cb => cb.value);
+      const checkedPrices = Array.from(document.querySelectorAll('.price-filter:checked')).map(cb => cb.value);
+      const checkedGenders = Array.from(document.querySelectorAll('.gender-filter:checked')).map(cb => cb.value);
+      const checkedWeights = Array.from(document.querySelectorAll('.weight-filter:checked')).map(cb => cb.value);
+
       let visibleCount = 0;
+
       gridCards.forEach(card => {
         const titleText = card.textContent.toLowerCase();
-        let matches = false;
+        const priceVal = parsePrice(card);
+        const weightVal = parseWeight(card);
 
-        if (cat === 'rings' && (titleText.includes('ring') || titleText.includes('band'))) matches = true;
-        else if (cat === 'chains' && (titleText.includes('chain') || titleText.includes('necklace') || titleText.includes('choker'))) matches = true;
-        else if (cat === 'mangalsutras' && (titleText.includes('mangalsutra') || titleText.includes('pendant'))) matches = true;
-        else if (cat === 'pendants' && titleText.includes('pendant')) matches = true;
-        else if (cat === 'bangles' && (titleText.includes('bangle') || titleText.includes('bracelet') || titleText.includes('anklet') || titleText.includes('kada'))) matches = true;
-        else if (cat === 'earrings' && (titleText.includes('earring') || titleText.includes('jhumka') || titleText.includes('stud') || titleText.includes('hoop'))) matches = true;
+        let matchesCategory = true;
+        let matchesPrice = true;
+        let matchesGender = true;
+        let matchesWeight = true;
 
-        if (matches) {
+        // Category matching (from URL or checkbox)
+        const targetCat = checkedCats.length > 0 ? checkedCats : (cat ? [cat] : []);
+        if (targetCat.length > 0) {
+          matchesCategory = targetCat.some(c => {
+            if (c === 'rings' && (titleText.includes('ring') || titleText.includes('band'))) return true;
+            if (c === 'chains' && (titleText.includes('chain') || titleText.includes('necklace') || titleText.includes('choker'))) return true;
+            if (c === 'mangalsutras' && (titleText.includes('mangalsutra') || titleText.includes('pendant'))) return true;
+            if (c === 'pendants' && titleText.includes('pendant')) return true;
+            if (c === 'bangles' && (titleText.includes('bangle') || titleText.includes('bracelet') || titleText.includes('anklet') || titleText.includes('kada'))) return true;
+            if (c === 'earrings' && (titleText.includes('earring') || titleText.includes('jhumka') || titleText.includes('stud') || titleText.includes('hoop'))) return true;
+            return false;
+          });
+        }
+
+        // Price range matching
+        if (checkedPrices.length > 0) {
+          matchesPrice = checkedPrices.some(p => {
+            if (p === 'under-15k' && priceVal > 0 && priceVal < 15000) return true;
+            if (p === '15k-50k' && priceVal >= 15000 && priceVal <= 50000) return true;
+            if (p === '50k-150k' && priceVal > 50000 && priceVal <= 150000) return true;
+            if (p === '150k-up' && priceVal > 150000) return true;
+            return false;
+          });
+        }
+
+        // Gender matching
+        if (checkedGenders.length > 0) {
+          matchesGender = checkedGenders.some(g => {
+            if (g === 'men' && (titleText.includes("men's") || (titleText.includes('men') && !titleText.includes('women')))) return true;
+            if (g === 'women' && (titleText.includes("women's") || titleText.includes('women') || titleText.includes('mangalsutra') || titleText.includes('jhumka'))) return true;
+            if (g === 'unisex') return true;
+            return false;
+          });
+        }
+
+        // Weight matching
+        if (checkedWeights.length > 0) {
+          matchesWeight = checkedWeights.some(w => {
+            if (w === 'under-5g' && weightVal > 0 && weightVal < 5) return true;
+            if (w === '5g-15g' && weightVal >= 5 && weightVal <= 15) return true;
+            if (w === '15g-up' && weightVal > 15) return true;
+            return false;
+          });
+        }
+
+        if (matchesCategory && matchesPrice && matchesGender && matchesWeight) {
           card.style.display = 'block';
           visibleCount++;
         } else {
@@ -479,39 +502,158 @@
         }
       });
 
+      // Update Piece Count
       const countSpan = document.querySelector('.product-count');
       if (countSpan) {
         countSpan.textContent = visibleCount + ' Exquisite Pieces Found';
       }
+
+      // Sort cards
+      const sortSelect = document.getElementById('sortBySelect');
+      if (sortSelect) {
+        const sortVal = sortSelect.value;
+        if (sortVal === 'price-low') {
+          gridCards.sort((a, b) => parsePrice(a) - parsePrice(b));
+          gridCards.forEach(c => gridContainer.appendChild(c));
+        } else if (sortVal === 'price-high') {
+          gridCards.sort((a, b) => parsePrice(b) - parsePrice(a));
+          gridCards.forEach(c => gridContainer.appendChild(c));
+        }
+      }
+    }
+
+    // Grid Switcher (2 Cols, 3 Cols, 4 Cols)
+    function initGridSwitcher() {
+      const gridContainer = document.getElementById('collectionProductGrid');
+      const switcherBtns = document.querySelectorAll('.grid-switcher-btn');
+      if (!gridContainer || !switcherBtns) return;
+
+      switcherBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          switcherBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cols = btn.dataset.columns;
+
+          gridContainer.classList.remove('cols-2', 'cols-3', 'cols-4');
+          gridContainer.classList.add(`cols-${cols}`);
+        });
+      });
+    }
+
+    // Bind event listeners
+    function bindEvents() {
+      const sortSelect = document.getElementById('sortBySelect');
+      if (sortSelect) {
+        sortSelect.addEventListener('change', applyFiltersAndSorting);
+      }
+
+      const checkboxes = document.querySelectorAll('.filter-checkbox');
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', applyFiltersAndSorting);
+      });
+
+      // Clear All Filters Handler
+      const clearBtn = document.getElementById('clearFiltersBtn');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          checkboxes.forEach(cb => cb.checked = false);
+          
+          // Clear query param from URL state cleanly
+          if (window.location.search.includes('cat=')) {
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.delete('cat');
+            window.history.pushState({}, '', newUrl.toString());
+          }
+
+          // Reset Title if needed
+          const pageTitle = document.querySelector('.collection-page-title');
+          const brand = (new URLSearchParams(window.location.search)).get('brand') || 'gold';
+          if (pageTitle) {
+            pageTitle.textContent = (brand === 'silver') ? 'The Grand Mother Silver Jewellery Curation' : 'Heritage Gold Jewellery Collection';
+          }
+
+          applyFiltersAndSorting();
+        });
+      }
+
+      // Mobile filter drawer toggles
+      const mobileBtn = document.getElementById('mobileFilterTriggerBtn');
+      const mobileClose = document.getElementById('mobileFilterClose');
+      const sidebar = document.getElementById('collectionSidebarFilters');
+      const overlay = document.getElementById('mobileFilterOverlay');
+
+      if (mobileBtn && sidebar && overlay) {
+        mobileBtn.addEventListener('click', () => {
+          sidebar.classList.add('active');
+          overlay.classList.add('active');
+        });
+      }
+      if (mobileClose && sidebar && overlay) {
+        mobileClose.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+          overlay.classList.remove('active');
+        });
+      }
+      if (overlay && sidebar) {
+        overlay.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+          overlay.classList.remove('active');
+        });
+      }
+
+      initGridSwitcher();
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyFilter);
+      document.addEventListener('DOMContentLoaded', () => {
+        applyFiltersAndSorting();
+        bindEvents();
+      });
     } else {
-      applyFilter();
+      applyFiltersAndSorting();
+      bindEvents();
     }
   })();
 </script>
 
 <style>
+.main-collection-section {
+  padding-top: 70px;
+  padding-bottom: 36px;
+}
+
 .collection-top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--color-gray-border);
-  padding-bottom: 20px;
-  margin-bottom: 30px;
+  padding-top: 16px;
+  padding-bottom: 32px;
+  margin-bottom: 36px;
 }
 
-.top-bar-left h2 {
+.top-bar-left h2.collection-page-title {
   font-family: var(--font-serif);
-  font-size: 26px;
-  color: var(--color-dark);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--color-gold);
+  line-height: 1.2;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+html.theme-silver .top-bar-left h2.collection-page-title {
+  color: #C0C0C0;
 }
 
 .product-count {
-  font-size: 11px;
+  font-size: 13px;
+  font-family: var(--font-sans);
   color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  font-weight: 400;
 }
 
 .top-bar-right {
@@ -562,47 +704,117 @@
 /* Sidebar Grid layout */
 .collection-main-layout {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 40px;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
 }
 
 .collection-sidebar-filters {
   align-self: flex-start;
+  border-right: 1px solid var(--color-gray-border);
+  padding-right: 28px;
+}
+
+.sidebar-header-desktop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+html.theme-silver .sidebar-header-desktop {
+  border-bottom-color: #C0C0C0;
 }
 
 .filter-sidebar-title {
-  font-family: var(--font-sans);
-  font-size: 14px;
+  font-family: var(--font-serif);
+  font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-dark);
-  margin-bottom: 24px;
-  border-bottom: 1.5px solid var(--color-gold);
-  padding-bottom: 8px;
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+  margin: 0;
+}
+
+html.theme-silver .filter-sidebar-title {
+  color: #C0C0C0;
+}
+
+.clear-filters-btn {
+  background: transparent;
+  border: 1px solid var(--color-gray-border);
+  border-radius: 3px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition-fast);
+}
+
+.clear-filters-btn:hover {
+  background: var(--color-gold);
+  color: #000000;
+  border-color: var(--color-gold);
+}
+
+html.theme-silver .clear-filters-btn:hover {
+  background: #C0C0C0;
+  color: #000000;
+  border-color: #C0C0C0;
 }
 
 .filter-group {
-  margin-bottom: 30px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed rgba(200, 161, 61, 0.2);
+}
+
+html.theme-silver .filter-group {
+  border-bottom-color: rgba(192, 192, 192, 0.2);
+}
+
+.filter-group:last-child {
+  border-bottom: none;
 }
 
 .filter-group h4 {
   font-family: var(--font-serif);
-  font-size: 15px;
-  margin-bottom: 12px;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
   color: var(--color-dark);
 }
 
 .filter-checkbox-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  margin-bottom: 8px;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--color-dark);
+  margin-bottom: 10px;
   cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.filter-checkbox-row:hover {
+  color: var(--color-gold);
+}
+
+html.theme-silver .filter-checkbox-row:hover {
+  color: #C0C0C0;
 }
 
 .filter-checkbox-row input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
   accent-color: var(--color-gold);
 }
 
