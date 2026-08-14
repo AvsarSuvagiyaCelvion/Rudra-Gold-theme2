@@ -574,25 +574,47 @@ document.addEventListener('DOMContentLoaded', () => {
   const carousels = document.querySelectorAll('.single-row-carousel');
 
   carousels.forEach(carousel => {
+    const originalCards = Array.from(carousel.children);
+    if (originalCards.length === 0) return;
+
+    // Clone original cards to create a seamless infinite loop sequence
+    originalCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.classList.add('is-clone');
+      carousel.appendChild(clone);
+    });
+
     let autoSlideInterval = null;
     let isUserInteracting = false;
+    let isResetting = false;
+
+    // Monitor scroll position for seamless infinite wrap on both manual swipe & auto-slide
+    carousel.addEventListener('scroll', () => {
+      if (isResetting) return;
+
+      const singleSetWidth = carousel.scrollWidth / 2;
+      if (carousel.scrollLeft >= singleSetWidth) {
+        isResetting = true;
+        carousel.scrollLeft -= singleSetWidth;
+        setTimeout(() => { isResetting = false; }, 50);
+      } else if (carousel.scrollLeft <= 0 && isUserInteracting) {
+        isResetting = true;
+        carousel.scrollLeft += singleSetWidth;
+        setTimeout(() => { isResetting = false; }, 50);
+      }
+    }, { passive: true });
 
     function startAutoSlide() {
       if (autoSlideInterval) clearInterval(autoSlideInterval);
+      // Increased speed: 2.0 seconds per slide
       autoSlideInterval = setInterval(() => {
         if (isUserInteracting) return;
 
-        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-        const currentScroll = carousel.scrollLeft;
         const firstCard = carousel.querySelector('.collection-item');
         const cardWidth = firstCard ? (firstCard.offsetWidth + 16) : 280;
 
-        if (currentScroll >= maxScroll - 20) {
-          carousel.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
-        }
-      }, 3200);
+        carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      }, 2000);
     }
 
     let pauseTimer = null;
@@ -601,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (pauseTimer) clearTimeout(pauseTimer);
       pauseTimer = setTimeout(() => {
         isUserInteracting = false;
-      }, 4000);
+      }, 3500);
     }
 
     carousel.addEventListener('touchstart', handleUserInteraction, { passive: true });
