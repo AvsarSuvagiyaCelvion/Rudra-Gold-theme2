@@ -308,27 +308,71 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
-@media(max-width: 768px) {
-  .pillars-grid { grid-template-columns: 1fr; }
-}
-.pillar-card {
-  padding: 30px 20px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--color-gray-border);
-  border-radius: 4px;
-}
-.pillar-icon {
-  color: var(--color-gold);
-  margin-bottom: 18px;
-}
-.pillar-card h4 {
-  font-family: var(--font-serif);
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-.pillar-card p {
-  font-size: 13px;
-  color: var(--color-text-muted);
-  line-height: 1.6;
+@media (max-width: 768px) {
+  .about-hero-banner {
+    min-height: auto;
+    padding: 100px 20px 40px 20px;
+  }
+  .about-main-title {
+    font-size: 26px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+  .about-main-desc {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .about-story-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .about-story-img-box img {
+    height: 260px;
+  }
+  .badge-experience {
+    font-size: 10px;
+    padding: 8px 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+  .story-title {
+    font-size: 24px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+  .about-story-content-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .about-stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 16px;
+    justify-content: space-around;
+  }
+  .stat-num {
+    font-size: 22px;
+  }
+  .stat-label {
+    font-size: 10px;
+  }
+  .about-trust-pillars {
+    padding-top: 36px;
+  }
+  .pillars-heading {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .pillar-card {
+    padding: 20px 16px;
+  }
 }
 </style>

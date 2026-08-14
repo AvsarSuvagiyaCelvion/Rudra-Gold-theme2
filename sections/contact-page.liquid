@@ -302,21 +302,34 @@
 @media (max-width: 991px) {
   .contact-layout {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
   }
   .contact-info-panel {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 20px;
   }
   .contact-info-item {
-    flex: 1 1 calc(50% - 12px);
+    flex: 1 1 calc(50% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-page {
+    padding-top: 100px;
+    padding-bottom: 40px;
+  }
+  .section-header {
+    margin-bottom: 24px;
+  }
+  .section-title {
+    font-size: 28px;
   }
 }
 
 @media (max-width: 575px) {
   .contact-form-panel {
-    padding: 24px;
+    padding: 20px 16px;
   }
   .contact-form-row {
     grid-template-columns: 1fr;
@@ -324,6 +337,13 @@
   }
   .contact-info-item {
     flex: 1 1 100%;
+    padding: 14px;
+    gap: 12px;
+  }
+  .contact-info-item p,
+  .contact-info-item a {
+    font-size: 12px;
+    word-break: break-word;
   }
 }
 </style>
