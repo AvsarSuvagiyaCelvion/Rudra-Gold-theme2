@@ -568,3 +568,48 @@ html.theme-silver .collection-item:hover .collection-tag {
   }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const carousels = document.querySelectorAll('.single-row-carousel');
+
+  carousels.forEach(carousel => {
+    let autoSlideInterval = null;
+    let isUserInteracting = false;
+
+    function startAutoSlide() {
+      if (autoSlideInterval) clearInterval(autoSlideInterval);
+      autoSlideInterval = setInterval(() => {
+        if (isUserInteracting) return;
+
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        const currentScroll = carousel.scrollLeft;
+        const firstCard = carousel.querySelector('.collection-item');
+        const cardWidth = firstCard ? (firstCard.offsetWidth + 16) : 280;
+
+        if (currentScroll >= maxScroll - 20) {
+          carousel.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+        }
+      }, 3200);
+    }
+
+    let pauseTimer = null;
+    function handleUserInteraction() {
+      isUserInteracting = true;
+      if (pauseTimer) clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(() => {
+        isUserInteracting = false;
+      }, 4000);
+    }
+
+    carousel.addEventListener('touchstart', handleUserInteraction, { passive: true });
+    carousel.addEventListener('mousedown', handleUserInteraction);
+    carousel.addEventListener('mouseenter', handleUserInteraction);
+    carousel.addEventListener('mouseleave', () => { isUserInteracting = false; });
+
+    startAutoSlide();
+  });
+});
+</script>
