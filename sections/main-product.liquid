@@ -409,65 +409,84 @@
 </div>
 
 <style>
+.main-product-section {
+  padding-top: 140px;
+  padding-bottom: 80px;
+}
+
 .product-detail-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 1.1fr 1fr;
   gap: 50px;
+  align-items: start;
 }
 
 .product-gallery-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
+  position: sticky;
+  top: 120px;
 }
 
 .product-main-image-box {
   background-color: var(--color-cream);
   border: 1px solid var(--color-gray-border);
-  border-radius: 2px;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   aspect-ratio: 1 / 1;
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 520px;
+  max-height: 520px;
   margin: 0 auto;
   width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.product-main-image-box:hover {
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
 }
 
 .product-main-image-box img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 15px;
-  transition: transform 0.6s ease;
+  object-fit: cover;
+  padding: 0;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product-main-image-box:hover img {
+  transform: scale(1.04);
 }
 
 .product-thumbnails-grid {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   margin-top: 10px;
 }
 
 .pdp-thumb {
   width: 75px;
   height: 75px;
-  object-fit: contain;
+  object-fit: cover;
   background-color: var(--color-cream);
   border: 1px solid var(--color-gray-border);
-  padding: 4px;
+  padding: 2px;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.7;
   transition: var(--transition-fast);
   flex-shrink: 0;
-  border-radius: 2px;
+  border-radius: 6px;
 }
 
 .pdp-thumb.active, .pdp-thumb:hover {
   opacity: 1;
   border-color: var(--color-gold);
+  transform: translateY(-2px);
 }
 
 .product-info-wrapper {
@@ -712,9 +731,21 @@
 }
 
 @media (max-width: 991px) {
+  .main-product-section {
+    padding-top: 110px;
+    padding-bottom: 50px;
+  }
   .product-detail-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
+  }
+  .product-gallery-wrapper {
+    position: relative;
+    top: 0;
+  }
+  .product-main-image-box {
+    max-width: 100%;
+    max-height: 440px;
   }
 }
 
