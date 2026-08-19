@@ -34,7 +34,7 @@
         "collection_card_YXPxx7": {
           "type": "gold_collection_card",
           "settings": {
-            "collection": "gold-rings",
+            "collection": "rings",
             "custom_title": "Bridal Heritage",
             "custom_tag": "Exquisite Craft"
           }
@@ -42,7 +42,7 @@
         "collection_card_rJixWQ": {
           "type": "gold_collection_card",
           "settings": {
-            "collection": "gold-chains",
+            "collection": "chains",
             "custom_title": "Temple Gold",
             "custom_tag": "Traditional"
           }
@@ -78,7 +78,7 @@
         "silver_title": "Silver Curation",
         "silver_collections": [
           "silver-rings",
-          "silver-chains",
+          "silvers-chains",
           "silver-pendants",
           "silver-bracelets"
         ]
@@ -132,6 +132,14 @@
         "silver_handle": "@thegrandmother_official",
         "silver_url": "https://www.instagram.com/the_grandmother_silver_"
       }
+    },
+    "17871412294799c9e5": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1787141918fad88062": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
@@ -141,6 +149,8 @@
     "bestsellers_ajax",
     "spotlight_showcase",
     "testimonials_glass",
-    "instagram_shoppable"
+    "instagram_shoppable",
+    "17871412294799c9e5",
+    "1787141918fad88062"
   ]
 }
