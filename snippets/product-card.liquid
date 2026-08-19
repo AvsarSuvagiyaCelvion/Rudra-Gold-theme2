@@ -88,7 +88,11 @@
       data-title="{{ card_title | escape }}"
       data-price="₹{{ dynamic_price }}"
       data-raw-price="{{ dynamic_price }}"
-      data-img="{{ card_img }}">
+      data-img="{{ card_img }}"
+      data-brand="{% if is_silver %}silver{% else %}gold{% endif %}"
+      data-purity="{% if is_silver %}925 Sterling Silver{% else %}{{ card_purity | escape }}{% endif %}"
+      data-url="{{ card_url }}"
+      data-variant-id="{{ card_variant_id }}">
       {% render 'icon-wishlist' %}
     </button>
 

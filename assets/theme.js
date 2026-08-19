@@ -926,10 +926,15 @@ function initWishlist() {
   wishlistTriggers.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const title = btn.dataset.title || 'Rudra Gold Piece';
+      const title = btn.dataset.title || 'Luxury Piece';
       const price = btn.dataset.price || '0';
       const rawPrice = parseInt(btn.dataset.rawPrice || btn.dataset.price || '0');
       const img = btn.dataset.img || '';
+      const activeBrand = document.documentElement.classList.contains('theme-silver') ? 'silver' : 'gold';
+      const brand = btn.dataset.brand || activeBrand;
+      const purity = btn.dataset.purity || (brand === 'silver' ? '925 Sterling Silver' : '22K Gold');
+      const url = btn.dataset.url || `/collections/all?brand=${brand}`;
+      const variantId = btn.dataset.variantId || '';
 
       let items = getWishlist();
       const existingIndex = items.findIndex(i => i.title === title);
@@ -939,7 +944,7 @@ function initWishlist() {
         btn.classList.remove('active');
         showToastNotification('wishlist-remove', title, img);
       } else {
-        items.push({ title, price, rawPrice, img });
+        items.push({ title, price, rawPrice, img, brand, purity, url, variantId });
         btn.classList.add('active');
         showToastNotification('wishlist-add', title, img);
       }

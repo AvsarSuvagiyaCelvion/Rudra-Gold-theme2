@@ -31,8 +31,8 @@
 {% endschema %}
 
 {%- assign selected_brand = 'gold' -%}
-{%- assign current_url = canonical_url | downcase -%}
-{%- if current_url contains 'brand=silver' or request.path contains 'silver' -%}
+{%- assign current_query = request.query_string | downcase -%}
+{%- if current_query contains 'brand=silver' or request.path contains 'silver' -%}
   {%- assign selected_brand = 'silver' -%}
 {%- endif -%}
 

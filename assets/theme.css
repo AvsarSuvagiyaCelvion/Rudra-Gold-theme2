@@ -2255,10 +2255,26 @@ html.theme-silver #silverNavigation {
 }
 
 /* 3. Responsive Touch Targets & Mobile Padding Safe Areas */
-button, a, input, select, textarea, .header-icon-btn, .mobile-nav-link {
+button, a, input, select, textarea, .mobile-nav-link {
   min-height: 44px;
   min-width: 44px;
   touch-action: manipulation;
+}
+
+.header-icon-btn {
+  width: 40px;
+  height: 40px;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  touch-action: manipulation;
+}
+
+.header-badge {
+  position: absolute !important;
+  top: 1px !important;
+  right: 1px !important;
 }
 
 .mobile-bottom-nav {
@@ -2326,7 +2342,11 @@ img {
   }
 }
 
-/* Tablets (600px to 1024px) */
+/* Mobile & Tablet Styles */
+.mobile-bottom-nav {
+  display: none !important;
+}
+
 @media (max-width: 1024px) {
   .main-navigation {
     display: none !important;
@@ -2336,12 +2356,8 @@ img {
     display: flex !important;
   }
 
-  .mobile-bottom-nav {
-    display: flex !important;
-  }
-
   body {
-    padding-bottom: 70px;
+    padding-bottom: 0 !important;
   }
 }
 

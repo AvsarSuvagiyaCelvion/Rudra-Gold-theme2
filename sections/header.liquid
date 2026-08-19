@@ -76,7 +76,7 @@
       <button class="mobile-menu-trigger" id="mobileMenuTrigger" aria-label="Open navigation menu">
         {% render 'icon-hamburger' %}
       </button>
-      <a href="/" class="header-logo-group">
+      <a href="/?brand={{ selected_brand }}" class="header-logo-group">
         <h1 class="logo-title">
           {%- if selected_brand == 'silver' -%}
             THE GRAND MOTHER
@@ -136,10 +136,10 @@
         </li>
 
         <li class="nav-item">
-          <a href="/pages/about-us" class="nav-link">About Us</a>
+          <a href="/pages/about-us?brand=gold" class="nav-link">About Us</a>
         </li>
         <li class="nav-item">
-          <a href="/pages/contact" class="nav-link">Contact</a>
+          <a href="/pages/contact?brand=gold" class="nav-link">Contact</a>
         </li>
       </ul>
     </nav>
@@ -182,10 +182,10 @@
         </li>
 
         <li class="nav-item">
-          <a href="/pages/about-us" class="nav-link">About Us</a>
+          <a href="/pages/about-us?brand=silver" class="nav-link">About Us</a>
         </li>
         <li class="nav-item">
-          <a href="/pages/contact" class="nav-link">Contact</a>
+          <a href="/pages/contact?brand=silver" class="nav-link">Contact</a>
         </li>
       </ul>
     </nav>
@@ -195,7 +195,7 @@
       <button class="header-icon-btn" id="headerSearchTrigger" aria-label="Open Search">
         {% render 'icon-search' %}
       </button>
-      <a href="/pages/wishlist" class="header-icon-btn wishlist-icon-btn" aria-label="Wishlist">
+      <a href="/pages/wishlist?brand={{ selected_brand }}" class="header-icon-btn wishlist-icon-btn" aria-label="Wishlist">
         {% render 'icon-wishlist' %}
         <span class="wishlist-count header-badge">0</span>
       </a>
@@ -707,6 +707,11 @@
   color: var(--color-light);
   cursor: pointer;
   position: relative;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: var(--transition-fast);
 }
 
@@ -722,18 +727,26 @@
 
 .header-badge {
   position: absolute;
-  top: -6px;
-  right: -8px;
+  top: 2px;
+  right: 2px;
   background-color: var(--color-gold);
   color: var(--color-dark);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
+  line-height: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+html.theme-silver .header-badge {
+  background-color: #C0C0C0;
+  color: var(--color-dark);
 }
 
 .mobile-menu-trigger {
@@ -1031,17 +1044,22 @@ html.theme-silver .mobile-nav-gold {
       sessionStorage.setItem('active_brand', brand);
     } catch(e) {}
     
-    const path = window.location.pathname.toLowerCase();
-
-    // If on homepage, product page, or collection page, redirect to the brand homepage
-    if (path === '/' || path.includes('/products/') || path.includes('/collections/')) {
-      window.location.replace('/?brand=' + brand);
+    // Synchronously update HTML brand class
+    if (brand === 'silver') {
+      document.documentElement.classList.add('theme-silver');
+      document.documentElement.classList.remove('theme-gold', 'brand-not-selected');
     } else {
-      // For general pages (about-us, contact, cart), keep page and set brand query parameter
-      const url = new URL(window.location.href);
-      url.searchParams.set('brand', brand);
-      window.location.replace(url.toString());
+      document.documentElement.classList.add('theme-gold');
+      document.documentElement.classList.remove('theme-silver', 'brand-not-selected');
     }
+
+    if (typeof applyBrandSectionVisibility === 'function') {
+      applyBrandSectionVisibility();
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('brand', brand);
+    window.location.replace(url.toString());
   };
 
 document.addEventListener('DOMContentLoaded', () => {

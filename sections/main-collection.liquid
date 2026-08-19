@@ -5,11 +5,11 @@
 }
 {% endschema %}
 
-{%- assign current_url = canonical_url | downcase -%}
+{%- assign query_str = request.query_string | downcase -%}
 {%- assign selected_brand = 'gold' -%}
-{%- if current_url contains 'brand=silver' -%}
+{%- if query_str contains 'brand=silver' -%}
   {%- assign selected_brand = 'silver' -%}
-{%- elsif current_url contains 'brand=gold' -%}
+{%- elsif query_str contains 'brand=gold' -%}
   {%- assign selected_brand = 'gold' -%}
 {%- elsif request.path contains 'silver' or request.path contains 'grand-mother' or request.path contains 'tgm' -%}
   {%- assign selected_brand = 'silver' -%}
@@ -221,7 +221,7 @@
       <div class="collection-content-grid-wrapper">
         {%- paginate collection.products by 12 -%}
         <div class="collection-grid cols-3" id="collectionProductGrid">
-          {%- assign req_query = canonical_url | downcase -%}
+          {%- assign req_query = request.query_string | downcase -%}
           {%- assign active_cat = "" -%}
           {%- if req_query contains 'cat=rings' -%}
             {%- assign active_cat = "rings" -%}
