@@ -89,7 +89,7 @@
   <div class="hero-full pane-silver brand-silver-only" id="paneSilver">
     <div class="pane-bg-wrapper">
       {% if section.settings.silver_image != blank %}
-        <img src="{{ section.settings.silver_image | image_url: width: 2000 }}" alt="The Grand Mother Silver Collection" class="pane-bg">
+        <img src="{{ section.settings.silver_image | image_url: width: 2000 }}" alt="The Grand Mother Silver Collection" class="pane-bg" loading="eager" fetchpriority="high" width="2000" height="1000">
       {% else %}
         <div class="pane-bg default-silver-bg"></div>
       {% endif %}
@@ -114,7 +114,7 @@
   <div class="hero-full pane-gold brand-gold-only" id="paneGold">
     <div class="pane-bg-wrapper">
       {% if section.settings.gold_image != blank %}
-        <img src="{{ section.settings.gold_image | image_url: width: 2000 }}" alt="Rudra Gold Luxury Collection" class="pane-bg">
+        <img src="{{ section.settings.gold_image | image_url: width: 2000 }}" alt="Rudra Gold Luxury Collection" class="pane-bg" loading="eager" fetchpriority="high" width="2000" height="1000">
       {% else %}
         <div class="pane-bg default-gold-bg"></div>
       {% endif %}

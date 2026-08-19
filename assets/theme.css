@@ -2203,4 +2203,172 @@ html.theme-silver .toast-badge {
   color: rgba(255, 255, 255, 0.75);
 }
 
+/* ==========================================================================
+   PRODUCTION RESPONSIVE & ZERO-FOUC PERFORMANCE ENHANCEMENTS
+   ========================================================================== */
+
+/* 1. Universal Layout & Overflow Guards */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+/* 2. Universal Brand Visibility System (Zero-FOUC Pure CSS) */
+.brand-gold-only {
+  display: block !important;
+}
+.brand-silver-only {
+  display: none !important;
+}
+html.theme-silver .brand-gold-only {
+  display: none !important;
+}
+html.theme-silver .brand-silver-only {
+  display: block !important;
+}
+
+/* Header Brand Navigation Visibility */
+#goldNavigation {
+  display: flex !important;
+}
+#silverNavigation {
+  display: none !important;
+}
+html.theme-silver #goldNavigation {
+  display: none !important;
+}
+html.theme-silver #silverNavigation {
+  display: flex !important;
+}
+
+/* 3. Responsive Touch Targets & Mobile Padding Safe Areas */
+button, a, input, select, textarea, .header-icon-btn, .mobile-nav-link {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+.mobile-bottom-nav {
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
+/* 4. Layout Shift (CLS) Guards */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.product-card-image-wrapper,
+.pdp-main-image-wrapper {
+  aspect-ratio: 1 / 1;
+  background-color: var(--color-cream);
+  overflow: hidden;
+}
+
+/* 5. Fluid Breakpoint Responsive Rules */
+/* Mobile Devices (320px to 480px) */
+@media (max-width: 480px) {
+  .logo-title {
+    font-size: 18px !important;
+    letter-spacing: 0.1em !important;
+  }
+  
+  .logo-tagline {
+    font-size: 7px !important;
+  }
+
+  .site-header {
+    height: 70px !important;
+  }
+
+  .header-left {
+    gap: 8px !important;
+  }
+
+  .selection-heading {
+    font-size: 28px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .selection-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .pane-title {
+    font-size: 32px !important;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 12px 20px !important;
+    font-size: 11px !important;
+  }
+
+  .toast-notification-container {
+    right: 12px !important;
+    left: 12px !important;
+    bottom: 80px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+}
+
+/* Tablets (600px to 1024px) */
+@media (max-width: 1024px) {
+  .main-navigation {
+    display: none !important;
+  }
+
+  .mobile-menu-trigger {
+    display: flex !important;
+  }
+
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+
+  body {
+    padding-bottom: 70px;
+  }
+}
+
+/* Desktop & Ultra-wide (1440px to 2560px+) */
+@media (min-width: 1441px) {
+  .container {
+    max-width: 1600px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1800px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .container {
+    max-width: 2200px;
+  }
+
+  body {
+    font-size: 18px;
+  }
+}
+
+
 

@@ -86,7 +86,7 @@
     <!-- Wishlist Button -->
     <button class="wishlist-btn" aria-label="Add to Wishlist"
       data-title="{{ card_title | escape }}"
-      data-price="₹{{ dynamic_price | number_with_delimiter }}"
+      data-price="₹{{ dynamic_price }}"
       data-raw-price="{{ dynamic_price }}"
       data-img="{{ card_img }}">
       {% render 'icon-wishlist' %}
@@ -94,8 +94,8 @@
 
     <!-- Images -->
     <a href="{{ card_url }}">
-      <img src="{{ card_img }}" alt="{{ card_title }}" class="product-card-img primary-img" loading="lazy">
-      <img src="{{ card_hover_img }}" alt="{{ card_title }}" class="product-card-img hover-img" loading="lazy">
+      <img src="{{ card_img }}" alt="{{ card_title | escape }}" class="product-card-img primary-img" loading="lazy" width="400" height="400">
+      <img src="{{ card_hover_img }}" alt="{{ card_title | escape }}" class="product-card-img hover-img" loading="lazy" width="400" height="400">
     </a>
 
     <!-- Hover Action Overlay -->
@@ -130,7 +130,7 @@
       {{ card_weight }} grams
     </div>
     <div class="product-card-price" data-card-price-el data-purity="{{ card_purity }}" data-weight="{{ card_weight }}" data-title="{{ card_title | escape }}" data-img="{{ card_img }}" data-variant-id="{{ card_variant_id }}">
-      ₹{{ dynamic_price | number_with_delimiter }}
+      ₹{{ dynamic_price }}
     </div>
   </div>
 </div>

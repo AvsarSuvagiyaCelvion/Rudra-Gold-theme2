@@ -43,7 +43,6 @@
         }
         
         const isHomepage = window.location.pathname === '/';
-        const hasBrandQuery = params.has('brand');
         
         if (brand === 'silver') {
           document.documentElement.classList.add('theme-silver');
@@ -51,26 +50,16 @@
           try {
             localStorage.setItem('active_brand', 'silver');
           } catch(e) {}
-          
-          if (isHomepage && !hasBrandQuery) {
-            window.location.replace('/?brand=silver');
-          }
         } else if (brand === 'gold') {
           document.documentElement.classList.add('theme-gold');
           document.documentElement.classList.remove('theme-silver', 'brand-not-selected');
           try {
             localStorage.setItem('active_brand', 'gold');
           } catch(e) {}
-          
-          if (isHomepage && !hasBrandQuery) {
-            window.location.replace('/?brand=gold');
-          }
-        } else if (isHomepage) {
-          // If homepage and brand is not chosen, show splash
-          document.documentElement.classList.add('brand-not-selected');
         } else {
-          // Fallback default Gold if landing directly on non-homepage
+          // Default fallback to gold theme
           document.documentElement.classList.add('theme-gold');
+          document.documentElement.classList.remove('theme-silver', 'brand-not-selected');
           try {
             localStorage.setItem('active_brand', 'gold');
           } catch(e) {}

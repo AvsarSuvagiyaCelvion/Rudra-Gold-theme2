@@ -6,22 +6,6 @@
 
 function applyBrandSectionVisibility() {
   const activeBrand = document.documentElement.classList.contains('theme-silver') ? 'silver' : 'gold';
-  
-  document.querySelectorAll('.brand-gold-only').forEach(el => {
-    if (activeBrand === 'silver') {
-      el.style.setProperty('display', 'none', 'important');
-    } else {
-      el.style.removeProperty('display');
-    }
-  });
-
-  document.querySelectorAll('.brand-silver-only').forEach(el => {
-    if (activeBrand === 'gold') {
-      el.style.setProperty('display', 'none', 'important');
-    } else {
-      el.style.removeProperty('display');
-    }
-  });
 
   const settings = window.ShopifyThemeSettings || {};
   const goldNum = settings.goldWhatsappNumber || '917405544338';
